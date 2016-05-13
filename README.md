@@ -1,7 +1,5 @@
 # RasPi-OpenCV
-Different python scripts for Raspberry PI with OpenCV
+Program which controls drone with vision system.
 
 
-accessPiCam.py - take one shot from camera and display it.
-accessPiCamStream.py - stream camera view to screen.
-pi_camera_fps_demo.py - program showing the fps improvement with threads
+shapeDetectNav.py - Program with threaded stream which searches for shapes and analyzes them.
