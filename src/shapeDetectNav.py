@@ -19,6 +19,11 @@ import imutils
 import time
 import cv2
 
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-d", "--display", type=int, default=-1,
+                help="Whether or not frames should be displayed")
+args = vars(ap.parse_args())
 
 # initialize the camera and stream
 camera = PiCamera()
@@ -43,8 +48,9 @@ while True:
     frame = imutils.resize(frame, width=400)
 
     # check to see if the frame should be displayed to our screen
-    cv2.imshow("Frame", frame)
-    key = cv2.waitKey(1) & 0xFF
+    if args["display"] > 0:
+        cv2.imshow("Frame", frame)
+        key = cv2.waitKey(1) & 0xFF
 
     # update the FPS counter
     fps.update()
