@@ -40,8 +40,10 @@ vs = PiVideoStream().start()
 time.sleep(2.0)
 fps = FPS().start()
 
+working = True
+
 # loop over some frames...this time using the threaded stream
-while True:
+while working:
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
     frame = vs.read()
@@ -55,7 +57,7 @@ while True:
     # update the FPS counter
     fps.update()
 
-    print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+    print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
     print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # stop the timer and display FPS information
