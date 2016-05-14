@@ -1,0 +1,4 @@
+imutils==0.3.6
+numpy==1.10.4
+picamera==1.10
+wheel==0.29.0
