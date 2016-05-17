@@ -10,6 +10,12 @@ class ShapeDetector:
 		shape = "unidentified"
 		peri = cv2.arcLength(c, True)
 		approx = cv2.approxPolyDP(c, 0.04 * peri, True)
+                verts = []
+
+                for i in range(0, len(approx)):
+                    for j in range(0, 2):
+                        verts.append(int(approx[i][0][j]))
+
 
 		# if the shape is a triangle, it will have 3 vertices
 		if len(approx) == 3:
@@ -35,5 +41,7 @@ class ShapeDetector:
 		else:
 			shape = "circle"
 
+
 		# return the name of the shape
-		return shape
+		return [shape, verts]
+
