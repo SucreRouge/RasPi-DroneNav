@@ -37,31 +37,38 @@ time.sleep(2.0)
 # fps = FPS().start()
 
 working = True
+i = 0
 
 # loop over some frames...this time using the threaded stream
 while working:
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
     frame = vs.read()
-    frame = imutils.resize(frame, width=400)
+    frame = imutils.resize(frame, width=600)
     frame = cv2.flip(frame, 0)
+    frame = cv2.copyMakeBorder(frame, 2, 2, 2, 2, cv2.BORDER_CONSTANT, value = (255, 255, 255))
     frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frameBlurred = cv2.GaussianBlur(frameGray, (5, 5), 0)
-    frameThresh = cv2.threshold(frameBlurred, 80, 255, cv2.THRESH_BINARY)[1]
+    frameThresh = cv2.threshold(frameBlurred, 90, 255, cv2.THRESH_BINARY_INV)[1]
     frameFinal = frameThresh
 
-    cnts = cv2.findContours(frameThresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) 
+    cnts = cv2.findContours(frameFinal.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) 
     cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+    i = i + 1
 
     for c in cnts:
         M = cv2.moments(c)
-        cX = int((M['m10'] / M['m00']))
-        cY = int((M['m01'] / M['m00']))
-        shape = sd.detect(c)
+        try:
+            cX = int((M['m10'] / M['m00']))
+            cY = int((M['m01'] / M['m00']))
+            shape = sd.detect(c)
+        except:
+            # print('ups: {0}'.format(i))
+            continue
 
         c = c.astype('float')
         c = c.astype('int')
-        cv2.drawContours(frame, [c], -1, (0, 255, 0), 2)
+        cv2.drawContours(frame, [c], -1, (0, 255, 0), 1)
         cv2.putText(frame, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (255, 255, 255), 2) # check to see if the frame should be displayed to our screen
 
