@@ -33,6 +33,7 @@ args = vars(ap.parse_args())
 print('Starting threaded stream.')
 vs = PiVideoStream().start()
 sd = ShapeDetector()
+v = []
 time.sleep(2.0)
 # fps = FPS().start()
 
@@ -96,6 +97,7 @@ while working:
     if key == 27:
         working = False
     elif key == ord('q'):
+        print(settings['dispThresh'])
         settings['dispThresh'] = not settings['dispThresh']
 
     # update the FPS counter
