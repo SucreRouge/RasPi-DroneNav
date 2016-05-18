@@ -40,32 +40,36 @@ time.sleep(2.0)
 working = True
 i = 0
 settings = {'dispThresh': False, 'dispContours': True,
-            'dispVertices': True, 'dispNames': True}
+            'dispVertices': True, 'dispNames': True,
+            'erodeValue': 0, 'lowerThresh': 40}
 # print(setting['dispThresh'])
 
 # loop over some frames...this time using the threaded stream
 while working:
     # grab the frame from the threaded video stream and resize it
-    # to have a maximum width of 400 pixels
     frame = vs.read()
     frame = imutils.resize(frame, width=600)
     frame = cv2.flip(frame, 0)
     # frame = cv2.copyMakeBorder(frame, 3, 3, 3, 3,
-                                 # cv2.BORDER_CONSTANT, value=(255, 255, 255))
+    #                              cv2.BORDER_CONSTANT, value=(255, 255, 255))
     frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frameBlurred = cv2.GaussianBlur(frameGray, (5, 5), 0)
-    frameThresh = cv2.threshold(frameBlurred, 40, 255,
+    frameThresh = cv2.threshold(frameBlurred, settings['lowerThresh'], 255,
                                 cv2.THRESH_BINARY_INV)[1]
-    # frameThresh = cv2.erode(frameThresh, None, iterations=1)
-    # frameThresh = cv2.dilate(frameThresh, None, iterations=1)
+    frameThresh = cv2.erode(frameThresh, None,
+                            iterations=settings['erodeValue'])
+    frameThresh = cv2.dilate(frameThresh, None,
+                             iterations=settings['erodeValue'])
     frameThresh = cv2.copyMakeBorder(frameThresh, 3, 3, 3, 3,
                                      cv2.BORDER_CONSTANT, value=(0, 0, 0))
     frameFinal = frameThresh
 
+    # FIND CONTOURS
     cnts = cv2.findContours(frameFinal.copy(),
                             cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = cnts[0] if imutils.is_cv2() else cnts[1]
     cntsCount = len(cnts)
+
     i = i + 1
 
     for c in cnts:
@@ -99,19 +103,36 @@ while working:
 
         key = cv2.waitKey(1) & 0xFF
 
-    if key == 27:
-        working = False
-    elif key == ord('q'):
-        prev = settings['dispThresh']
-        settings['dispThresh'] = not settings['dispThresh']
-        if prev == True and settings['dispThresh'] == False:
-            cv2.destroyWindow('Thresholded')
-    elif key == ord('w'):
-        settings['dispContours'] = not settings['dispContours']
-    elif key == ord('e'):
-        settings['dispVertices'] = not settings['dispVertices']
-    elif key == ord('r'):
-        settings['dispNames'] = not settings['dispNames']
+        # input handling - ONLY IF HIGH GUI WINDOWS EXIST
+        if key == 27:
+            working = False
+        elif key == ord('q'):
+            prev = settings['dispThresh']
+            settings['dispThresh'] = not settings['dispThresh']
+            if prev is True and settings['dispThresh'] is False:
+                cv2.destroyWindow('Thresholded')
+        elif key == ord('w'):
+            settings['dispContours'] = not settings['dispContours']
+        elif key == ord('e'):
+            settings['dispVertices'] = not settings['dispVertices']
+        elif key == ord('r'):
+            settings['dispNames'] = not settings['dispNames']
+        elif key == ord('a'):
+            settings['lowerThresh'] = settings['lowerThresh'] + 10
+            if settings['lowerThresh'] > 255:
+                settings['lowerThresh'] = 255
+        elif key == ord('z'):
+            settings['lowerThresh'] = settings['lowerThresh'] - 10
+            if settings['lowerThresh'] < 0:
+                settings['lowerThresh'] = 0
+        elif key == ord('s'):
+            settings['erodeValue'] = settings['erodeValue'] + 1
+            if settings['erodeValue'] > 255:
+                settings['erodeValue'] = 255
+        elif key == ord('x'):
+            settings['erodeValue'] = settings['erodeValue'] - 1
+            if settings['erodeValue'] < 0:
+                settings['erodeValue'] = 0
 
     # update the FPS counter
     # fps.update()
