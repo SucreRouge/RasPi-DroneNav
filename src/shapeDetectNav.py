@@ -39,7 +39,8 @@ time.sleep(2.0)
 
 working = True
 i = 0
-settings = {'dispThresh': False, 'dispContours': True}
+settings = {'dispThresh': False, 'dispContours': True,
+            'dispVertices': True, 'dispNames': True}
 # print(setting['dispThresh'])
 
 # loop over some frames...this time using the threaded stream
@@ -78,12 +79,16 @@ while working:
 
         c = c.astype('float')
         c = c.astype('int')
-        cv2.drawContours(frame, [c], -1, (0, 255, 0), 1)
-        cv2.putText(frame, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
-                    0.5, (255, 255, 255), 1)
 
-    for i in range(0, len(v) / 2):
-        cv2.circle(frame, (v[2 * i], v[2 * i + 1]), 4, (255, 100, 100), 1)
+        if settings['dispContours']:
+            cv2.drawContours(frame, [c], -1, (0, 255, 0), 1)
+        if settings['dispNames']:
+            cv2.putText(frame, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5, (255, 255, 255), 1)
+
+        if settings['dispVertices']:
+            for i in range(0, len(v)):
+                cv2.circle(frame, tuple(v[i]), 4, (255, 100, 100), 1)
 
     # check to see if the frame should be displayed to our screen
     if args['display'] > 0:
@@ -97,8 +102,16 @@ while working:
     if key == 27:
         working = False
     elif key == ord('q'):
-        print(settings['dispThresh'])
+        prev = settings['dispThresh']
         settings['dispThresh'] = not settings['dispThresh']
+        if prev == True and settings['dispThresh'] == False:
+            cv2.destroyWindow('Thresholded')
+    elif key == ord('w'):
+        settings['dispContours'] = not settings['dispContours']
+    elif key == ord('e'):
+        settings['dispVertices'] = not settings['dispVertices']
+    elif key == ord('r'):
+        settings['dispNames'] = not settings['dispNames']
 
     # update the FPS counter
     # fps.update()

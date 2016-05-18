@@ -11,10 +11,15 @@ class ShapeDetector:
 		peri = cv2.arcLength(c, True)
 		approx = cv2.approxPolyDP(c, 0.04 * peri, True)
                 verts = []
+                vrt = []
 
+                # iterate over contours
                 for i in range(0, len(approx)):
+                    # iterate over vertices (needs additional [0]
+                    vrt = []
                     for j in range(0, 2):
-                        verts.append(int(approx[i][0][j]))
+                        vrt.append(int(approx[i][0][j])) 
+                    verts.append(vrt)
 
 
 		# if the shape is a triangle, it will have 3 vertices
