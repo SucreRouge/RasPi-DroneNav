@@ -49,7 +49,7 @@ settings = {'dispThresh': False, 'dispContours': True,
 while working:
     # grab the frame from the threaded video stream and resize it
     frame = vs.read()
-    frame = imutils.resize(frame, width=600)
+    # frame = imutils.resize(frame, width=600)
     frame = cv2.flip(frame, 0)
     # frame = cv2.copyMakeBorder(frame, 3, 3, 3, 3,
     #                              cv2.BORDER_CONSTANT, value=(255, 255, 255))
