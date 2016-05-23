@@ -1,4 +1,5 @@
 #!python2
+# -*- coding: UTF-8 -*-
 
 from unicurses import *
 from threading import Thread
@@ -7,13 +8,13 @@ from threading import Thread
 class CLInterface:
     def __init__(self):
         self.stdscr = initscr()
-        # keypad(stdscr, True)
+        keypad(self.stdscr, True)
         curs_set(False)
         timeout(-1)
         cbreak()
         start_color()
         noecho()
-        self.max_y, self.max_x = getmaxyx(stdscr)
+        self.max_y, self.max_x = getmaxyx(self.stdscr)
 
         self.running = True
         self.data = []
