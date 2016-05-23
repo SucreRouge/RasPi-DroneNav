@@ -37,8 +37,7 @@ class CLInterface:
             waddstr(self.window, 'Drone navigation - vision based.\n')
             waddstr(self.window, '\n')
             waddstr(self.window, 'Parameters of the vision processing:\n')
-            # waddstr(self.window, 'Threshold {0} - 255'.format(self.data['lowerThresh']))
-            print(self.data)
+            waddstr(self.window, 'Threshold {0} - 255'.format(self.data['lowerThresh']))
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:

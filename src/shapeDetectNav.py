@@ -137,7 +137,7 @@ while working:
             if settings['erodeValue'] < 0:
                 settings['erodeValue'] = 0
 
-        cli.write(settings)
+        cli.write(**settings)
 
     # update the FPS counter
     # fps.update()
