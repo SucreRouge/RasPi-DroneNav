@@ -20,8 +20,8 @@ import imutils
 import time
 import cv2
 
-# necessary for shape detection
 from shapeDetector.shapedetector import ShapeDetector
+from curses.CLInterface import CLInterface
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -34,6 +34,7 @@ args = vars(ap.parse_args())
 print('Starting threaded stream.')
 vs = PiVideoStream().start()
 sd = ShapeDetector()
+cli = CLInterface.start()
 v = []
 time.sleep(2.0)
 # fps = FPS().start()

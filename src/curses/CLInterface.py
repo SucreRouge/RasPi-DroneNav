@@ -1,6 +1,7 @@
 #!python2
 
 from curses import *
+from threading import Thread
 
 
 class CLInterface:
@@ -14,10 +15,36 @@ class CLInterface:
         noecho()
         self.max_y, self.max_x = getmaxyx(stdscr)
 
+        self.running = True
+        self.data = []
+        self.keyPressed = 0
+
         self.window = newwin(self.max_y, self.max_x, 0, 0)
         box(self.window)
 
-    def update():
-        # wrefresh(window)
-        wclear(window)
-        waddstr(window, 'Test.')
+    def start(self):
+        # start the thread
+        t = Thread(target=self.update, args=())
+        t.daemon = True
+        t.start()
+        return self
+
+    def update(self):
+        while Running:
+            # wrefresh(window)
+            wclear(self.window)
+            waddstr(self.window, 'Test.')
+
+            self.keyPressed = wgetch(self.window)
+            if self.keyPressed == 27:
+                waddstr(self.window, '\nESC interrupt.\n', uCu.A_BOLD)
+                wgetch(self.window)
+                self.running = False
+                break
+        endwin()
+
+    def write(self, dataIn):
+        self.data = dataIn
+
+    def stop(self):
+        return
