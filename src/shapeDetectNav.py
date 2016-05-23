@@ -21,7 +21,7 @@ import time
 import cv2
 
 from shapeDetector.shapedetector import ShapeDetector
-from curses.CLInterface import CLInterface
+from CLInterface.CLInterface import CLInterface
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -34,7 +34,8 @@ args = vars(ap.parse_args())
 print('Starting threaded stream.')
 vs = PiVideoStream().start()
 sd = ShapeDetector()
-cli = CLInterface.start()
+cli = CLInterface()
+cli.start()
 v = []
 time.sleep(2.0)
 # fps = FPS().start()
