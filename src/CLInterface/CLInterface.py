@@ -21,7 +21,7 @@ class CLInterface:
         self.settings = {'dispThresh': False, 'dispContours': True,
                          'dispVertices': True, 'dispNames': True,
                          'erodeValue': 0, 'lowerThresh': 0}
-        self.keyPressed = 0
+        self.key= 0
 
         self.window = newwin(self.max_y, self.max_x, 0, 0)
 
@@ -37,31 +37,31 @@ class CLInterface:
             # wrefresh(window)
             self.printData()
 
-            self.keyPressed = wgetch(self.window)
-            if self.keyPressed == 27:
+            self.key= wgetch(self.window)
+            if self.key == 27:
                 wmove(self.stdscr, self.max_y, self.max_x)
                 waddstr(self.window, '\nESC interrupt.\n', A_BOLD)
                 wgetch(self.window)
                 self.running = False
-            elif key == ord('w'):
+            elif self.key == ord('w'):
                 self.settings['dispContours'] = not self.settings['dispContours']
-            elif key == ord('e'):
+            elif self.key == ord('e'):
                 self.settings['dispVertices'] = not self.settings['dispVertices']
-            elif key == ord('r'):
+            elif self.key == ord('r'):
                 self.settings['dispNames'] = not self.settings['dispNames']
-            elif key == ord('a'):
+            elif self.key == ord('a'):
                 self.settings['lowerThresh'] = self.settings['lowerThresh'] + 2
                 if self.settings['lowerThresh'] > 255:
                     self.settings['lowerThresh'] = 255
-            elif key == ord('z'):
+            elif self.key == ord('z'):
                 self.settings['lowerThresh'] = self.settings['lowerThresh'] - 2
                 if self.settings['lowerThresh'] < 0:
                     self.settings['lowerThresh'] = 0
-            elif key == ord('s'):
+            elif self.key == ord('s'):
                 self.settings['erodeValue'] = self.settings['erodeValue'] + 1
                 if self.settings['erodeValue'] > 255:
                     self.settings['erodeValue'] = 255
-            elif key == ord('x'):
+            elif self.key == ord('x'):
                 self.settings['erodeValue'] = self.settings['erodeValue'] - 1
                 if self.settings['erodeValue'] < 0:
                     self.settings['erodeValue'] = 0
