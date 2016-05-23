@@ -17,6 +17,7 @@ class CLInterface:
         self.max_y, self.max_x = getmaxyx(self.stdscr)
 
         self.running = True
+        # self.data = {}
         self.data = {'dispThresh': False, 'dispContours': True,
                      'dispVertices': True, 'dispNames': True,
                      'erodeValue': 0, 'lowerThresh': 0}

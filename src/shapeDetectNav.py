@@ -49,7 +49,7 @@ settings = {'dispThresh': False, 'dispContours': True,
 
 # loop over some frames...this time using the threaded stream
 while working:
-    cli.write(**settings)
+    cli.write(settings)
     # grab the frame from the threaded video stream and resize it
     frame = vs.read()
     # frame = imutils.resize(frame, width=600)
