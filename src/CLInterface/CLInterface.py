@@ -17,11 +17,10 @@ class CLInterface:
         self.max_y, self.max_x = getmaxyx(self.stdscr)
 
         self.running = True
-        # self.data = {}
         self.settings = {'dispThresh': False, 'dispContours': True,
                          'dispVertices': True, 'dispNames': True,
                          'erodeValue': 0, 'lowerThresh': 0}
-        self.key= 0
+        self.keyPressed = 0
 
         self.window = newwin(self.max_y, self.max_x, 0, 0)
 
@@ -37,31 +36,33 @@ class CLInterface:
             # wrefresh(window)
             self.printData()
 
-            self.key= wgetch(self.window)
-            if self.key == 27:
+            self.keyPressed = wgetch(self.window)
+            if self.keyPressed == 27:
                 wmove(self.stdscr, self.max_y, self.max_x)
                 waddstr(self.window, '\nESC interrupt.\n', A_BOLD)
                 wgetch(self.window)
                 self.running = False
-            elif self.key == ord('w'):
+            elif self.keyPressed == ord('q'):
+                self.settings['dispThresh'] = not self.settings['dispThresh']
+            elif self.keyPressed == ord('w'):
                 self.settings['dispContours'] = not self.settings['dispContours']
-            elif self.key == ord('e'):
+            elif self.keyPressed == ord('e'):
                 self.settings['dispVertices'] = not self.settings['dispVertices']
-            elif self.key == ord('r'):
+            elif self.keyPressed == ord('r'):
                 self.settings['dispNames'] = not self.settings['dispNames']
-            elif self.key == ord('a'):
+            elif self.keyPressed == ord('a'):
                 self.settings['lowerThresh'] = self.settings['lowerThresh'] + 2
                 if self.settings['lowerThresh'] > 255:
                     self.settings['lowerThresh'] = 255
-            elif self.key == ord('z'):
+            elif self.keyPressed == ord('z'):
                 self.settings['lowerThresh'] = self.settings['lowerThresh'] - 2
                 if self.settings['lowerThresh'] < 0:
                     self.settings['lowerThresh'] = 0
-            elif self.key == ord('s'):
+            elif self.keyPressed == ord('s'):
                 self.settings['erodeValue'] = self.settings['erodeValue'] + 1
                 if self.settings['erodeValue'] > 255:
                     self.settings['erodeValue'] = 255
-            elif self.key == ord('x'):
+            elif self.keyPressed == ord('x'):
                 self.settings['erodeValue'] = self.settings['erodeValue'] - 1
                 if self.settings['erodeValue'] < 0:
                     self.settings['erodeValue'] = 0
@@ -81,11 +82,13 @@ class CLInterface:
         waddstr(self.window, 'Drone navigation - vision based.\n', A_BOLD)
         waddstr(self.window, '\n')
         waddstr(self.window, 'Parameters of the vision processing:\n', A_BOLD)
+        waddstr(self.window, 'Display mask    : {0} \n'.
+                             format(self.settings['dispThresh']))
         waddstr(self.window, 'Display contours: {0} \n'.
                              format(self.settings['dispContours']))
         waddstr(self.window, 'Display vertices: {0} \n'.
                              format(self.settings['dispVertices']))
-        waddstr(self.window, 'Display names: {0} \n'.
+        waddstr(self.window, 'Display names   : {0} \n'.
                              format(self.settings['dispNames']))
         waddstr(self.window, 'Threshold {0} - 255\n'.
                              format(self.settings['lowerThresh']))

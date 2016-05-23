@@ -49,6 +49,7 @@ settings = {'dispThresh': False, 'dispContours': True,
 
 # loop over some frames...this time using the threaded stream
 while working:
+    prev = settings['dispThresh']
     settings = cli.read()
     # grab the frame from the threaded video stream and resize it
     frame = vs.read()
@@ -104,39 +105,16 @@ while working:
 
         if settings['dispThresh']:
             cv2.imshow('Thresholded', frameFinal)
+        if prev is True and settings['dispThresh'] is False:
+            cv2.destroyWindow('Thresholded')
 
         key = cv2.waitKey(1) & 0xFF
+
 
         # input handling - ONLY IF HIGH GUI WINDOWS EXIST
         if key == 27:
             working = False
-        elif key == ord('q'):
-            prev = settings['dispThresh']
-            settings['dispThresh'] = not settings['dispThresh']
-            if prev is True and settings['dispThresh'] is False:
-                cv2.destroyWindow('Thresholded')
-        elif key == ord('w'):
-            settings['dispContours'] = not settings['dispContours']
-        elif key == ord('e'):
-            settings['dispVertices'] = not settings['dispVertices']
-        elif key == ord('r'):
-            settings['dispNames'] = not settings['dispNames']
-        elif key == ord('a'):
-            settings['lowerThresh'] = settings['lowerThresh'] + 10
-            if settings['lowerThresh'] > 255:
-                settings['lowerThresh'] = 255
-        elif key == ord('z'):
-            settings['lowerThresh'] = settings['lowerThresh'] - 10
-            if settings['lowerThresh'] < 0:
-                settings['lowerThresh'] = 0
-        elif key == ord('s'):
-            settings['erodeValue'] = settings['erodeValue'] + 1
-            if settings['erodeValue'] > 255:
-                settings['erodeValue'] = 255
-        elif key == ord('x'):
-            settings['erodeValue'] = settings['erodeValue'] - 1
-            if settings['erodeValue'] < 0:
-                settings['erodeValue'] = 0
+
 
     # update the FPS counter
     # fps.update()
