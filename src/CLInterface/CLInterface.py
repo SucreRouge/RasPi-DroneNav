@@ -1,26 +1,26 @@
 #!python2
 
-import curses
+from unicurses import *
 from threading import Thread
 
 
 class CLInterface:
     def __init__(self):
-        self.stdscr = curses.initscr()
-        # curses.keypad(stdscr, True)
-        curses.curs_set(False)
-        curses.timeout(-1)
-        curses.cbreak()
-        curses.start_color()
-        curses.noecho()
-        self.max_y, self.max_x = curses.getmaxyx(stdscr)
+        self.stdscr = initscr()
+        # keypad(stdscr, True)
+        curs_set(False)
+        timeout(-1)
+        cbreak()
+        start_color()
+        noecho()
+        self.max_y, self.max_x = getmaxyx(stdscr)
 
         self.running = True
         self.data = []
         self.keyPressed = 0
 
-        self.window = curses.newwin(self.max_y, self.max_x, 0, 0)
-        curses.box(self.window)
+        self.window = newwin(self.max_y, self.max_x, 0, 0)
+        box(self.window)
 
     def start(self):
         # start the thread
@@ -32,15 +32,15 @@ class CLInterface:
     def update(self):
         while Running:
             # wrefresh(window)
-            curses.wclear(self.window)
-            curses.waddstr(self.window, 'Test.')
+            wclear(self.window)
+            waddstr(self.window, 'Test.')
 
-            self.keyPressed = curses.wgetch(self.window)
+            self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
-                curses.waddstr(self.window, '\nESC interrupt.\n', uCu.A_BOLD)
-                curses.wgetch(self.window)
+                waddstr(self.window, '\nESC interrupt.\n', uCu.A_BOLD)
+                wgetch(self.window)
                 self.running = False
-        curses.endwin()
+        endwin()
 
     def write(self, dataIn):
         self.data = dataIn
