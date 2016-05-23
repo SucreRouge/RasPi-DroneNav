@@ -19,7 +19,7 @@ class CLInterface:
         self.running = True
         self.data = {'dispThresh': False, 'dispContours': True,
                      'dispVertices': True, 'dispNames': True,
-                     'erodeValue': 0, 'lowerThresh': 40}
+                     'erodeValue': 0, 'lowerThresh': 0}
         self.keyPressed = 0
 
         self.window = newwin(self.max_y, self.max_x, 0, 0)
@@ -34,12 +34,7 @@ class CLInterface:
     def update(self):
         while self.running:
             # wrefresh(window)
-            wclear(self.window)
-            box(self.window)
-            waddstr(self.window, 'Drone navigation - vision based.\n')
-            waddstr(self.window, '\n')
-            waddstr(self.window, 'Parameters of the vision processing:\n')
-            waddstr(self.window, 'Threshold {0} - 255'.format(self.data['lowerThresh']))
+            printData()
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
@@ -51,6 +46,15 @@ class CLInterface:
 
     def write(self, **dataIn):
         self.data = dataIn
+
+    def printData(self):
+        wclear(self.window)
+        box(self.window)
+        wmove(self.window, 0, 1)
+        waddstr(self.window, 'Drone navigation - vision based.\n')
+        waddstr(self.window, '\n')
+        waddstr(self.window, 'Parameters of the vision processing:\n')
+        waddstr(self.window, 'Threshold {0} - 255'.format(self.data['lowerThresh']))
 
     def stop(self):
         endwin()

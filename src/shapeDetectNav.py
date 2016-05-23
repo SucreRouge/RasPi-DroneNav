@@ -49,6 +49,7 @@ settings = {'dispThresh': False, 'dispContours': True,
 
 # loop over some frames...this time using the threaded stream
 while working:
+    cli.write(**settings)
     # grab the frame from the threaded video stream and resize it
     frame = vs.read()
     # frame = imutils.resize(frame, width=600)
@@ -136,8 +137,6 @@ while working:
             settings['erodeValue'] = settings['erodeValue'] - 1
             if settings['erodeValue'] < 0:
                 settings['erodeValue'] = 0
-
-        cli.write(**settings)
 
     # update the FPS counter
     # fps.update()
