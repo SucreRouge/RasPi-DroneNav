@@ -1,6 +1,6 @@
 #!python2
 
-from curses import *
+from unicurses import *
 from threading import Thread
 
 
@@ -40,7 +40,6 @@ class CLInterface:
                 waddstr(self.window, '\nESC interrupt.\n', uCu.A_BOLD)
                 wgetch(self.window)
                 self.running = False
-                break
         endwin()
 
     def write(self, dataIn):
