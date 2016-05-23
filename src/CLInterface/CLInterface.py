@@ -17,7 +17,7 @@ class CLInterface:
         self.max_y, self.max_x = getmaxyx(self.stdscr)
 
         self.running = True
-        self.data = []
+        self.data = {}
         self.keyPressed = 0
 
         self.window = newwin(self.max_y, self.max_x, 0, 0)
@@ -35,7 +35,9 @@ class CLInterface:
             wclear(self.window)
             box(self.window)
             waddstr(self.window, 'Drone navigation - vision based.\n')
-            waddstr(self.window, 'data')
+            waddstr(self.window, '\n')
+            waddstr(self.window, 'Parameters of the vision processing:\n')
+            waddstr(self.window, 'Threshold {0} - 255'.format(data['lowerThresh']))
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
@@ -45,7 +47,7 @@ class CLInterface:
                 self.running = False
         endwin()
 
-    def write(self, dataIn):
+    def write(self, **dataIn):
         self.data = dataIn
 
     def stop(self):
