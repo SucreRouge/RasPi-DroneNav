@@ -34,7 +34,7 @@ class CLInterface:
     def update(self):
         while self.running:
             # wrefresh(window)
-            printData()
+            self.printData()
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
