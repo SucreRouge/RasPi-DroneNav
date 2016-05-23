@@ -149,3 +149,4 @@ while working:
 # do a bit of cleanup
 cv2.destroyAllWindows()
 vs.stop()
+cli.stop()

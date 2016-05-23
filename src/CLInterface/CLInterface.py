@@ -47,4 +47,5 @@ class CLInterface:
         self.data = dataIn
 
     def stop(self):
+        endwin()
         return
