@@ -80,19 +80,27 @@ class CLInterface:
         box(self.window)
         wmove(self.window, 0, 1)
         waddstr(self.window, 'Drone navigation - vision based.\n', A_BOLD)
+        wmove(self.window, 1, 1)
         waddstr(self.window, '\n')
+        wmove(self.window, 2, 1)
         waddstr(self.window, 'Parameters of the vision processing:\n', A_BOLD)
-        waddstr(self.window, 'Display mask    : {0} \n'.
+        wmove(self.window, 3, 1)
+        waddstr(self.window, 'Display mask     <q>   : {0} \n'.
                              format(self.settings['dispThresh']))
-        waddstr(self.window, 'Display contours: {0} \n'.
+        wmove(self.window, 4, 1)
+        waddstr(self.window, 'Display contours <w>: {0} \n'.
                              format(self.settings['dispContours']))
-        waddstr(self.window, 'Display vertices: {0} \n'.
+        wmove(self.window, 5, 1)
+        waddstr(self.window, 'Display vertices <e>: {0} \n'.
                              format(self.settings['dispVertices']))
-        waddstr(self.window, 'Display names   : {0} \n'.
+        wmove(self.window, 6, 1)
+        waddstr(self.window, 'Display names    <r>: {0} \n'.
                              format(self.settings['dispNames']))
-        waddstr(self.window, 'Threshold {0} - 255\n'.
+        wmove(self.window, 7, 1)
+        waddstr(self.window, 'Threshold      <a,z> {0} - 255\n'.
                              format(self.settings['lowerThresh']))
-        waddstr(self.window, 'Erode: {0}\n'.format(self.settings['erodeValue']))
+        wmove(self.window, 8, 1)
+        waddstr(self.window, 'Erode          <s,x>: {0}\n'.format(self.settings['erodeValue']))
 
     def stop(self):
         endwin()
