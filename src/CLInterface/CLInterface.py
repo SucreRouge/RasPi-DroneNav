@@ -34,10 +34,12 @@ class CLInterface:
             # wrefresh(window)
             wclear(self.window)
             box(self.window)
-            waddstr(self.window, 'Test.')
+            waddstr(self.window, 'Drone navigation - vision based.')
+            waddstr(self.window, 'data')
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
+                wmove(stdscr, max_y, max_x)
                 waddstr(self.window, '\nESC interrupt.\n', A_BOLD)
                 wgetch(self.window)
                 self.running = False
