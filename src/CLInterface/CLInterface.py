@@ -21,7 +21,6 @@ class CLInterface:
         self.keyPressed = 0
 
         self.window = newwin(self.max_y, self.max_x, 0, 0)
-        box(self.window)
 
     def start(self):
         # start the thread
@@ -34,11 +33,12 @@ class CLInterface:
         while self.running:
             # wrefresh(window)
             wclear(self.window)
+            box(self.window)
             waddstr(self.window, 'Test.')
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
-                waddstr(self.window, '\nESC interrupt.\n', uCu.A_BOLD)
+                waddstr(self.window, '\nESC interrupt.\n', A_BOLD)
                 wgetch(self.window)
                 self.running = False
         endwin()
