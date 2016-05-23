@@ -44,35 +44,35 @@ class CLInterface:
                 wgetch(self.window)
                 self.running = False
             elif key == ord('w'):
-                settings['dispContours'] = not settings['dispContours']
+                self.settings['dispContours'] = not self.settings['dispContours']
             elif key == ord('e'):
-                settings['dispVertices'] = not settings['dispVertices']
+                self.settings['dispVertices'] = not self.settings['dispVertices']
             elif key == ord('r'):
-                settings['dispNames'] = not settings['dispNames']
+                self.settings['dispNames'] = not self.settings['dispNames']
             elif key == ord('a'):
-                settings['lowerThresh'] = settings['lowerThresh'] + 2
-                if settings['lowerThresh'] > 255:
-                    settings['lowerThresh'] = 255
+                self.settings['lowerThresh'] = self.settings['lowerThresh'] + 2
+                if self.settings['lowerThresh'] > 255:
+                    self.settings['lowerThresh'] = 255
             elif key == ord('z'):
-                settings['lowerThresh'] = settings['lowerThresh'] - 2
-                if settings['lowerThresh'] < 0:
-                    settings['lowerThresh'] = 0
+                self.settings['lowerThresh'] = self.settings['lowerThresh'] - 2
+                if self.settings['lowerThresh'] < 0:
+                    self.settings['lowerThresh'] = 0
             elif key == ord('s'):
-                settings['erodeValue'] = settings['erodeValue'] + 1
-                if settings['erodeValue'] > 255:
-                    settings['erodeValue'] = 255
+                self.settings['erodeValue'] = self.settings['erodeValue'] + 1
+                if self.settings['erodeValue'] > 255:
+                    self.settings['erodeValue'] = 255
             elif key == ord('x'):
-                settings['erodeValue'] = settings['erodeValue'] - 1
-                if settings['erodeValue'] < 0:
-                    settings['erodeValue'] = 0
+                self.settings['erodeValue'] = self.settings['erodeValue'] - 1
+                if self.settings['erodeValue'] < 0:
+                    self.settings['erodeValue'] = 0
 
         endwin()
 
     def write(self, dataIn):
-        self.data = dataIn
+        self.settings = dataIn
 
     def read(self):
-        return self.data
+        return self.settings
 
     def printData(self):
         wclear(self.window)
@@ -82,14 +82,14 @@ class CLInterface:
         waddstr(self.window, '\n')
         waddstr(self.window, 'Parameters of the vision processing:\n', A_BOLD)
         waddstr(self.window, 'Display contours: {0} \n'.
-                             format(settings['dispContours']))
+                             format(self.settings['dispContours']))
         waddstr(self.window, 'Display vertices: {0} \n'.
-                             format(settings['dispVertices']))
+                             format(self.settings['dispVertices']))
         waddstr(self.window, 'Display names: {0} \n'.
-                             format(settings['dispNames']))
+                             format(self.settings['dispNames']))
         waddstr(self.window, 'Threshold {0} - 255\n'.
-                             format(self.data['lowerThresh']))
-        waddstr(self.window, 'Erode: {0}\n'.format(self.data['erodeValue']))
+                             format(self.settings['lowerThresh']))
+        waddstr(self.window, 'Erode: {0}\n'.format(self.settings['erodeValue']))
 
     def stop(self):
         endwin()
