@@ -39,7 +39,7 @@ class CLInterface:
 
             self.keyPressed = wgetch(self.window)
             if self.keyPressed == 27:
-                wmove(stdscr, self.max_y, self.max_x)
+                wmove(self.stdscr, self.max_y, self.max_x)
                 waddstr(self.window, '\nESC interrupt.\n', A_BOLD)
                 wgetch(self.window)
                 self.running = False
