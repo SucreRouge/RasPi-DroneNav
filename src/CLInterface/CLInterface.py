@@ -47,7 +47,7 @@ class CLInterface:
                 self.running = False
         endwin()
 
-    def write(self, dataIn):
+    def write(self, **dataIn):
         self.data = dataIn
 
     def stop(self):
