@@ -31,7 +31,7 @@ class CLInterface:
         return self
 
     def update(self):
-        while Running:
+        while self.running:
             # wrefresh(window)
             wclear(self.window)
             waddstr(self.window, 'Test.')
