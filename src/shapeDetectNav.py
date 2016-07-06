@@ -40,7 +40,7 @@ sd = ShapeDetector()
 cli = CLInterface()
 cli.start()
 serialPort = serialcom(queue)
-serialPort.start()
+# serialPort.start()
 v = []
 time.sleep(2.0)
 # fps = FPS().start()
@@ -125,8 +125,7 @@ while working:
     # fps.update()
 
     # print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
-    # print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
-
+    # print("[INFO] approx. FPS: {:.2f}".format(fps.fps())) 
 # stop the timer and display FPS information
 # fps.stop()
 
