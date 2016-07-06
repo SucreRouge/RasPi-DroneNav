@@ -19,9 +19,11 @@ import argparse
 import imutils
 import time
 import cv2
+import Queue
 
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
+from SerialCom.serialcom import serialcom
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -32,10 +34,13 @@ args = vars(ap.parse_args())
 # created a *threaded *video stream, allow the camera sensor to warmup,
 # and start the FPS counter
 print('Starting threaded stream.')
+queue = Queue.Queue()
 vs = PiVideoStream().start()
 sd = ShapeDetector()
 cli = CLInterface()
 cli.start()
+serialPort = serialcom(queue)
+serialPort.start()
 v = []
 time.sleep(2.0)
 # fps = FPS().start()
