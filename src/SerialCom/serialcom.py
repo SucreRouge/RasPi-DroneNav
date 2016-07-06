@@ -14,7 +14,7 @@ class serialcom():
         self.Running = True
         self.numericals = []
         self.queue = q
-        self.data = 7
+        self.data = 'a\n'
 
     def start(self):
         self.SP = serial.Serial('/dev/ttyAMA0',

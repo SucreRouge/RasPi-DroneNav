@@ -40,7 +40,7 @@ sd = ShapeDetector()
 cli = CLInterface()
 cli.start()
 serialPort = serialcom(queue)
-# serialPort.start()
+serialPort.start()
 v = []
 time.sleep(2.0)
 # fps = FPS().start()
