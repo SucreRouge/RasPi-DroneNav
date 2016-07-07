@@ -12,7 +12,7 @@ void setup() {
     inputString.reserve(200);
 
     // synchronization info for RPi
-    Serial.println("ARD - OK\n")
+    Serial.println("ARD - OK\n");
 }
 
 
