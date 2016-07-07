@@ -10,6 +10,9 @@ void setup() {
 
     // reserve 200 bytes for the inputString
     inputString.reserve(200);
+    // PWM pins to output
+    DDRB |= 0b00001110;
+    DDRD |= 0b01101000;
 
     // synchronization info for RPi
     Serial.println("ARD - OK\n");
