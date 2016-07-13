@@ -42,7 +42,21 @@ def main():
         # keys = pygame.key.get_pressed()
 
         # if keys[pygame.K_e]:
-            # pwm0 = 240
+        #     pwm0 = 240
+        # if keys[pygame.K_d]:
+        #     pwm1 = 240
+        # if keys[pygame.K_f]:
+        #     pwm2 = 240
+        # if keys[pygame.K_s]:
+        #     pwm3 = 240
+        # if keys[pygame.K_w]:
+        #     pwm4 = 240
+        # if keys[pygame.K_r]:
+        #     pwm5 = 240
+        # if keys[pygame.K_q]:
+        #     pwm6 = 240
+        # if keys[pygame.K_a]:
+        #     pwm7 = 240
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
