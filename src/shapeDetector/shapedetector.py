@@ -18,7 +18,7 @@ class ShapeDetector:
                     # iterate over vertices (needs additional [0]
                     vrt = []
                     for j in range(0, 2):
-                        vrt.append(int(approx[i][0][j])) 
+                        vrt.append(int(approx[i][0][j]))
                     verts.append(vrt)
 
 
