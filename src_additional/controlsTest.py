@@ -29,46 +29,50 @@ def buildDataString(valueList):
 
 def main():
     while 1:
-        clock.tick(60)
+
+        pwm0 = 120
+        pwm1 = 120
+        pwm2 = 120
+        pwm3 = 120
+        pwm4 = 120
+        pwm5 = 120
+        pwm6 = 120
+        pwm7 = 120
+
+        # keys = pygame.key.get_pressed()
+
+        # if keys[pygame.K_e]:
+            # pwm0 = 240
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pass
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                print('e')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                print('d')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                print('f')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                print('s')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                print('w')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                print('r')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                print('q')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                print('a')
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                pwm0 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                pwm1 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+                pwm2 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                pwm3 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+                pwm4 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                pwm5 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                pwm6 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+                pwm7 = 240
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 print('esc')
-            else:
-                pwm0 = 120
-                pwm1 = 120
-                pwm2 = 120
-                pwm3 = 120
-                pwm4 = 120
-                pwm5 = 120
-                pwm6 = 120
-                pwm7 = 120
 
         values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5, pwm6, pwm7]
         valuesString = buildDataString(values)
         print(valuesString)
         # queue.put(valuesString)
 
-
         screen.blit(background, (0, 0))
         pygame.display.flip()
+        clock.tick(60)
 
 main()
