@@ -27,14 +27,23 @@ def buildDataString(valueList):
     return s
 
 
-pwm0 = 120
-pwm1 = 120
-pwm2 = 120
-pwm3 = 120
-pwm4 = 120
-pwm5 = 120
-pwm6 = 120
-pwm7 = 120
+pwm0_def = 52
+pwm1_def = 52
+pwm2_def = 52
+pwm3_def = 52
+pwm4_def = 52
+pwm5_def = 52
+pwm6_def = 52
+pwm7_def = 52
+
+pwm0 = pwm0_def
+pwm1 = pwm1_def
+pwm2 = pwm2_def
+pwm3 = pwm3_def
+pwm4 = pwm4_def
+pwm5 = pwm5_def
+pwm6 = pwm6_def
+pwm7 = pwm7_def
 
 
 def main():
@@ -48,44 +57,53 @@ def main():
     global pwm6
     global pwm7
 
+    global pwm0_def
+    global pwm1_def
+    global pwm2_def
+    global pwm3_def
+    global pwm4_def
+    global pwm5_def
+    global pwm6_def
+    global pwm7_def
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pass
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                pwm0 = 900
+                pwm0 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                pwm1 = 900
+                pwm1 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                pwm2 = 900
+                pwm2 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                pwm3 = 900
+                pwm3 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                pwm4 = 900
+                pwm4 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                pwm5 = 900
+                pwm5 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                pwm6 = 900
+                pwm6 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                pwm7 = 900
+                pwm7 = 103
 
             if event.type == pygame.KEYUP and event.key == pygame.K_e:
-                pwm0 = 120
+                pwm0 = pwm0_def
             if event.type == pygame.KEYUP and event.key == pygame.K_d:
-                pwm1 = 120
+                pwm1 = pwm1_def
             if event.type == pygame.KEYUP and event.key == pygame.K_f:
-                pwm2 = 120
+                pwm2 = pwm2_def
             if event.type == pygame.KEYUP and event.key == pygame.K_s:
-                pwm3 = 120
+                pwm3 = pwm3_def
             if event.type == pygame.KEYUP and event.key == pygame.K_w:
-                pwm4 = 120
+                pwm4 = pwm4_def
             if event.type == pygame.KEYUP and event.key == pygame.K_r:
-                pwm5 = 120
+                pwm5 = pwm5_def
             if event.type == pygame.KEYUP and event.key == pygame.K_q:
-                pwm6 = 120
+                pwm6 = pwm6_def
             if event.type == pygame.KEYUP and event.key == pygame.K_a:
-                pwm7 = 120
+                pwm7 = pwm7_def
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 print('esc')

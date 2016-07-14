@@ -4,6 +4,7 @@
 from threading import Thread
 import serial
 import time
+import platform
 
 
 class serialcom():
@@ -14,11 +15,18 @@ class serialcom():
         self.numericals = []
         self.queue = q
         self.data = 'a\n'
+        self.system = platform.system()
+        self.PortNo = 13
 
     def start(self):
-        self.SP = serial.Serial('/dev/ttyAMA0',
-                                self.BaudRate,
-                                timeout=5)
+        if self.system == 'Windows':
+            self.SP = serial.Serial("COM" + str(self.PortNo),
+                                    self.BaudRate,
+                                    timeout=5)
+        else:
+            self.SP = serial.Serial('/dev/ttyAMA0',
+                                    self.BaudRate,
+                                    timeout=5)
         self.SP.flush()
         self.SP.flushInput()
 
