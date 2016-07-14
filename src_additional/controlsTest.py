@@ -93,7 +93,7 @@ def main():
         values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5, pwm6, pwm7]
         valuesString = buildDataString(values)
         print(valuesString)
-        # queue.put(valuesString)
+        queue.put(valuesString)
 
         screen.blit(background, (0, 0))
         pygame.display.flip()
