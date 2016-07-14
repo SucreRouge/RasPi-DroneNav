@@ -8,7 +8,7 @@ import time
 
 queue = Queue.Queue()
 serialPort = serialcom(queue)
-# serialPort.start()
+serialPort.start()
 time.sleep(2.0)
 
 pygame.init()
@@ -35,6 +35,7 @@ pwm4 = 120
 pwm5 = 120
 pwm6 = 120
 pwm7 = 120
+
 
 def main():
 
@@ -96,6 +97,6 @@ def main():
 
         screen.blit(background, (0, 0))
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(50)
 
 main()
