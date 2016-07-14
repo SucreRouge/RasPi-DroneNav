@@ -23,7 +23,7 @@ background.fill((250, 250, 250))
 
 
 def buildDataString(valueList):
-    s = 'a{0}b{1}c{2}d{3}e{4}f{5}g{6}h{7}i'.format(*valueList)
+    s = 'a{0}b{1}c{2}d{3}e{4}f{5}g{6}h{7}i\n'.format(*valueList)
     return s
 
 
@@ -54,21 +54,21 @@ def main():
                 pass
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                pwm0 = 240
+                pwm0 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                pwm1 = 240
+                pwm1 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                pwm2 = 240
+                pwm2 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                pwm3 = 240
+                pwm3 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                pwm4 = 240
+                pwm4 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                pwm5 = 240
+                pwm5 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                pwm6 = 240
+                pwm6 = 900
             if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                pwm7 = 240
+                pwm7 = 900
 
             if event.type == pygame.KEYUP and event.key == pygame.K_e:
                 pwm0 = 120
