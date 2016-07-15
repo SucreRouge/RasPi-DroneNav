@@ -2,4 +2,5 @@ imutils==0.3.6
 numpy==1.10.4
 picamera==1.10
 pyserial==3.1.1
+RPi.GPIO==0.6.2
 wheel==0.29.0
