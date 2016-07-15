@@ -24,11 +24,12 @@ class pwmgenerator():
         self.pin3 = 24
         self.pin4 = 25
 
-        self.pwm = [103, 103, 103, 103]
+        self.pwm = [50, 50, 50, 50]
         self.m = 0
-        self.period = 2000
+        self.period = 1000
 
     def start(self):
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pin1, GPIO.OUT)
         GPIO.setup(self.pin2, GPIO.OUT)
         GPIO.setup(self.pin3, GPIO.OUT)
