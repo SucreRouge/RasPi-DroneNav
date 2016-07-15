@@ -163,7 +163,7 @@ void serialEvent() {
         // so the main loop can do something about it:
         if (inChar == '\n') {
             stringComplete = true;
-              Serial.println(inputString);
+//            Serial.println(inputString);
 //            Serial.println(inputString.substring(inputString.indexOf('a')+1, inputString.indexOf('b')));
 //            Serial.println(inputString.substring(inputString.indexOf('b')+1, inputString.indexOf('c')));
 //            Serial.println(inputString.substring(inputString.indexOf('c')+1, inputString.indexOf('d')));
