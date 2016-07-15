@@ -5,6 +5,7 @@ from SerialCom.serialcom import serialcom
 import pygame
 import Queue
 import time
+import sys
 
 queue = Queue.Queue()
 serialPort = serialcom(queue)
@@ -106,7 +107,7 @@ def main():
                 pwm7 = pwm7_def
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                print('esc')
+                sys.exit(0)
 
         values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5, pwm6, pwm7]
         valuesString = buildDataString(values)
