@@ -24,27 +24,37 @@ background.fill((250, 250, 250))
 
 
 def buildDataString(valueList):
-    s = 'a{0}b{1}c{2}d{3}e{4}f{5}g{6}h{7}i\n'.format(*valueList)
+    s = 'a{0}b{1}c{2}d{3}e{4}f{5}g\n'.format(*valueList)
     return s
 
 
-pwm0_def = 52
-pwm1_def = 52
-pwm2_def = 52
-pwm3_def = 52
-pwm4_def = 52
-pwm5_def = 52
-pwm6_def = 52
-pwm7_def = 52
+pwm0_low = 100
+pwm1_low = 100
+pwm2_low = 100
+pwm3_low = 100
+pwm4_low = 100
+pwm5_low = 100
 
-pwm0 = pwm0_def
-pwm1 = pwm1_def
-pwm2 = pwm2_def
-pwm3 = pwm3_def
-pwm4 = pwm4_def
-pwm5 = pwm5_def
-pwm6 = pwm6_def
-pwm7 = pwm7_def
+pwm0_neutral = 500
+pwm1_neutral = 500
+pwm2_neutral = 500
+pwm3_neutral = 500
+pwm4_neutral = 500
+pwm5_neutral = 500
+
+pwm0_high = 900
+pwm1_high = 900
+pwm2_high = 900
+pwm3_high = 900
+pwm4_high = 900
+pwm5_high = 900
+
+pwm0 = pwm0_neutral
+pwm1 = pwm1_neutral
+pwm2 = pwm2_neutral
+pwm3 = pwm3_neutral
+pwm4 = pwm4_neutral
+pwm5 = pwm5_neutral
 
 
 def main():
@@ -55,61 +65,87 @@ def main():
     global pwm3
     global pwm4
     global pwm5
-    global pwm6
-    global pwm7
 
-    global pwm0_def
-    global pwm1_def
-    global pwm2_def
-    global pwm3_def
-    global pwm4_def
-    global pwm5_def
-    global pwm6_def
-    global pwm7_def
+    global pwm0_low
+    global pwm1_low
+    global pwm2_low
+    global pwm3_low
+    global pwm4_low
+    global pwm5_low
+
+    global pwm0_neutral
+    global pwm1_neutral
+    global pwm2_neutral
+    global pwm3_neutral
+    global pwm4_neutral
+    global pwm5_neutral
+
+    global pwm0_high
+    global pwm1_high
+    global pwm2_high
+    global pwm3_high
+    global pwm4_high
+    global pwm5_high
 
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pass
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                pwm0 = 103
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                pwm1 = 103
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                pwm2 = 103
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                pwm3 = 103
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                pwm4 = 103
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                pwm5 = 103
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                pwm6 = 103
+                pwm0 = pwm0_high
             if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                pwm7 = 103
+                pwm0 = pwm0_low
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+                pwm1 = pwm1_high
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                pwm1 = pwm1_low
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                pwm2 = pwm2_high
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                pwm2 = pwm2_low
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                pwm3 = pwm3_high
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+                pwm3 = pwm3_low
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
+                pwm4 = pwm4_high
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
+                pwm4 = pwm4_low
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                pwm5 = pwm5_high
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
+                pwm5 = pwm5_low
 
-            if event.type == pygame.KEYUP and event.key == pygame.K_e:
-                pwm0 = pwm0_def
-            if event.type == pygame.KEYUP and event.key == pygame.K_d:
-                pwm1 = pwm1_def
-            if event.type == pygame.KEYUP and event.key == pygame.K_f:
-                pwm2 = pwm2_def
-            if event.type == pygame.KEYUP and event.key == pygame.K_s:
-                pwm3 = pwm3_def
-            if event.type == pygame.KEYUP and event.key == pygame.K_w:
-                pwm4 = pwm4_def
-            if event.type == pygame.KEYUP and event.key == pygame.K_r:
-                pwm5 = pwm5_def
             if event.type == pygame.KEYUP and event.key == pygame.K_q:
-                pwm6 = pwm6_def
+                pwm0 = pwm0_neutral
             if event.type == pygame.KEYUP and event.key == pygame.K_a:
-                pwm7 = pwm7_def
+                pwm0 = pwm0_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_w:
+                pwm1 = pwm1_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_s:
+                pwm1 = pwm1_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_e:
+                pwm2 = pwm2_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_d:
+                pwm2 = pwm2_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_r:
+                pwm3 = pwm3_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_f:
+                pwm3 = pwm3_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_t:
+                pwm4 = pwm4_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_g:
+                pwm4 = pwm4_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_y:
+                pwm5 = pwm5_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_h:
+                pwm5 = pwm5_neutral
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit(0)
 
-        values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5, pwm6, pwm7]
+        values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5]
         valuesString = buildDataString(values)
         print(valuesString)
         queue.put(valuesString)
