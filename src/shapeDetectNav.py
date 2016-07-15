@@ -24,6 +24,7 @@ import Queue
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
 from SerialCom.serialcom import serialcom
+from pwmGenerator.pwmgenerator import pwmgenerator
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -34,28 +35,32 @@ args = vars(ap.parse_args())
 # created a *threaded *video stream, allow the camera sensor to warmup,
 # and start the FPS counter
 print('Starting threaded stream.')
+
+# objects used
 queue = Queue.Queue()
 vs = PiVideoStream().start()
 sd = ShapeDetector()
 cli = CLInterface()
 cli.start()
-serialPort = serialcom(queue)
-serialPort.start()
-v = []
+# serialPort = serialcom(queue)
+# serialPort.start()
+pwm = pwmgenerator(queue)
+pwm.start()
+
 time.sleep(2.0)
-# fps = FPS().start()
 
 working = True
-i = 0
+verts = []
+n = 0
 settings = {'dispThresh': False, 'dispContours': True,
             'dispVertices': True, 'dispNames': True,
             'erodeValue': 0, 'lowerThresh': 40}
-# print(setting['dispThresh'])
 
 # loop over some frames...this time using the threaded stream
 while working:
     prev = settings['dispThresh']
     settings = cli.read()
+
     # grab the frame from the threaded video stream and resize it
     frame = vs.read()
     # frame = imutils.resize(frame, width=600)
@@ -80,14 +85,14 @@ while working:
     cnts = cnts[0] if imutils.is_cv2() else cnts[1]
     cntsCount = len(cnts)
 
-    i = i + 1
+    n = n + 1
 
     for c in cnts:
         M = cv2.moments(c)
         try:
             cX = int((M['m10'] / M['m00']))
             cY = int((M['m01'] / M['m00']))
-            shape, v = sd.detect(c)
+            shape, verts = sd.detect(c)
         except:
             continue
 
@@ -101,10 +106,13 @@ while working:
                         0.5, (255, 255, 255), 1)
 
         if settings['dispVertices']:
-            for i in range(0, len(v)):
-                cv2.circle(frame, tuple(v[i]), 4, (255, 100, 100), 1)
+            for i in range(0, len(verts)):
+                cv2.circle(frame, tuple(verts[i]), 4, (255, 100, 100), 1)
 
-    # check to see if the frame should be displayed to our screen
+    pwmVals = [103, 103, 103, 103]
+    queue.put(pwmVals)
+
+    # check to see if the frame should be displayed to the screen
     if args['display'] > 0:
         cv2.imshow('Frame', frame)
 
@@ -120,14 +128,6 @@ while working:
         if key == 27:
             working = False
 
-
-    # update the FPS counter
-    # fps.update()
-
-    # print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
-    # print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
-# stop the timer and display FPS information
-# fps.stop()
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
