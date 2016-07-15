@@ -32,17 +32,21 @@ uint16_t pwm5 = 103;
 //a999b999c999d999e999f999g
 void setup() {
     Serial.begin(115200);
-
-    while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-    }
-
+    
     // reserve 200 bytes for the inputString
     inputString.reserve(200);
     // PWM pins to output
     DDRC |= 0b00111111;
     // DDRD |= 0b01100000;
 
+    //while (!Serial) {
+    // wait for serial port to connect. Needed for native USB port only
+    PORTC |= _BV(PC5);
+    delay(2000);
+    PORTC &= ~_BV(PC5);
+    delay(2000);
+    //}
+    
     // synchronization info for RPi
     Serial.println("ARD - OK\n");
 }
