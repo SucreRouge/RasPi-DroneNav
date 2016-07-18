@@ -3,6 +3,8 @@
 
 from unicurses import *
 from threading import Thread
+import os
+import ConfigParser
 
 
 class CLInterface:
@@ -15,16 +17,46 @@ class CLInterface:
         start_color()
         noecho()
         self.max_y, self.max_x = getmaxyx(self.stdscr)
-
-        self.running = True
-        self.settings = {'dispThresh': False, 'dispContours': True,
-                         'dispVertices': True, 'dispNames': True,
-                         'erodeValue': 0, 'lowerThresh': 0}
-        self.keyPressed = 0
-
         self.window = newwin(self.max_y, self.max_x, 0, 0)
 
+        self.running = True
+        self.keyPressed = 0
+
+        self.settings = {'dispThresh': False, 'dispContours': False,
+                         'dispVertices': False, 'dispNames': True,
+                         'erodeValue': 0, 'lowerThresh': 0}
+
+    def readConfig(self, cfg, path, setts):
+        self.configFile = open('../config.ini', 'r')
+
+        setts['dispThresh'] = cfg.getboolean('VisionParams', 'dispThresh')
+        setts['dispContours'] = cfg.getboolean('VisionParams', 'dispContours')
+        setts['dispVertices'] = cfg.getboolean('VisionParams', 'dispVertices')
+        setts['dispNames'] = cfg.getboolean('VisionParams', 'dispNames')
+        setts['erodeValue'] = cfg.getint('VisionParams', 'erodeValue')
+        setts['lowerThresh'] = cfg.getint('VisionParams', 'lowerThresh')
+
+        self.configFile.close()
+
+    def writeConfig(self, cfg, path, setts):
+        self.configFile = open(path, 'w')
+
+        cfg.add_section('VisionParams')
+        # append all the dict in the config
+        for key in setts:
+            cfg.set(key, setts[key])
+
+        cfg.write(configFile)
+        self.configFile.close()
+
     def start(self):
+        # create or load config file
+        self.config = ConfigParser.ConfigParser()
+        if os.path.isfile('../config.ini'):
+            readConfig(self.config, '../config.ini', self.settings)
+        else:
+            writeConfig(self.config, '../config.ini', self.settings)
+
         # start the thread
         t = Thread(target=self.update, args=())
         t.daemon = True
