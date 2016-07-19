@@ -16,7 +16,7 @@ class serialcom():
         self.queue = q
         self.data = 'a\n'
         self.system = platform.system()
-        self.PortNo = 4
+        self.PortNo = 13
 
     def start(self):
         if self.system == 'Windows':

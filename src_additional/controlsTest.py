@@ -6,6 +6,15 @@ import pygame
 import Queue
 import time
 import sys
+import argparse
+import math
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-m", "--mode", type=int, default=0,
+                help="Direct control = 0,"
+                     "Sinus on all = 1,"
+                     "Sinus one by one = 2")
+args = vars(ap.parse_args())
 
 queue = Queue.Queue()
 serialPort = serialcom(queue)
@@ -56,8 +65,16 @@ pwm3 = pwm3_neutral
 pwm4 = pwm4_neutral
 pwm5 = pwm5_neutral
 
+frameNumber = 0
+sinusSpeed = 0.001
+pwmNumber = 0
+
 
 def main():
+
+    global frameNumber
+    global sinusSpeed
+    global pwmNumber
 
     global pwm0
     global pwm1
@@ -88,67 +105,109 @@ def main():
     global pwm5_high
 
     while 1:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pass
+        if args['mode'] == 0:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pass
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                pwm0 = pwm0_high
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                pwm0 = pwm0_low
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                pwm1 = pwm1_high
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                pwm1 = pwm1_low
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                pwm2 = pwm2_high
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                pwm2 = pwm2_low
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                pwm3 = pwm3_high
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                pwm3 = pwm3_low
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-                pwm4 = pwm4_high
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
-                pwm4 = pwm4_low
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-                pwm5 = pwm5_high
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
-                pwm5 = pwm5_low
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    pwm0 = pwm0_high
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+                    pwm0 = pwm0_low
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+                    pwm1 = pwm1_high
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                    pwm1 = pwm1_low
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                    pwm2 = pwm2_high
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                    pwm2 = pwm2_low
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                    pwm3 = pwm3_high
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+                    pwm3 = pwm3_low
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
+                    pwm4 = pwm4_high
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
+                    pwm4 = pwm4_low
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                    pwm5 = pwm5_high
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
+                    pwm5 = pwm5_low
 
-            if event.type == pygame.KEYUP and event.key == pygame.K_q:
-                pwm0 = pwm0_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_a:
-                pwm0 = pwm0_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_w:
-                pwm1 = pwm1_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_s:
-                pwm1 = pwm1_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_e:
-                pwm2 = pwm2_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_d:
-                pwm2 = pwm2_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_r:
-                pwm3 = pwm3_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_f:
-                pwm3 = pwm3_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_t:
-                pwm4 = pwm4_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_g:
-                pwm4 = pwm4_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_y:
-                pwm5 = pwm5_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_h:
-                pwm5 = pwm5_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_q:
+                    pwm0 = pwm0_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_a:
+                    pwm0 = pwm0_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_w:
+                    pwm1 = pwm1_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_s:
+                    pwm1 = pwm1_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_e:
+                    pwm2 = pwm2_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_d:
+                    pwm2 = pwm2_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_r:
+                    pwm3 = pwm3_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_f:
+                    pwm3 = pwm3_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_t:
+                    pwm4 = pwm4_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_g:
+                    pwm4 = pwm4_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_y:
+                    pwm5 = pwm5_neutral
+                if event.type == pygame.KEYUP and event.key == pygame.K_h:
+                    pwm5 = pwm5_neutral
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                serialPort.stop()
-                sys.exit(0)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    serialPort.stop()
+                    sys.exit(0)
+
+        elif args['mode'] == 1:
+            pwm0 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusSpeed * frameNumber * math.pi))
+            pwm1 = pwm2 = pwm3 = pwm4 = pwm5 = pwm0
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    serialPort.stop()
+                    sys.exit(0)
+
+        elif args['mode'] == 2:
+            sinusSpeed = 0.01
+            sinusArgument = sinusSpeed * frameNumber * math.pi
+
+            if pwmNumber == 0:
+                pwm0 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusArgument))
+            elif pwmNumber == 1:
+                pwm1 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusArgument))
+            elif pwmNumber == 2:
+                pwm2 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusArgument))
+            elif pwmNumber == 3:
+                pwm3 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusArgument))
+            elif pwmNumber == 4:
+                pwm4 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusArgument))
+            elif pwmNumber == 5:
+                pwm5 = int(300 + (pwm0_high - pwm0_neutral) * math.sin(sinusArgument))
+
+            # if the argument is multipication of 2 pi
+            # frame number condition so that it doesn't jump to pwmNumber 2 at the start
+            if sinusArgument % (2 * math.pi) == 0 and frameNumber > 10:
+                pwmNumber += 1
+
+            if pwmNumber > 5:
+                pwmNumber = 0
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    serialPort.stop()
+                    sys.exit(0)
+
+        frameNumber += 1
 
         values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5]
         valuesString = buildDataString(values)
-        # print(valuesString)
+        print(valuesString)
         queue.put(valuesString)
 
         screen.blit(background, (0, 0))
