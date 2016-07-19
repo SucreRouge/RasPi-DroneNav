@@ -27,14 +27,17 @@ class CLInterface:
                          'dispVertices': False, 'dispNames': True,
                          'erodeValue': 0, 'lowerThresh': 0}
 
+        # configuration parser
         self.configFilePath = ('./config.ini')
+        self.configPars = ConfigParser.ConfigParser()
 
+        # logging
         logging.basicConfig(filename='./log', format='%(asctime)s %(message)s', level=logging.DEBUG)
         self.logger = logging.getLogger(__name__)
 
     def readConfig(self, cfg, path, setts):
         logging.info('Reading config file.')
-        self.configFile = open(path, 'r')
+        cfg.read('config.ini')
 
         setts['dispThresh'] = cfg.getboolean('VisionParams', 'dispThresh')
         setts['dispContours'] = cfg.getboolean('VisionParams', 'dispContours')
@@ -43,29 +46,26 @@ class CLInterface:
         setts['erodeValue'] = cfg.getint('VisionParams', 'erodeValue')
         setts['lowerThresh'] = cfg.getint('VisionParams', 'lowerThresh')
 
-        self.configFile.close()
-
     def writeConfig(self, cfg, path, setts):
         logging.info('Writing config file.')
-        self.configFile = open(path, 'w')
+        configFile = open(path, 'w')
 
         cfg.add_section('VisionParams')
         # append all the dict in the config
         for key in setts:
-            cfg.set(key, setts[key])
+            cfg.set('VisionParams', key, setts[key])
 
         cfg.write(configFile)
-        self.configFile.close()
+        configFile.close()
 
     def start(self):
         # create or load config file
-        self.config = ConfigParser.ConfigParser()
         if os.path.isfile(self.configFilePath):
             logging.debug('The config.ini does exist.')
-            self.readConfig(self.config, self.configFilePath, self.settings)
+            self.readConfig(self.configPars, self.configFilePath, self.settings)
         else:
             logging.debug('The config file doesnt exist.')
-            self.writeConfig(self.config, self.configFilePath, self.settings)
+            self.writeConfig(self.configPars, self.configFilePath, self.settings)
 
         # start the thread
         t = Thread(target=self.update, args=())
@@ -108,6 +108,10 @@ class CLInterface:
                 self.settings['erodeValue'] = self.settings['erodeValue'] - 1
                 if self.settings['erodeValue'] < 0:
                     self.settings['erodeValue'] = 0
+            elif self.keyPressed == ord('p'):
+                self.writeConfig(self.configPars, self.configFilePath, self.settings)
+            elif self.keyPressed == ord('o'):
+                self.readConfig(self.configPars, self.configFilePath, self.settings)
 
         endwin()
 
@@ -143,6 +147,10 @@ class CLInterface:
                              format(self.settings['lowerThresh']))
         wmove(self.window, 8, 1)
         waddstr(self.window, 'Erode          <s,x>: {0}\n'.format(self.settings['erodeValue']))
+        wmove(self.window, 9, 1)
+        waddstr(self.window, 'Store values to config.ini   <p>\n')
+        wmove(self.window, 10, 1)
+        waddstr(self.window, 'Restore values from config.ini   <o>\n')
 
     def stop(self):
         endwin()
