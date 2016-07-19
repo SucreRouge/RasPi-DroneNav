@@ -25,7 +25,7 @@ class CLInterface:
 
         self.settings = {'dispThresh': False, 'dispContours': False,
                          'dispVertices': False, 'dispNames': True,
-                         'erodeValue': 0, 'lowerThresh': 0}
+                         'erodeValue': 0, 'lowerThresh': 0, 'working': True}
 
         # configuration parser
         self.configFilePath = ('./config.ini')
@@ -62,10 +62,14 @@ class CLInterface:
         # create or load config file
         if os.path.isfile(self.configFilePath):
             self.logger.debug('The config.ini does exist.')
-            self.readConfig(self.configPars, self.configFilePath, self.settings)
+            self.readConfig(self.configPars,
+                            self.configFilePath,
+                            self.settings)
         else:
             self.logger.debug('The config file doesnt exist.')
-            self.writeConfig(self.configPars, self.configFilePath, self.settings)
+            self.writeConfig(self.configPars,
+                             self.configFilePath,
+                             self.settings)
 
         # start the thread
         t = Thread(target=self.update, args=())
@@ -112,6 +116,9 @@ class CLInterface:
                 self.writeConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
+            # escape key
+            elif self.keyPressed == 27:
+                self.settings['working'] = not self.settings['working']
 
         endwin()
 
@@ -151,6 +158,9 @@ class CLInterface:
         waddstr(self.window, 'Store values to config.ini   <p>\n')
         wmove(self.window, 11, 1)
         waddstr(self.window, 'Restore values from config.ini   <o>\n')
+        wmove(self.window, 14, 1)
+        waddstr(self.window, 'Process working     : {0} \n'.
+                             format(self.settings['working']))
 
     def stop(self):
         endwin()

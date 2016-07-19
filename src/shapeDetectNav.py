@@ -25,20 +25,17 @@ import sys
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
 from SerialCom.serialcom import serialcom
-from pwmGenerator.pwmgenerator import pwmgenerator
+# from pwmGenerator.pwmgenerator import pwmgenerator
 
-working = True
 
 def main():
+    working = True
+
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-d", "--display", type=int, default=-1,
                     help="Whether or not frames should be displayed")
     args = vars(ap.parse_args())
-
-    # created a *threaded *video stream, allow the camera sensor to warmup,
-    # and start the FPS counter
-    print('Starting threaded stream.')
 
     # objects used
     queue = Queue.Queue()
@@ -57,20 +54,20 @@ def main():
     n = 0
     settings = {'dispThresh': False, 'dispContours': True,
                 'dispVertices': True, 'dispNames': True,
-                'erodeValue': 0, 'lowerThresh': 40}
+                'erodeValue': 0, 'lowerThresh': 40, 'working': True}
 
-    global working
     # loop over some frames...this time using the threaded stream
     while working:
         prev = settings['dispThresh']
         settings = cli.read()
+        working = settings['working']
 
         # grab the frame from the threaded video stream and resize it
         frame = vs.read()
         # frame = imutils.resize(frame, width=600)
         frame = cv2.flip(frame, 0)
         # frame = cv2.copyMakeBorder(frame, 3, 3, 3, 3,
-        #                              cv2.BORDER_CONSTANT, value=(255, 255, 255))
+        #                            cv2.BORDER_CONSTANT, value=(255, 255, 255))
         frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         frameBlurred = cv2.GaussianBlur(frameGray, (5, 5), 0)
         frameThresh = cv2.threshold(frameBlurred, settings['lowerThresh'], 255,
@@ -108,7 +105,6 @@ def main():
             if settings['dispNames']:
                 cv2.putText(frame, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
                             0.5, (255, 255, 255), 1)
-
             if settings['dispVertices']:
                 for i in range(0, len(verts)):
                     cv2.circle(frame, tuple(verts[i]), 4, (255, 100, 100), 1)
@@ -124,7 +120,6 @@ def main():
 
             key = cv2.waitKey(1) & 0xFF
 
-
             # input handling - ONLY IF HIGH GUI WINDOWS EXIST
             if key == 27:
                 working = False
@@ -136,9 +131,8 @@ def main():
     sys.exit(0)
 
 
-
-#try:
+# try:
 main()
-#except Exception as e:
-#    print(e)
-#    sys.exit(0)
+# except Exception as e:
+#     print(e)
+#     sys.exit(0)
