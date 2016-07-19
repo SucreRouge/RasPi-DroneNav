@@ -36,7 +36,7 @@ class CLInterface:
         self.logger = logging.getLogger(__name__)
 
     def readConfig(self, cfg, path, setts):
-        logging.info('Reading config file.')
+        self.logger.info('Reading config file.')
         cfg.read('config.ini')
 
         setts['dispThresh'] = cfg.getboolean('VisionParams', 'dispThresh')
@@ -47,7 +47,7 @@ class CLInterface:
         setts['lowerThresh'] = cfg.getint('VisionParams', 'lowerThresh')
 
     def writeConfig(self, cfg, path, setts):
-        logging.info('Writing config file.')
+        self.logger.info('Writing config file.')
         configFile = open(path, 'w')
 
         cfg.add_section('VisionParams')
@@ -61,10 +61,10 @@ class CLInterface:
     def start(self):
         # create or load config file
         if os.path.isfile(self.configFilePath):
-            logging.debug('The config.ini does exist.')
+            self.logger.debug('The config.ini does exist.')
             self.readConfig(self.configPars, self.configFilePath, self.settings)
         else:
-            logging.debug('The config file doesnt exist.')
+            self.logger.debug('The config file doesnt exist.')
             self.writeConfig(self.configPars, self.configFilePath, self.settings)
 
         # start the thread
@@ -131,7 +131,7 @@ class CLInterface:
         wmove(self.window, 2, 1)
         waddstr(self.window, 'Parameters of the vision processing:\n', A_BOLD)
         wmove(self.window, 3, 1)
-        waddstr(self.window, 'Display mask     <q>   : {0} \n'.
+        waddstr(self.window, 'Display mask     <q>: {0} \n'.
                              format(self.settings['dispThresh']))
         wmove(self.window, 4, 1)
         waddstr(self.window, 'Display contours <w>: {0} \n'.
@@ -143,13 +143,13 @@ class CLInterface:
         waddstr(self.window, 'Display names    <r>: {0} \n'.
                              format(self.settings['dispNames']))
         wmove(self.window, 7, 1)
-        waddstr(self.window, 'Threshold      <a,z> {0} - 255\n'.
+        waddstr(self.window, 'Threshold      <a,z>: {0} - 255\n'.
                              format(self.settings['lowerThresh']))
         wmove(self.window, 8, 1)
         waddstr(self.window, 'Erode          <s,x>: {0}\n'.format(self.settings['erodeValue']))
-        wmove(self.window, 9, 1)
-        waddstr(self.window, 'Store values to config.ini   <p>\n')
         wmove(self.window, 10, 1)
+        waddstr(self.window, 'Store values to config.ini   <p>\n')
+        wmove(self.window, 11, 1)
         waddstr(self.window, 'Restore values from config.ini   <o>\n')
 
     def stop(self):
