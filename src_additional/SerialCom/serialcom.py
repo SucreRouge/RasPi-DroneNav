@@ -9,14 +9,14 @@ import platform
 
 class serialcom():
     """docstring for CLInfo"""
-    def __init__(self, q):
+    def __init__(self, q, nr):
         self.BaudRate = 115200
         self.Running = True
         self.numericals = []
         self.queue = q
         self.data = 'a\n'
         self.system = platform.system()
-        self.PortNo = 13
+        self.PortNo = nr
 
     def start(self):
         if self.system == 'Windows':
