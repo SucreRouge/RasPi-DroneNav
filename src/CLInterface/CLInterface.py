@@ -83,7 +83,9 @@ class CLInterface:
             self.printData()
 
             self.keyPressed = wgetch(self.window)
+            # ESCAPE
             if self.keyPressed == 27:
+                self.settings['working'] = not self.settings['working']
                 wmove(self.stdscr, self.max_y, self.max_x)
                 waddstr(self.window, '\nESC interrupt.\n', A_BOLD)
                 wgetch(self.window)
@@ -116,9 +118,6 @@ class CLInterface:
                 self.writeConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
-            # escape key
-            elif self.keyPressed == 27:
-                self.settings['working'] = not self.settings['working']
 
         endwin()
 
