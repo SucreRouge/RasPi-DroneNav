@@ -27,6 +27,8 @@ from CLInterface.CLInterface import CLInterface
 from SerialCom.serialcom import serialcom
 from pwmGenerator.pwmgenerator import pwmgenerator
 
+working = True
+
 def main():
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
@@ -51,13 +53,13 @@ def main():
 
     time.sleep(2.0)
 
-    working = True
     verts = []
     n = 0
     settings = {'dispThresh': False, 'dispContours': True,
                 'dispVertices': True, 'dispNames': True,
                 'erodeValue': 0, 'lowerThresh': 40}
 
+    global working
     # loop over some frames...this time using the threaded stream
     while working:
         prev = settings['dispThresh']
@@ -137,7 +139,5 @@ def main():
 try:
     main()
 except Exception as e:
-    # cv2.destroyAllWindows()
-    # vs.stop()
-    # cli.stop()
     print(e)
+    sys.exit(0)

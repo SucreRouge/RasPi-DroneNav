@@ -5,6 +5,7 @@ from unicurses import *
 from threading import Thread
 import os
 import ConfigParser
+import logging
 
 
 class CLInterface:
@@ -26,8 +27,14 @@ class CLInterface:
                          'dispVertices': False, 'dispNames': True,
                          'erodeValue': 0, 'lowerThresh': 0}
 
+        self.configFilePath = ('./config.ini')
+
+        logging.basicConfig(filename='./log', format='%(asctime)s %(message)s', level=logging.DEBUG)
+        self.logger = logging.getLogger(__name__)
+
     def readConfig(self, cfg, path, setts):
-        self.configFile = open('../config.ini', 'r')
+        logging.info('Reading config file.')
+        self.configFile = open(path, 'r')
 
         setts['dispThresh'] = cfg.getboolean('VisionParams', 'dispThresh')
         setts['dispContours'] = cfg.getboolean('VisionParams', 'dispContours')
@@ -39,6 +46,7 @@ class CLInterface:
         self.configFile.close()
 
     def writeConfig(self, cfg, path, setts):
+        logging.info('Writing config file.')
         self.configFile = open(path, 'w')
 
         cfg.add_section('VisionParams')
@@ -52,10 +60,12 @@ class CLInterface:
     def start(self):
         # create or load config file
         self.config = ConfigParser.ConfigParser()
-        if os.path.isfile('../config.ini'):
-            readConfig(self.config, '../config.ini', self.settings)
+        if os.path.isfile(self.configFilePath):
+            logging.debug('The config.ini does exist.')
+            self.readConfig(self.config, self.configFilePath, self.settings)
         else:
-            writeConfig(self.config, '../config.ini', self.settings)
+            logging.debug('The config file doesnt exist.')
+            self.writeConfig(self.config, self.configFilePath, self.settings)
 
         # start the thread
         t = Thread(target=self.update, args=())
