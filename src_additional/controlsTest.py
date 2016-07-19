@@ -35,19 +35,19 @@ pwm3_low = 100
 pwm4_low = 100
 pwm5_low = 100
 
-pwm0_neutral = 500
-pwm1_neutral = 500
-pwm2_neutral = 500
-pwm3_neutral = 500
-pwm4_neutral = 500
-pwm5_neutral = 500
+pwm0_neutral = 300
+pwm1_neutral = 300
+pwm2_neutral = 300
+pwm3_neutral = 300
+pwm4_neutral = 300
+pwm5_neutral = 300
 
-pwm0_high = 900
-pwm1_high = 900
-pwm2_high = 900
-pwm3_high = 900
-pwm4_high = 900
-pwm5_high = 900
+pwm0_high = 500
+pwm1_high = 500
+pwm2_high = 500
+pwm3_high = 500
+pwm4_high = 500
+pwm5_high = 500
 
 pwm0 = pwm0_neutral
 pwm1 = pwm1_neutral
@@ -143,11 +143,12 @@ def main():
                 pwm5 = pwm5_neutral
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                serialPort.stop()
                 sys.exit(0)
 
         values = [pwm0, pwm1, pwm2, pwm3, pwm4, pwm5]
         valuesString = buildDataString(values)
-        print(valuesString)
+        # print(valuesString)
         queue.put(valuesString)
 
         screen.blit(background, (0, 0))

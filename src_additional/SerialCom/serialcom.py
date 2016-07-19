@@ -40,6 +40,9 @@ class serialcom():
             if not self.queue.empty():
                 self.data = self.queue.get()
                 self.SP.write(self.data)
+                temp = self.SP.read()
+                if temp == 'ok\n':
+                    print('AVR received the data.')
                 self.queue.task_done()
             elif self.queue.empty():
                 pass
