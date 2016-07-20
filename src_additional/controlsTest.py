@@ -17,13 +17,13 @@ ap.add_argument("-m", "--mode", type=int, default=0,
 args = vars(ap.parse_args())
 
 queue = Queue.Queue()
-serialPort = serialcom(queue, 4)
+serialPort = serialcom(queue, 13)
 serialPort.start()
 time.sleep(2.0)
 
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((640, 480))
+screen = pygame.display.set_mode((100, 100))
 pygame.display.set_caption('Controls test for drone.')
 pygame.mouse.set_visible(1)
 
@@ -37,26 +37,26 @@ def buildDataString(valueList):
     return s
 
 
-pwm0_low = 100
-pwm1_low = 100
-pwm2_low = 100
-pwm3_low = 100
-pwm4_low = 100
-pwm5_low = 100
+pwm0_low = 52
+pwm1_low = 52
+pwm2_low = 52
+pwm3_low = 52
+pwm4_low = 52
+pwm5_low = 52
 
-pwm0_neutral = 500
-pwm1_neutral = 500
-pwm2_neutral = 500
-pwm3_neutral = 500
-pwm4_neutral = 500
-pwm5_neutral = 500
+pwm0_neutral = 78
+pwm1_neutral = 78
+pwm2_neutral = 78
+pwm3_neutral = 78
+pwm4_neutral = 78
+pwm5_neutral = 78
 
-pwm0_high = 900
-pwm1_high = 900
-pwm2_high = 900
-pwm3_high = 900
-pwm4_high = 900
-pwm5_high = 900
+pwm0_high = 104
+pwm1_high = 104
+pwm2_high = 104
+pwm3_high = 104
+pwm4_high = 104
+pwm5_high = 104
 
 pwm0 = pwm0_neutral
 pwm1 = pwm1_neutral
