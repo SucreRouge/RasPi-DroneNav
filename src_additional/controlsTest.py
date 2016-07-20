@@ -14,10 +14,13 @@ ap.add_argument("-m", "--mode", type=int, default=0,
                 help="Direct control = 0,"
                      "Sinus on all = 1,"
                      "Sinus one by one = 2")
+ap.add_argument("-p", "--port", type=int, default=4,
+                help="Bluetooth = 4,"
+                     "USB TTL   = 13")
 args = vars(ap.parse_args())
 
 queue = Queue.Queue()
-serialPort = serialcom(queue, 13)
+serialPort = serialcom(queue, args['port'])
 serialPort.start()
 time.sleep(2.0)
 
