@@ -50,6 +50,8 @@ def main():
     pwm4 = pwm4_neutral = 78
     pwm5 = pwm5_neutral = 78
 
+    throttle = args['throttle']
+
     valuesString = ''
 
     print('Starting the program in 3 seconds.')
@@ -65,30 +67,40 @@ def main():
             if event.type == pygame.QUIT:
                 pass
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_u:
+                throttle = throttle + 0.1
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
+                throttle = throttle - 0.1
+
+            if throttle > 1:
+                throttle = 1
+            elif throttle < 0.1:
+                throttle = 0.1
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                pwm0 = pwm0_neutral + stepUP * args['throttle']
+                pwm0 = pwm0_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                pwm0 = pwm0_neutral - stepDOWN * args['throttle']
+                pwm0 = pwm0_neutral - stepDOWN * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                pwm1 = pwm1_neutral + stepUP * args['throttle']
+                pwm1 = pwm1_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                pwm1 = pwm1_neutral - stepDOWN * args['throttle']
+                pwm1 = pwm1_neutral - stepDOWN * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                pwm2 = pwm2_neutral + stepUP * args['throttle']
+                pwm2 = pwm2_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                pwm2 = pwm2_neutral - stepDOWN * args['throttle']
+                pwm2 = pwm2_neutral - stepDOWN * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                pwm3 = pwm3_neutral + stepUP * args['throttle']
+                pwm3 = pwm3_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                pwm3 = pwm3_neutral - stepDOWN * args['throttle']
+                pwm3 = pwm3_neutral - stepDOWN * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-                pwm4 = pwm4_neutral + stepUP * args['throttle']
+                pwm4 = pwm4_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
-                pwm4 = pwm4_neutral - stepDOWN * args['throttle']
+                pwm4 = pwm4_neutral - stepDOWN * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-                pwm5 = pwm5_neutral + stepUP * args['throttle']
+                pwm5 = pwm5_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
-                pwm5 = pwm5_neutral - stepDOWN * args['throttle']
+                pwm5 = pwm5_neutral - stepDOWN * throttle
 
             if event.type == pygame.KEYUP and event.key == pygame.K_q:
                 pwm0 = pwm0_neutral
@@ -127,7 +139,7 @@ def main():
                   int(pwm4),
                   int(pwm5)]
         valuesString = buildDataString(values)
-        print(valuesString)
+        print("Data {0}, and throttle {1}".format(valuesString, throttle))
         queue.put(valuesString)
 
         screen.blit(background, (0, 0))
