@@ -32,7 +32,7 @@ uint16_t pwm5 = 103;
 //a999b999c999d999e999f999g
 void setup() {
     Serial.begin(115200);
-    
+
     // reserve 200 bytes for the inputString
     inputString.reserve(200);
     // PWM pins to output
@@ -46,7 +46,7 @@ void setup() {
     PORTC &= ~_BV(PC5);
     delay(2000);
     //}
-    
+
     // synchronization info for RPi
     Serial.println("ARD - OK\n");
 }

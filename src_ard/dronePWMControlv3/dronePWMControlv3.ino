@@ -2,7 +2,8 @@ String inputString = "";
 boolean stringComplete = false;
 boolean synchronized = false;
 uint16_t m = 0;
-uint16_t period = 1050;
+// uint16_t period = 1050;
+uint16_t period = 525;
 
 bool On0 = false;
 bool On1 = false;
