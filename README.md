@@ -57,11 +57,11 @@ F:.
             dronePWMControlv5.ino
 </pre>
 
-### Main folder
+### *Main folder*
 
 **requirements.txt** - the list of packages required to run this. Can be used with pip to install automatically.
 
-### src folder - contains main navigation program
+### *src folder - contains main navigation program*
 
 **shapeDetectNav.py** - Program with threaded stream which searches for shapes and analyzes them.
 
@@ -71,11 +71,13 @@ F:.
 
 **shapedetector.py** - Class of an object which identifies the shape.
 
-### src_additional folder - contains additional programs for testing
+### *src_additional folder - contains additional programs for testing*
 
 **controlsTest.py** - Allows to test and configure control through LibrePilot by using computer keyboard.
 
-### src_ard folder - programs for AVR microcontroller which generates PWMs for CC3D
+**controlsTest_pure.py** - Allows to test and configure control through LibrePilot by using computer keyboard. Only direct keyboard control but with throttling. Better written than the previous one.
+
+### *src_ard folder - programs for AVR microcontroller which generates PWMs for CC3D*
 
 **dronePWMControl** - First version of generating custom PWM on Arduino Uno.
 
