@@ -33,6 +33,7 @@ F:.
 |
 +---src_additional
 |   |   controlsTest.py
+|   |   controlsTest_pure.py
 |   |
 |   \---SerialCom
 |           serialcom.py
@@ -54,7 +55,7 @@ F:.
     |       dronePWMControlv4.ino
     |
     \---dronePWMControlv5
-            dronePWMControlv5.ino
+            dronePWMControlv5.inoo
 </pre>
 
 ### *Main folder*
