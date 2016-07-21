@@ -25,6 +25,7 @@ class CLInterface:
 
         self.settings = {'dispThresh': False, 'dispContours': False,
                          'dispVertices': False, 'dispNames': True,
+                         'dispCenters': True, 'dispTHEcenter': True,
                          'erodeValue': 0, 'lowerThresh': 0, 'working': True}
 
         # configuration parser
@@ -32,7 +33,9 @@ class CLInterface:
         self.configPars = ConfigParser.ConfigParser()
 
         # logging
-        logging.basicConfig(filename='./log', format='%(asctime)s %(message)s', level=logging.DEBUG)
+        logging.basicConfig(filename='./log',
+                            format='%(asctime)s %(message)s',
+                            level=logging.DEBUG)
         self.logger = logging.getLogger(__name__)
 
     def readConfig(self, cfg, path, setts):
@@ -43,6 +46,8 @@ class CLInterface:
         setts['dispContours'] = cfg.getboolean('VisionParams', 'dispContours')
         setts['dispVertices'] = cfg.getboolean('VisionParams', 'dispVertices')
         setts['dispNames'] = cfg.getboolean('VisionParams', 'dispNames')
+        setts['dispCenters'] = cfg.getboolean('VisionParams', 'dispCenters')
+        setts['dispTHEcenter'] = cfg.getboolean('VisionParams', 'dispTHEcenter')
         setts['erodeValue'] = cfg.getint('VisionParams', 'erodeValue')
         setts['lowerThresh'] = cfg.getint('VisionParams', 'lowerThresh')
 
@@ -98,6 +103,10 @@ class CLInterface:
                 self.settings['dispVertices'] = not self.settings['dispVertices']
             elif self.keyPressed == ord('r'):
                 self.settings['dispNames'] = not self.settings['dispNames']
+            elif self.keyPressed == ord('t'):
+                self.settings['dispCenters'] = not self.settings['dispCenters']
+            elif self.keyPressed == ord('y'):
+                self.settings['dispTHEcenter'] = not self.settings['dispTHEcenter']
             elif self.keyPressed == ord('a'):
                 self.settings['lowerThresh'] = self.settings['lowerThresh'] + 2
                 if self.settings['lowerThresh'] > 255:
@@ -149,15 +158,21 @@ class CLInterface:
         waddstr(self.window, 'Display names    <r>: {0} \n'.
                              format(self.settings['dispNames']))
         wmove(self.window, 7, 1)
+        waddstr(self.window, 'Display centers    <t>: {0} \n'.
+                             format(self.settings['dispCenters']))
+        wmove(self.window, 8, 1)
+        waddstr(self.window, 'Display the center    <y>: {0} \n'.
+                             format(self.settings['dispTHEcenter']))
+        wmove(self.window, 9, 1)
         waddstr(self.window, 'Threshold      <a,z>: {0} - 255\n'.
                              format(self.settings['lowerThresh']))
-        wmove(self.window, 8, 1)
-        waddstr(self.window, 'Erode          <s,x>: {0}\n'.format(self.settings['erodeValue']))
         wmove(self.window, 10, 1)
+        waddstr(self.window, 'Erode          <s,x>: {0}\n'.format(self.settings['erodeValue']))
+        wmove(self.window, 12, 1)
         waddstr(self.window, 'Store values to config.ini   <p>\n')
-        wmove(self.window, 11, 1)
+        wmove(self.window, 13, 1)
         waddstr(self.window, 'Restore values from config.ini   <o>\n')
-        wmove(self.window, 14, 1)
+        wmove(self.window, 16, 1)
         waddstr(self.window, 'Process working     : {0} \n'.
                              format(self.settings['working']))
 

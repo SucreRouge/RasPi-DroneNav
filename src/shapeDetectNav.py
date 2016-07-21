@@ -25,7 +25,6 @@ import sys
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
 from SerialCom.serialcom import serialcom
-# from pwmGenerator.pwmgenerator import pwmgenerator
 
 
 def main():
@@ -39,21 +38,22 @@ def main():
 
     # objects used
     queue = Queue.Queue()
-    vs = PiVideoStream().start()
+    # vs = PiVideoStream().start()
+    vs = PiVideoStream((320, 240), 60)
+    vs.start()
     sd = ShapeDetector()
     cli = CLInterface()
     cli.start()
     serialPort = serialcom(queue)
     serialPort.start()
-    # pwm = pwmgenerator(queue)
-    # pwm.start()
 
     time.sleep(2.0)
 
     verts = []
     n = 0
-    settings = {'dispThresh': False, 'dispContours': True,
-                'dispVertices': True, 'dispNames': True,
+    settings = {'dispThresh': False, 'dispContours': False,
+                'dispVertices': False, 'dispNames': False,
+                'dispCenters': False, 'dispTHEcenter': False,
                 'erodeValue': 0, 'lowerThresh': 40, 'working': True}
 
     # loop over some frames...this time using the threaded stream
@@ -108,8 +108,13 @@ def main():
             if settings['dispVertices']:
                 for i in range(0, len(verts)):
                     cv2.circle(frame, tuple(verts[i]), 4, (255, 100, 100), 1)
+            if settings['dispCenters']:
+                cv2.circle(frame, (cX, cY), 2, (50, 255, 50), 1)
 
-        # check to see if the frame should be displayed to the screen
+        if settings['dispTHEcenter']:
+            cv2.circle(frame, (320 / 2, 240 / 2), 2, (50, 50, 255), 1)
+
+        # HIGH GUI DISPLAY AND CONTROL
         if args['display'] > 0:
             cv2.imshow('Frame', frame)
 
