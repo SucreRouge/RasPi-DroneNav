@@ -33,13 +33,10 @@ class CLInterface:
         self.configPars = ConfigParser.ConfigParser()
 
         # logging
-        logging.basicConfig(filename='./log',
-                            format='%(asctime)s %(message)s',
-                            level=logging.DEBUG)
-        self.logger = logging.getLogger(__name__)
+        self.class_logger = logging.getLogger('droneNav.CLI')
 
     def readConfig(self, cfg, path, setts):
-        self.logger.info('Reading config file.')
+        self.class_logger.info('Reading config file.')
         cfg.read('config.ini')
 
         setts['dispThresh'] = cfg.getboolean('VisionParams', 'dispThresh')
@@ -52,7 +49,7 @@ class CLInterface:
         setts['lowerThresh'] = cfg.getint('VisionParams', 'lowerThresh')
 
     def writeConfig(self, cfg, path, setts):
-        self.logger.info('Writing config file.')
+        self.class_logger.info('Writing config file.')
         configFile = open(path, 'w')
 
         cfg.add_section('VisionParams')
@@ -66,12 +63,12 @@ class CLInterface:
     def start(self):
         # create or load config file
         if os.path.isfile(self.configFilePath):
-            self.logger.debug('The config.ini does exist.')
+            self.class_logger.debug('The config.ini does exist.')
             self.readConfig(self.configPars,
                             self.configFilePath,
                             self.settings)
         else:
-            self.logger.debug('The config file doesnt exist.')
+            self.class_logger.debug('The config file doesnt exist.')
             self.writeConfig(self.configPars,
                              self.configFilePath,
                              self.settings)

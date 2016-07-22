@@ -21,6 +21,7 @@ import time
 import cv2
 import Queue
 import sys
+import logging
 
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
@@ -28,13 +29,20 @@ from SerialCom.serialcom import serialcom
 
 
 def main():
-    working = True
 
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-d", "--display", type=int, default=-1,
                     help="Whether or not frames should be displayed")
     args = vars(ap.parse_args())
+
+    logger = logging.getLogger('droneNav')
+    logger.setLevel(logging.DEBUG)
+    fh = logging.FileHandler('./log')
+    fh.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s %(module)s %(levename)s %(message)s')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
 
     # objects used
     queue = Queue.Queue()
@@ -48,6 +56,7 @@ def main():
     serialPort.start()
 
     time.sleep(2.0)
+    working = True
 
     verts = []
     n = 0
@@ -58,6 +67,7 @@ def main():
 
     # loop over some frames...this time using the threaded stream
     while working:
+        start_time = time.time()
         prev = settings['dispThresh']
         settings = cli.read()
         working = settings['working']
@@ -128,6 +138,9 @@ def main():
             # input handling - ONLY IF HIGH GUI WINDOWS EXIST
             if key == 27:
                 working = False
+
+        end_time = time.time()
+        logger.info('Loop dt: {0}'.format(end_time - start_time))
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
