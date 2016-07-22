@@ -39,8 +39,8 @@ def main():
     logger = logging.getLogger('droneNav')
     logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler('./log')
-    fh.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s %(module)s %(levename)s %(message)s')
+    fh.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s %(module)s %(levelname)s %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
