@@ -74,36 +74,54 @@ def drawCntrsFeatures(fr, setts, cntr, cx, cy, shapeName, vrts):
 
 
 def main():
+    # #####################################################################
+    # VARIABLES USED
+    # #####################################################################
+    working = True
+    verts = []
+    resolution = (320, 240)
+    settings = {'dispThresh': False, 'dispContours': False,
+                'dispVertices': False, 'dispNames': False,
+                'dispCenters': False, 'dispTHEcenter': False,
+                'erodeValue': 0, 'lowerThresh': 40, 'working': True}
+    # #####################################################################
+
+    # #####################################################################
+    # OBJECTS USED
+    # #####################################################################
+    logger = createLogger()
+    queue = Queue.Queue()
+    # vs = PiVideoStream().start()
+    vs = PiVideoStream(resolution, 60)
+    sd = ShapeDetector()
+    cli = CLInterface()
+    serialPort = serialcom(queue)
 
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-d", "--display", type=int, default=-1,
                     help="Whether or not frames should be displayed")
     args = vars(ap.parse_args())
+    # #####################################################################
 
-    logger = createLogger()
+    print('Starting in 3...')
+    time.sleep(1)
+    print('Starting in 2...')
+    time.sleep(1)
+    print('Starting in 1...')
+    time.sleep(1)
 
-    # objects used
-    queue = Queue.Queue()
-    # vs = PiVideoStream().start()
-    vs = PiVideoStream((320, 240), 60)
+    # #####################################################################
+    # STARTING
+    # #####################################################################
     vs.start()
-    sd = ShapeDetector()
-    cli = CLInterface()
     cli.start()
-    serialPort = serialcom(queue)
     serialPort.start()
+    # #####################################################################
 
-    time.sleep(2.0)
-    working = True
-
-    verts = []
-    settings = {'dispThresh': False, 'dispContours': False,
-                'dispVertices': False, 'dispNames': False,
-                'dispCenters': False, 'dispTHEcenter': False,
-                'erodeValue': 0, 'lowerThresh': 40, 'working': True}
-
-    # loop over some frames...this time using the threaded stream
+    # #####################################################################
+    # MAIN LOOP
+    # #####################################################################
     while working:
         start_time = time.time()
         prev = settings['dispThresh']
@@ -136,7 +154,8 @@ def main():
             drawCntrsFeatures(frame, settings, c, cX, cY, shape, verts)
 
         if settings['dispTHEcenter']:
-            cv2.circle(frame, (320 / 2, 240 / 2), 2, (50, 50, 255), 1)
+            cv2.circle(frame, (resolution[0] / 2, resolution[1] / 2),
+                       2, (50, 50, 255), 1)
 
         # HIGH GUI DISPLAY AND CONTROL
         if args['display'] > 0:
@@ -155,6 +174,7 @@ def main():
 
         end_time = time.time()
         # logger.info('Loop dt: {0}'.format(end_time - start_time))
+    # #####################################################################
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
