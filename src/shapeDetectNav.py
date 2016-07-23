@@ -60,6 +60,19 @@ def createLogger():
     return log
 
 
+def drawCntrsFeatures(fr, setts, cntr, cx, cy, shapeName, vrts):
+    if setts['dispContours']:
+        cv2.drawContours(fr, [cntr], -1, (0, 255, 0), 1)
+    if setts['dispNames']:
+        cv2.putText(fr, shapeName, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5, (255, 255, 255), 1)
+    if setts['dispVertices']:
+        for i in range(0, len(vrts)):
+            cv2.circle(fr, tuple(vrts[i]), 4, (255, 100, 100), 1)
+    if setts['dispCenters']:
+        cv2.circle(fr, (cx, cy), 2, (50, 255, 50), 1)
+
+
 def main():
 
     # construct the argument parse and parse the arguments
@@ -120,16 +133,7 @@ def main():
             c = c.astype('float')
             c = c.astype('int')
 
-            if settings['dispContours']:
-                cv2.drawContours(frame, [c], -1, (0, 255, 0), 1)
-            if settings['dispNames']:
-                cv2.putText(frame, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
-                            0.5, (255, 255, 255), 1)
-            if settings['dispVertices']:
-                for i in range(0, len(verts)):
-                    cv2.circle(frame, tuple(verts[i]), 4, (255, 100, 100), 1)
-            if settings['dispCenters']:
-                cv2.circle(frame, (cX, cY), 2, (50, 255, 50), 1)
+            drawCntrsFeatures(frame, settings, c, cX, cY, shape, verts)
 
         if settings['dispTHEcenter']:
             cv2.circle(frame, (320 / 2, 240 / 2), 2, (50, 50, 255), 1)
