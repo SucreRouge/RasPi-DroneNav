@@ -170,7 +170,8 @@ class CLInterface:
         waddstr(self.window, 'Threshold      <a,z>: {0} - 255\n'.
                              format(self.settings['lowerThresh']))
         wmove(self.window, 10, 1)
-        waddstr(self.window, 'Erode          <s,x>: {0}\n'.format(self.settings['erodeValue']))
+        waddstr(self.window, 'Erode          <s,x>: {0}\n'.
+                             format(self.settings['erodeValue']))
         wmove(self.window, 12, 1)
         waddstr(self.window, 'Store values to config.ini   <p>\n')
         wmove(self.window, 13, 1)
