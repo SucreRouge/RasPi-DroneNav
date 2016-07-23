@@ -117,7 +117,7 @@ def main():
     vs.start()
     cli.start()
     serialPort.start()
-    time.sleep(2)
+    time.sleep(2) # necessary so camera can start properly
 
     # #####################################################################
 
