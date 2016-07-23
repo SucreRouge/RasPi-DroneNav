@@ -7,8 +7,10 @@ import logging
 
 class DroneStateMachine:
     def __init__(self, resolution=(320, 240), framerate=60):
-        self.possibleStates = {'default': 0, 'ascending': 1, 'rotating': 2,
-                               'movingToPoint': 3, 'landing': 4}
+        self.possibleStates = {'default': 0, 'ascending': 1,
+                               'rotating': 2, 'movingToPoint': 3,
+                               'landing': 4, 'hovering': 5,
+                               'hoveringOnPoint': 6}
         self.state = self.possibleStates['default']
         self.running = False
 
@@ -33,6 +35,10 @@ class DroneStateMachine:
                 print('moving to point')
             elif self.state == self.possibleStates['landing']:
                 print('landing')
+            elif self.state == self.possibleStates['hovering']:
+                print('hovering')
+            elif self.state == self.possibleStates['hoveringOnPoint']:
+                print('hovering on Point')
 
     def stop(self):
         self.running = False

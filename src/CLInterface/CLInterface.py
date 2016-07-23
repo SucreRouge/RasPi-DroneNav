@@ -9,16 +9,18 @@ import logging
 
 
 class CLInterface:
-    def __init__(self):
+    def __init__(self, q):
         self.stdscr = initscr()
         keypad(self.stdscr, True)
         curs_set(False)
-        timeout(-1)
+        timeout(-1) # -1 means infinity; 0 means no waiting
         cbreak()
         start_color()
         noecho()
         self.max_y, self.max_x = getmaxyx(self.stdscr)
         self.window = newwin(self.max_y, self.max_x, 0, 0)
+
+        self.queue = q
 
         self.running = True
         self.keyPressed = 0
@@ -124,6 +126,10 @@ class CLInterface:
                 self.writeConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
+
+            # it puts the data in queue after pressing button because
+            # it is a blocking getch() (timeout(-1))
+            queue.put(self.settings)
 
         endwin()
 

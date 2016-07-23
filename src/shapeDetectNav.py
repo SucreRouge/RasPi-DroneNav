@@ -91,10 +91,11 @@ def main():
     # #####################################################################
     logger = createLogger()
     queue = Queue.Queue()
+    queueCLI = Queue.Queue()
     # vs = PiVideoStream().start()
     vs = PiVideoStream(resolution, 60)
     sd = ShapeDetector()
-    cli = CLInterface()
+    cli = CLInterface(queueCLI)
     serialPort = serialcom(queue)
 
     # construct the argument parse and parse the arguments
@@ -117,7 +118,7 @@ def main():
     vs.start()
     cli.start()
     serialPort.start()
-    time.sleep(2) # necessary so camera can start properly
+    time.sleep(2)  # necessary so camera can start properly
 
     # #####################################################################
 
@@ -127,7 +128,12 @@ def main():
     while working:
         start_time = time.time()
         prev = settings['dispThresh']
-        settings = cli.read()
+
+        # settings = cli.read()
+        if not queueCLI.empty():
+            settings = queueCLI.get()
+            queueCLI.task_done()
+
         working = settings['working']
 
         # grab the frame from the threaded video stream...
