@@ -39,14 +39,14 @@ class CLInterface:
         self.class_logger.info('Reading config file.')
         cfg.read('config.ini')
 
-        setts['dispThresh'] = cfg.getboolean('VisionParams', 'dispThresh')
-        setts['dispContours'] = cfg.getboolean('VisionParams', 'dispContours')
-        setts['dispVertices'] = cfg.getboolean('VisionParams', 'dispVertices')
-        setts['dispNames'] = cfg.getboolean('VisionParams', 'dispNames')
-        setts['dispCenters'] = cfg.getboolean('VisionParams', 'dispCenters')
+        setts['dispThresh']    = cfg.getboolean('VisionParams', 'dispThresh')
+        setts['dispContours']  = cfg.getboolean('VisionParams', 'dispContours')
+        setts['dispVertices']  = cfg.getboolean('VisionParams', 'dispVertices')
+        setts['dispNames']     = cfg.getboolean('VisionParams', 'dispNames')
+        setts['dispCenters']   = cfg.getboolean('VisionParams', 'dispCenters')
         setts['dispTHEcenter'] = cfg.getboolean('VisionParams', 'dispTHEcenter')
-        setts['erodeValue'] = cfg.getint('VisionParams', 'erodeValue')
-        setts['lowerThresh'] = cfg.getint('VisionParams', 'lowerThresh')
+        setts['erodeValue']    = cfg.getint('VisionParams', 'erodeValue')
+        setts['lowerThresh']   = cfg.getint('VisionParams', 'lowerThresh')
 
     def writeConfig(self, cfg, path, setts):
         self.class_logger.info('Writing config file.')
