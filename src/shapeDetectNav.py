@@ -48,6 +48,18 @@ def processFrame(fr, setts):
     return frameFinal
 
 
+def createLogger():
+    log = logging.getLogger('droneNav')
+    log.setLevel(logging.DEBUG)
+    fh = logging.FileHandler('./log')
+    fh.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s %(module)s'
+                                  '%(levelname)s %(message)s')
+    fh.setFormatter(formatter)
+    log.addHandler(fh)
+    return log
+
+
 def main():
 
     # construct the argument parse and parse the arguments
@@ -56,13 +68,7 @@ def main():
                     help="Whether or not frames should be displayed")
     args = vars(ap.parse_args())
 
-    logger = logging.getLogger('droneNav')
-    logger.setLevel(logging.DEBUG)
-    fh = logging.FileHandler('./log')
-    fh.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s %(module)s %(levelname)s %(message)s')
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
+    logger = createLogger()
 
     # objects used
     queue = Queue.Queue()
