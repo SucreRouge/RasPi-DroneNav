@@ -28,6 +28,26 @@ from CLInterface.CLInterface import CLInterface
 from SerialCom.serialcom import serialcom
 
 
+def processFrame(fr, setts):
+    # frame = imutils.resize(frame, width=600)
+    fr = cv2.flip(fr, 0)
+    # frame = cv2.copyMakeBorder(frame, 3, 3, 3, 3,
+    #                            cv2.BORDER_CONSTANT, value=(255, 255, 255))
+    frameGray = cv2.cvtColor(fr, cv2.COLOR_BGR2GRAY)
+    frameBlurred = cv2.GaussianBlur(frameGray, (5, 5), 0)
+    frameThresh = cv2.threshold(frameBlurred, setts['lowerThresh'], 255,
+                                cv2.THRESH_BINARY_INV)[1]
+    frameThresh = cv2.erode(frameThresh, None,
+                            iterations=setts['erodeValue'])
+    frameThresh = cv2.dilate(frameThresh, None,
+                             iterations=setts['erodeValue'])
+    frameThresh = cv2.copyMakeBorder(frameThresh, 3, 3, 3, 3,
+                                     cv2.BORDER_CONSTANT, value=(0, 0, 0))
+    frameFinal = frameThresh
+
+    return frameFinal
+
+
 def main():
 
     # construct the argument parse and parse the arguments
@@ -59,7 +79,6 @@ def main():
     working = True
 
     verts = []
-    n = 0
     settings = {'dispThresh': False, 'dispContours': False,
                 'dispVertices': False, 'dispNames': False,
                 'dispCenters': False, 'dispTHEcenter': False,
@@ -72,31 +91,16 @@ def main():
         settings = cli.read()
         working = settings['working']
 
-        # grab the frame from the threaded video stream and resize it
+        # grab the frame from the threaded video stream...
         frame = vs.read()
-        # frame = imutils.resize(frame, width=600)
-        frame = cv2.flip(frame, 0)
-        # frame = cv2.copyMakeBorder(frame, 3, 3, 3, 3,
-        #                            cv2.BORDER_CONSTANT, value=(255, 255, 255))
-        frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        frameBlurred = cv2.GaussianBlur(frameGray, (5, 5), 0)
-        frameThresh = cv2.threshold(frameBlurred, settings['lowerThresh'], 255,
-                                    cv2.THRESH_BINARY_INV)[1]
-        frameThresh = cv2.erode(frameThresh, None,
-                                iterations=settings['erodeValue'])
-        frameThresh = cv2.dilate(frameThresh, None,
-                                 iterations=settings['erodeValue'])
-        frameThresh = cv2.copyMakeBorder(frameThresh, 3, 3, 3, 3,
-                                         cv2.BORDER_CONSTANT, value=(0, 0, 0))
-        frameFinal = frameThresh
+        # ...and process it
+        frameProcessed = processFrame(frame, settings)
 
         # FIND CONTOURS
-        cnts = cv2.findContours(frameFinal.copy(),
+        cnts = cv2.findContours(frameProcessed.copy(),
                                 cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
-        cntsCount = len(cnts)
-
-        n = n + 1
+        shapesCount = len(cnts)
 
         for c in cnts:
             M = cv2.moments(c)
@@ -129,7 +133,7 @@ def main():
             cv2.imshow('Frame', frame)
 
             if settings['dispThresh']:
-                cv2.imshow('Thresholded', frameFinal)
+                cv2.imshow('Thresholded', frameProcessed)
             if prev is True and settings['dispThresh'] is False:
                 cv2.destroyWindow('Thresholded')
 
@@ -140,7 +144,7 @@ def main():
                 working = False
 
         end_time = time.time()
-        logger.info('Loop dt: {0}'.format(end_time - start_time))
+        # logger.info('Loop dt: {0}'.format(end_time - start_time))
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
