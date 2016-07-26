@@ -15,6 +15,7 @@ class SerialCom():
         self.data = 'a\n'
 
     def start(self):
+        self.class_logger.info('Starting serial com.')
         self.SP = serial.Serial('/dev/ttyAMA0',
                                 self.BaudRate,
                                 timeout=5)
