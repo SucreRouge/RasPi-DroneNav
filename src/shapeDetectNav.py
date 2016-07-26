@@ -179,6 +179,10 @@ def main():
             cv2.circle(frame, (resolution[0] / 2, resolution[1] / 2),
                        2, (50, 50, 255), 1)
 
+        if shapesCount == 1:
+            cv2.line(frame, (resolution[0] / 2, resolution[1] / 2),
+                     objs[0]['center'], (255, 0, 0), 2)
+
         # HIGH GUI DISPLAY AND CONTROL
         if args['display'] > 0:
             cv2.imshow('Frame', frame)
