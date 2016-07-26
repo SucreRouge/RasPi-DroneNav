@@ -20,7 +20,7 @@ class CLInterface:
         self.max_y, self.max_x = getmaxyx(self.stdscr)
         self.window = newwin(self.max_y, self.max_x, 0, 0)
 
-        self.queue = q
+        self.queueCLI = q
 
         self.running = True
         self.keyPressed = 0
@@ -127,9 +127,9 @@ class CLInterface:
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
 
-            # it puts the data in queue after pressing button because
+            # it puts the data in queueCLI after pressing button because
             # it is a blocking getch() (timeout(-1))
-            queue.put(self.settings)
+            queueCLI.put(self.settings)
 
         endwin()
 

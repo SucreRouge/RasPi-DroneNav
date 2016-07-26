@@ -25,7 +25,8 @@ import logging
 
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
-from SerialCom.serialcom import serialcom
+from SerialCom.serialcom import SerialCom
+from droneStateMachine.dronestatemachine import DroneStateMachine
 
 
 def processFrame(fr, setts):
@@ -53,7 +54,7 @@ def createLogger():
     log.setLevel(logging.DEBUG)
     fh = logging.FileHandler('./log')
     fh.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s %(module)s'
+    formatter = logging.Formatter('%(asctime)s %(module)s '
                                   '%(levelname)s %(message)s')
     fh.setFormatter(formatter)
     log.addHandler(fh)
@@ -78,7 +79,6 @@ def main():
     # VARIABLES USED
     # #####################################################################
     working = True
-    verts = []
     objs = []
     resolution = (320, 240)
     settings = {'dispThresh': False, 'dispContours': False,
@@ -91,13 +91,15 @@ def main():
     # OBJECTS USED
     # #####################################################################
     logger = createLogger()
-    queue = Queue.Queue()
+    queueSRL = Queue.Queue()
     queueCLI = Queue.Queue()
+    queueSTM = Queue.Queue()
     # vs = PiVideoStream().start()
     vs = PiVideoStream(resolution, 60)
     sd = ShapeDetector()
     cli = CLInterface(queueCLI)
-    serialPort = serialcom(queue)
+    serialPort = SerialCom(queueSRL)
+    stm = DroneStateMachine(queueSTM, queueSRL)
 
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
@@ -119,6 +121,7 @@ def main():
     vs.start()
     cli.start()
     serialPort.start()
+    stm.start()
     time.sleep(2)  # necessary so camera can start properly
 
     # #####################################################################
@@ -168,6 +171,9 @@ def main():
 
             drawCntrsFeatures(frame, settings, objs[j])
             j += 1
+
+        # send objects to state machine
+        queueSTM.put(objs)
 
         if settings['dispTHEcenter']:
             cv2.circle(frame, (resolution[0] / 2, resolution[1] / 2),

@@ -3,17 +3,15 @@
 
 from threading import Thread
 import serial
-import re
-import time
 
 
-class serialcom():
+class SerialCom():
     """docstring for CLInfo"""
     def __init__(self, q):
         self.BaudRate = 115200
-        self.Running = True
+        self.running = True
         self.numericals = []
-        self.queue = q
+        self.queueSRL = q
         self.data = 'a\n'
 
     def start(self):
@@ -29,9 +27,13 @@ class serialcom():
         return self
 
     def update(self):
-        while self.Running:
-            self.SP.write(self.data)
-            time.sleep(1)
+        while self.running:
+            if not self.queueSRL.empty():
+                self.data = self.queueSRL.get()
+                self.queueSRL.task_done()
+                self.SP.write(self.data)
+            else:
+                pass
 
             # # ile bajtow czeka
             # self.bytesToRead = self.SP.inWaiting()
@@ -48,7 +50,7 @@ class serialcom():
             #     self.tmp = [x.rstrip() for x in self.tmp]
             #     self.numericals = [float(i) for i in self.tmp]
             #     # print(self.numericals)
-            #     self.queue.put(self.numericals)
+            #     self.queueSRL.put(self.numericals)
             # except:
             #     # print('Failing at data munching [or/and] putting data into q.')
             #     pass
