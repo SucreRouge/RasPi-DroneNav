@@ -60,17 +60,17 @@ def createLogger():
     return log
 
 
-def drawCntrsFeatures(fr, setts, cntr, cx, cy, shapeName, vrts):
+def drawCntrsFeatures(fr, setts, obj):
     if setts['dispContours']:
-        cv2.drawContours(fr, [cntr], -1, (0, 255, 0), 1)
+        cv2.drawContours(fr, [obj['contour']], -1, (0, 255, 0), 1)
     if setts['dispNames']:
-        cv2.putText(fr, shapeName, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX,
+        cv2.putText(fr, obj['shapeName'], obj['center'], cv2.FONT_HERSHEY_SIMPLEX,
                     0.5, (255, 255, 255), 1)
     if setts['dispVertices']:
-        for i in range(0, len(vrts)):
-            cv2.circle(fr, tuple(vrts[i]), 4, (255, 100, 100), 1)
+        for i in range(0, len(obj['verts'])):
+            cv2.circle(fr, tuple(obj['verts'][i]), 4, (255, 100, 100), 1)
     if setts['dispCenters']:
-        cv2.circle(fr, (cx, cy), 2, (50, 255, 50), 1)
+        cv2.circle(fr, (obj['center']), 2, (50, 255, 50), 1)
 
 
 def main():
@@ -79,6 +79,7 @@ def main():
     # #####################################################################
     working = True
     verts = []
+    objs = []
     resolution = (320, 240)
     settings = {'dispThresh': False, 'dispContours': False,
                 'dispVertices': False, 'dispNames': False,
@@ -147,19 +148,26 @@ def main():
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
         shapesCount = len(cnts)
 
+        # clear list
+        objs = []
+        j = 0
         for c in cnts:
             M = cv2.moments(c)
             try:
                 cX = int((M['m10'] / M['m00']))
                 cY = int((M['m01'] / M['m00']))
-                shape, verts = sd.detect(c)
+                # shape, verts = sd.detect(c)
+                objs.append(sd.detect(c))
+                objs[j]['contour'] = c
+                objs[j]['center'] = (cX, cY)
             except:
                 continue
 
             c = c.astype('float')
             c = c.astype('int')
 
-            drawCntrsFeatures(frame, settings, c, cX, cY, shape, verts)
+            drawCntrsFeatures(frame, settings, objs[j])
+            j += 1
 
         if settings['dispTHEcenter']:
             cv2.circle(frame, (resolution[0] / 2, resolution[1] / 2),
