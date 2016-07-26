@@ -129,7 +129,7 @@ class CLInterface:
 
             # it puts the data in queue after pressing button because
             # it is a blocking getch() (timeout(-1))
-            queue.put(self.settings)
+            self.queue.put(self.settings)
 
         endwin()
 
