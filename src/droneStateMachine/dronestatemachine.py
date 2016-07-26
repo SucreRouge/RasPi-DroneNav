@@ -22,6 +22,7 @@ class DroneStateMachine:
         self.class_logger = logging.getLogger('droneNav.StateMachine')
 
     def start(self):
+        self.class_logger.info('Starting state machine.')
         t = Thread(target=self.update, args=())
         t.daemon = True
         t.start()
