@@ -3,6 +3,7 @@
 
 from threading import Thread
 import serial
+import logging
 
 
 class SerialCom():
@@ -13,6 +14,8 @@ class SerialCom():
         self.numericals = []
         self.queueSRL = q
         self.data = 'a\n'
+
+        self.class_logger = logging.getLogger('droneNav.SerialCom')
 
     def start(self):
         self.class_logger.info('Starting serial com.')
