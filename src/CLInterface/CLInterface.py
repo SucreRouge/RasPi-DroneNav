@@ -129,7 +129,7 @@ class CLInterface:
 
             # it puts the data in queueCLI after pressing button because
             # it is a blocking getch() (timeout(-1))
-            queueCLI.put(self.settings)
+            self.queueCLI.put(self.settings)
 
         endwin()
 
