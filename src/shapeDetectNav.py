@@ -103,8 +103,10 @@ def main():
 
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument("-d", "--display", type=int, default=-1,
-                    help="Whether or not frames should be displayed")
+    ap.add_argument("-d", "--display", type=int,
+                    help="Whether or not frames should be displayed.")
+    ap.add_argument("-c", "--cli", type=int,
+                    help="Whether or not curses process should start.")
     args = vars(ap.parse_args())
     # #####################################################################
 
@@ -119,7 +121,8 @@ def main():
     # STARTING
     # #####################################################################
     vs.start()
-    cli.start()
+    if args['cli'] > 0:
+        cli.start()
     serialPort.start()
     stm.start()
     time.sleep(2)  # necessary so camera can start properly
