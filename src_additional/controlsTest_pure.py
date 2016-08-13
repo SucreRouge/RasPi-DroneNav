@@ -50,10 +50,15 @@ def main():
     pwm4 = pwm4_neutral = 78
     pwm5 = pwm5_neutral = 78
 
+    pwm4_State = 0
+    pwm5_State = 0
+
     throttle = args['throttle']
 
     valuesString = ''
 
+    print('Starting with settings: port {0}, throttle {1}'.format(args['port'], args['throttle']))
+    time.sleep(1)
     print('Starting the program in 3 seconds.')
     time.sleep(1)
     print('Starting the program in 2 seconds.')
@@ -93,14 +98,6 @@ def main():
                 pwm3 = pwm3_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_i:
                 pwm3 = pwm3_neutral - stepDOWN * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
-                pwm4 = pwm4_neutral + stepUP * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
-                pwm4 = pwm4_neutral - stepDOWN * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_3:
-                pwm5 = pwm5_neutral + stepUP * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_4:
-                pwm5 = pwm5_neutral - stepDOWN * throttle
 
             if event.type == pygame.KEYUP and event.key == pygame.K_e:
                 pwm0 = pwm0_neutral
@@ -118,14 +115,20 @@ def main():
                 pwm3 = pwm3_neutral
             if event.type == pygame.KEYUP and event.key == pygame.K_i:
                 pwm3 = pwm3_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_1:
-                pwm4 = pwm4_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_2:
-                pwm4 = pwm4_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_3:
-                pwm5 = pwm5_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_4:
-                pwm5 = pwm5_neutral
+
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+                pwm4_State = pwm4_State + 1
+                if pwm4_State > 1:
+                    pwm4_State = -1
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+                pwm5_State = pwm5_State + 1
+                if pwm5_State > 1:
+                    pwm5_State = -1
+
+            pwm4 = pwm4_neutral + pwm4_State * stepDOWN # * throttle
+            pwm5 = pwm5_neutral + pwm5_State * stepDOWN # * throttle
+
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 print('Stopped by user.')
