@@ -67,9 +67,9 @@ def main():
             if event.type == pygame.QUIT:
                 pass
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_u:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHTBRACKET:
                 throttle = throttle + 0.1
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFTBRACKET:
                 throttle = throttle - 0.1
 
             if throttle > 1:
@@ -77,54 +77,54 @@ def main():
             elif throttle < 0.1:
                 throttle = 0.1
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                pwm0 = pwm0_neutral + stepUP * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-                pwm0 = pwm0_neutral - stepDOWN * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-                pwm1 = pwm1_neutral + stepUP * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-                pwm1 = pwm1_neutral - stepDOWN * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                pwm2 = pwm2_neutral + stepUP * throttle
+                pwm0 = pwm0_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                pwm2 = pwm2_neutral - stepDOWN * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                pwm3 = pwm3_neutral + stepUP * throttle
+                pwm0 = pwm0_neutral - stepDOWN * throttle
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                pwm1 = pwm1_neutral + stepUP * throttle
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+                pwm1 = pwm1_neutral - stepDOWN * throttle
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
+                pwm2 = pwm2_neutral + stepUP * throttle
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_k:
+                pwm2 = pwm2_neutral - stepDOWN * throttle
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_u:
+                pwm3 = pwm3_neutral + stepUP * throttle
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_i:
                 pwm3 = pwm3_neutral - stepDOWN * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
                 pwm4 = pwm4_neutral + stepUP * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_g:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
                 pwm4 = pwm4_neutral - stepDOWN * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_3:
                 pwm5 = pwm5_neutral + stepUP * throttle
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_4:
                 pwm5 = pwm5_neutral - stepDOWN * throttle
 
-            if event.type == pygame.KEYUP and event.key == pygame.K_q:
+            if event.type == pygame.KEYUP and event.key == pygame.K_e:
                 pwm0 = pwm0_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_a:
+            if event.type == pygame.KEYUP and event.key == pygame.K_d:
                 pwm0 = pwm0_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_w:
-                pwm1 = pwm1_neutral
             if event.type == pygame.KEYUP and event.key == pygame.K_s:
                 pwm1 = pwm1_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_e:
-                pwm2 = pwm2_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_d:
-                pwm2 = pwm2_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_r:
-                pwm3 = pwm3_neutral
             if event.type == pygame.KEYUP and event.key == pygame.K_f:
+                pwm1 = pwm1_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_j:
+                pwm2 = pwm2_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_k:
+                pwm2 = pwm2_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_u:
                 pwm3 = pwm3_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_t:
+            if event.type == pygame.KEYUP and event.key == pygame.K_i:
+                pwm3 = pwm3_neutral
+            if event.type == pygame.KEYUP and event.key == pygame.K_1:
                 pwm4 = pwm4_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_g:
+            if event.type == pygame.KEYUP and event.key == pygame.K_2:
                 pwm4 = pwm4_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_y:
+            if event.type == pygame.KEYUP and event.key == pygame.K_3:
                 pwm5 = pwm5_neutral
-            if event.type == pygame.KEYUP and event.key == pygame.K_h:
+            if event.type == pygame.KEYUP and event.key == pygame.K_4:
                 pwm5 = pwm5_neutral
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
