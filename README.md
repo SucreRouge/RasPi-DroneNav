@@ -54,7 +54,10 @@ F:.
     +---dronePWMControlv4
     |       dronePWMControlv4.ino
     |
-    \---dronePWMControlv5
+    +---dronePWMControlv5
+    |       dronePWMControlv4.ino
+    |
+    \---dronePWMControlv6
             dronePWMControlv5.inoo
 </pre>
 
@@ -64,29 +67,44 @@ F:.
 
 ### *src folder - contains main navigation program*
 
-**shapeDetectNav.py** - Program with threaded stream which searches for shapes and analyzes them.
+**shapeDetectNav.py** - Program with threaded stream which searches for shapes
+and analyzes them.
 
-**CLInterface.py** - Class of an object which displays the parameters the stdout being the CLI. Stores settings which are read by shapeDetectNav.py .
+**CLInterface.py** - Class of an object which displays the parameters the
+stdout being the CLI. Stores settings which are read by shapeDetectNav.py .
 
-**pivideostream.py** - Class of an object which starts the streaming. Contains settings for the video capture.
+**pivideostream.py** - Class of an object which starts the streaming. Contains
+settings for the video capture.
 
 **shapedetector.py** - Class of an object which identifies the shape.
 
 ### *src_additional folder - contains additional programs for testing*
 
-**controlsTest.py** - Allows to test and configure control through LibrePilot by using computer keyboard.
+**controlsTest.py** - Allows to test and configure control through LibrePilot
+by using computer keyboard.
 
-**controlsTest_pure.py** - Allows to test and configure control through LibrePilot by using computer keyboard. Only direct keyboard control but with throttling. Better written than the previous one.
+**controlsTest_pure.py** - Allows to test and configure control through
+LibrePilot by using computer keyboard. Only direct keyboard control but with
+throttling. Better written than the previous one.
 
-### *src_ard folder - programs for AVR microcontroller which generates PWMs for CC3D*
+### *src_ard folder - programs for AVR microcontroller which generates PWMs
+for CC3D*
 
 **dronePWMControl** - First version of generating custom PWM on Arduino Uno.
 
 **dronePWMControlv2** - Working version of Arduino Uno program which reads from
 serial port the PWM values and applies them to specific pins.
 
-**dronePWMControlv3** - Final version of my custom PWM generation. Reads data from UART and generates PWMs based on this data. Not consistent enough for Drone.
+**dronePWMControlv3** - Final version of my custom PWM generation. Reads data
+from UART and generates PWMs based on this data. Not consistent enough for
+Drone.
 
-**dronePWMControlv4** - Same as above but with c strings... doesn't work properly.
+**dronePWMControlv4** - Same as above but with c strings... doesn't work
+properly.
 
-**dronePWMControlv5** - THE program. Uses Arduino's servo library which generates signals with almost perfect 50Hz. With this program LibrePilot properly configures control.
+**dronePWMControlv5** - Uses Arduino's servo library which
+generates signals with almost perfect 50Hz. With this program LibrePilot
+properly configures control.
+
+**dronePWMControlv6** - THE program. Uses Arduino's servo library and uses fill
+of 1.5ms, 2ms, 1ms.
