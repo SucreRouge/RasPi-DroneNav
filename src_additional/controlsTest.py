@@ -9,6 +9,8 @@ import sys
 import argparse
 import math
 
+# TODO: add some better gui (maybe some sprites for controls)
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--mode", type=int, default=0,
                 help="Direct control = 0,"
