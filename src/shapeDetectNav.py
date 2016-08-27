@@ -183,8 +183,11 @@ def main():
                        2, (50, 50, 255), 1)
 
         if shapesCount == 1:
-            cv2.line(frame, (resolution[0] / 2, resolution[1] / 2),
-                     objs[0]['center'], (255, 0, 0), 2)
+            try:
+                cv2.line(frame, (resolution[0] / 2, resolution[1] / 2),
+                         objs[0]['center'], (255, 0, 0), 2)
+            except:
+                pass
 
         # HIGH GUI DISPLAY AND CONTROL
         if args['display'] > 0:
