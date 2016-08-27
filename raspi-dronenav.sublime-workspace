@@ -527,14 +527,10 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 285.0,
-		"last_filter": "project save",
+		"height": 375.0,
+		"last_filter": ":w",
 		"selected_items":
 		[
-			[
-				"project save",
-				"Project: Save As"
-			],
 			[
 				":w",
 				":w - Save"
@@ -542,6 +538,10 @@
 			[
 				"todo",
 				"TodoReview: Project Files"
+			],
+			[
+				"project save",
+				"Project: Save As"
 			],
 			[
 				"install",
@@ -700,7 +700,7 @@
 				"Snippet: Namespace"
 			]
 		],
-		"width": 249.0
+		"width": 514.0
 	},
 	"console":
 	{
@@ -723,17 +723,22 @@
 	},
 	"expanded_folders":
 	[
-		"/F/CODE/RasPi-DroneNav"
+		"/F/CODE/RasPi-DroneNav",
+		"/F/CODE/RasPi-DroneNav/src",
+		"/F/CODE/RasPi-DroneNav/src_additional",
+		"/F/CODE/RasPi-DroneNav/src_ard"
 	],
 	"file_history":
 	[
-		"/F/CODE/RasPi-DroneNav/README.md",
 		"/F/CODE/RasPi-DroneNav/.gitignore",
+		"/F/CODE/RasPi-DroneNav/src_additional/controlsTest.py",
+		"/F/CODE/RasPi-DroneNav/src/CLInterface/CLInterface.py",
+		"/F/CODE/RasPi-DroneNav/src/CLInterface/unicurses.py",
+		"/F/CODE/RasPi-DroneNav/README.md",
 		"/F/CODE/RasPi-DroneNav/src_ard/dronePWMControl/dronePWMControl.ino",
 		"/F/CODE/RasPi-DroneNav/src/shapeDetectNav.py",
 		"/F/CODE/C_serialConsole/main.c",
 		"/F/CODE/RasPi-DroneNav/src/piVideoStream/pivideostream.py",
-		"/F/CODE/RasPi-DroneNav/src/CLInterface/CLInterface.py",
 		"/f/CODE/RasPi-DroneNav/src/SerialCom/serialcom.py",
 		"/F/CODE/RasPi-DroneNav/src/droneStateMachine/dronestatemachine.py",
 		"/F/CODE/V_objects/visIMU.py",
@@ -746,7 +751,6 @@
 		"/F/CODE/RasPi-DroneNav/src_additional/controlsTest_pure.py",
 		"/F/CODE/RasPi-DroneNav/src_ard/dronePWMControlv6/dronePWMControlv6.ino",
 		"/F/CODE/RasPi-DroneNav/src_additional/SerialCom/serialcom.py",
-		"/F/CODE/RasPi-DroneNav/src_additional/controlsTest.py",
 		"/F/CODE/RasPi-DroneNav/src_ard/dronePWMControlv5/dronePWMControlv5.ino",
 		"/F/APPS/ffmpeg-20150301-git-9564375-win64-static/przyklady.txt",
 		"/F/CODE/C_serialConsole/RS-232/demo_rx.c",
@@ -853,8 +857,7 @@
 		"/C/Users/MrOneTwo/Desktop/UE4_tips.txt",
 		"/F/APPS/SumatraPDF-3.1.1-64/SumatraPDF-settings.txt",
 		"/F/CODE/PY/pygame/class_test/debug.py",
-		"/F/CODE/PY/pygame/class_test/ball.py",
-		"/F/CODE/PY/pygame/class_test/uart.py"
+		"/F/CODE/PY/pygame/class_test/ball.py"
 	],
 	"find":
 	{
@@ -1055,7 +1058,7 @@
 		"cols":
 		[
 			0.0,
-			0.609222800775,
+			0.832071883991,
 			1.0
 		],
 		"rows":
@@ -1094,6 +1097,14 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"cli",
+				"src\\CLInterface\\CLInterface.py"
+			],
+			[
+				"contr",
+				"src_additional\\controlsTest.py"
+			],
 			[
 				"read",
 				"README.md"
@@ -1275,7 +1286,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
