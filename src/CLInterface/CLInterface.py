@@ -40,6 +40,21 @@ class CLInterface:
         # logging
         self.class_logger = logging.getLogger('droneNav.CLI')
 
+    def initConfig(self, cfg):
+        if os.path.isfile(self.configFilePath):
+            self.configExists = True
+        else:
+            self.configExists = False
+
+        cfg.add_section('VisionParams')
+        # append all the dict in the config
+        for key in setts:
+            cfg.set('VisionParams', key, setts[key])
+
+        if not self.configExists:
+            self.writeConfig(cfg)
+            self.configExists = True
+
     def readConfig(self, cfg, path, setts):
         if self.configExists:
             self.class_logger.info('Reading config file.')
@@ -58,31 +73,18 @@ class CLInterface:
 
     def writeConfig(self, cfg, path, setts):
         # TODO: test writing when config.ini already exists. Add file rm if doesnt
-        if not self.configExists:
-            self.class_logger.info('Writing config file.')
-            configFile = open(path, 'w')
+        self.class_logger.info('Writing config file.')
 
-            cfg.add_section('VisionParams')
-            # append all the dict in the config
-            for key in setts:
-                cfg.set('VisionParams', key, setts[key])
+        configFile = open(path, 'w')
+        cfg.write(configFile)
+        configFile.close()
 
-            cfg.write(configFile)
-            configFile.close()
-            self.configExists = True
-        else:
-            # cleaning file
-            configFile = open(path, 'w').close()
-            self.configExists = False
-            self.writeConfig(self.configPars, self.configFilePath, self.settings)
+        self.configExists = True
 
     def start(self):
         self.class_logger.info('Starting console interface.')
         # create or load config file
-        if os.path.isfile(self.configFilePath):
-            self.configExists = True
-        else:
-            self.configExists = False
+        self.initConfig(self.configFilePath)
 
         if self.configExists:
             self.class_logger.debug('The config.ini does exist; reading.')
