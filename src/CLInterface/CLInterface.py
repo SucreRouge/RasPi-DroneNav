@@ -32,9 +32,8 @@ class CLInterface:
                          'erodeValue': 0, 'lowerThresh': 0, 'working': True}
 
         # configuration parser
-        # TODO: test if this new path for config works
         self.main_dir = main_dir
-        self.configFilePath = (main_dir + 'config.ini')
+        self.configFilePath = (self.main_dir + 'config.ini')
         self.configPars = ConfigParser.ConfigParser()
 
         # logging
@@ -128,6 +127,7 @@ class CLInterface:
                 if self.settings['erodeValue'] < 0:
                     self.settings['erodeValue'] = 0
             elif self.keyPressed == ord('p'):
+                os.remove(self.configFilePath)
                 self.writeConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
