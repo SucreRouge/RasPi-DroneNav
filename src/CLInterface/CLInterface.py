@@ -40,7 +40,7 @@ class CLInterface:
         # logging
         self.class_logger = logging.getLogger('droneNav.CLI')
 
-    def initConfig(self, cfg):
+    def initConfig(self, cfg, setts):
         if os.path.isfile(self.configFilePath):
             self.configExists = True
         else:
@@ -84,7 +84,7 @@ class CLInterface:
     def start(self):
         self.class_logger.info('Starting console interface.')
         # create or load config file
-        self.initConfig(self.configPars)
+        self.initConfig(self.configPars, self.settings)
 
         if self.configExists:
             self.class_logger.debug('The config.ini does exist; reading.')
