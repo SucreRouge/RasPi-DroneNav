@@ -71,7 +71,7 @@ class CLInterface:
             configFile.close()
             self.configExists = True
         else:
-            os.remove(configFilePath)
+            os.remove(self.configFilePath)
             self.configExists = False
             self.writeConfig(self.configPars, self.configFilePath, self.settings)
 
