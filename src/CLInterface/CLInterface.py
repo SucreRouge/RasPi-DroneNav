@@ -78,7 +78,6 @@ class CLInterface:
             self.class_logger.info('Tried to read config but file doesnt exist.')
 
     def writeConfig(self, cfg, path, setts):
-        # TODO: test writing when config.ini already exists. Add file rm if doesnt
         self.class_logger.info('Writing config file.')
 
         cfg.remove_section('VisionParams')
