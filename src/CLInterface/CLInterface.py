@@ -34,7 +34,7 @@ class CLInterface:
         # configuration parser
         # TODO: test if this new path for config works
         self.main_dir = main_dir
-        self.configFilePath = (main_dir + '\config.ini')
+        self.configFilePath = (main_dir + 'config.ini')
         self.configPars = ConfigParser.ConfigParser()
 
         # logging
