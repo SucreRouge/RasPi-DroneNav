@@ -40,7 +40,7 @@ class CLInterface:
         # logging
         self.class_logger = logging.getLogger('droneNav.CLI')
 
-    def initConfig(self, cfg, setts):
+    def initConfig(self, cfg, path, setts):
         if os.path.isfile(self.configFilePath):
             self.configExists = True
         else:
@@ -52,7 +52,7 @@ class CLInterface:
             cfg.set('VisionParams', key, setts[key])
 
         if not self.configExists:
-            self.writeConfig(cfg)
+            self.writeConfig(cfg, path, setts)
             self.configExists = True
 
     def readConfig(self, cfg, path, setts):
