@@ -84,7 +84,7 @@ class CLInterface:
     def start(self):
         self.class_logger.info('Starting console interface.')
         # create or load config file
-        self.initConfig(self.configPars, self.settings)
+        self.initConfig(self.configPars, self.configFilePath, self.settings)
 
         if self.configExists:
             self.class_logger.debug('The config.ini does exist; reading.')
