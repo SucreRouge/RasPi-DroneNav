@@ -22,6 +22,7 @@ import cv2
 import Queue
 import sys
 import logging
+import os
 
 from shapeDetector.shapedetector import ShapeDetector
 from CLInterface.CLInterface import CLInterface
@@ -30,6 +31,7 @@ from droneStateMachine.dronestatemachine import DroneStateMachine
 
 
 def processFrame(fr, setts):
+    """ Takes frame and processes it based on settings. """
     # frame = imutils.resize(frame, width=600)
     fr = cv2.flip(fr, 0)
     # frame = cv2.copyMakeBorder(frame, 3, 3, 3, 3,
@@ -49,10 +51,14 @@ def processFrame(fr, setts):
     return frameFinal
 
 
-def createLogger():
+def createLogger(log_dir):
+    """
+    Takes dir for log file.
+    Returns logger object with formatter and file handle.
+    """
     log = logging.getLogger('droneNav')
     log.setLevel(logging.DEBUG)
-    fh = logging.FileHandler('./log')
+    fh = logging.FileHandler(log_dir + '\\log')
     fh.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s %(module)s '
                                   '%(levelname)s %(message)s')
@@ -62,6 +68,10 @@ def createLogger():
 
 
 def drawCntrsFeatures(fr, setts, obj):
+    """
+    Takes frame, settings, objects list and draws features (contours, names,
+    vertives, centers) on frame.
+    """
     if setts['dispContours']:
         cv2.drawContours(fr, [obj['contour']], -1, (0, 255, 0), 1)
     if setts['dispNames']:
@@ -75,9 +85,11 @@ def drawCntrsFeatures(fr, setts, obj):
 
 
 def main():
+    """ Main program loop. """
     # #####################################################################
     # VARIABLES USED
     # #####################################################################
+    main_dir = os.path.dirname(__file__)
     working = True
     objs = []
     resolution = (320, 240)
@@ -90,14 +102,14 @@ def main():
     # #####################################################################
     # OBJECTS USED
     # #####################################################################
-    logger = createLogger()
+    logger = createLogger(main_dir)
     queueSRL = Queue.Queue()
     queueCLI = Queue.Queue()
     queueSTM = Queue.Queue()
     # vs = PiVideoStream().start()
     vs = PiVideoStream(resolution, 60)
     sd = ShapeDetector()
-    cli = CLInterface(queueCLI)
+    cli = CLInterface(queueCLI, main_dir)
     serialPort = SerialCom(queueSRL)
     stm = DroneStateMachine(queueSTM, queueSRL)
 

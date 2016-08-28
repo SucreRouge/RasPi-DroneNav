@@ -9,11 +9,12 @@ import logging
 
 
 class CLInterface:
-    def __init__(self, q):
+    """ Class being the console line user interface. """
+    def __init__(self, q, main_dir):
         self.stdscr = initscr()
         keypad(self.stdscr, True)
         curs_set(False)
-        timeout(-1) # -1 means infinity; 0 means no waiting
+        timeout(-1)  # -1 means infinity; 0 means no waiting
         cbreak()
         start_color()
         noecho()
@@ -31,7 +32,9 @@ class CLInterface:
                          'erodeValue': 0, 'lowerThresh': 0, 'working': True}
 
         # configuration parser
-        self.configFilePath = ('./config.ini')
+        # TODO: test if this new path for config works
+        self.main_dir = main_dir
+        self.configFilePath = (main_dir + '\\config.ini')
         self.configPars = ConfigParser.ConfigParser()
 
         # logging
@@ -51,6 +54,7 @@ class CLInterface:
         setts['lowerThresh']   = cfg.getint('VisionParams', 'lowerThresh')
 
     def writeConfig(self, cfg, path, setts):
+        # TODO: test writing when config.ini already exists. Add file rm if doesnt
         self.class_logger.info('Writing config file.')
         configFile = open(path, 'w')
 
