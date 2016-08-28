@@ -59,7 +59,7 @@ def createLogger(log_dir):
     log = logging.getLogger('droneNav')
     log.setLevel(logging.DEBUG)
     # TODO: check this new log path
-    fh = logging.FileHandler(log_dir + '\\log')
+    fh = logging.FileHandler(log_dir + '\log')
     fh.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s %(module)s '
                                   '%(levelname)s %(message)s')
