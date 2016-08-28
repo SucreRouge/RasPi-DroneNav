@@ -41,15 +41,20 @@ class CLInterface:
         self.class_logger = logging.getLogger('droneNav.CLI')
 
     def initConfig(self, cfg, path, setts):
+        """
+        Check if config.ini exists, fill cfg object, if not exists create.
+        """
         if os.path.isfile(self.configFilePath):
             self.configExists = True
         else:
             self.configExists = False
 
-        cfg.add_section('VisionParams')
+        # cfg.add_section('VisionParams')
         # append all the dict in the config
-        for key in setts:
-            cfg.set('VisionParams', key, setts[key])
+        # for key in setts:
+            # cfg.set('VisionParams', key, setts[key])
+
+        cfg.read_dict({'VisionParams': setts})
 
         if not self.configExists:
             self.writeConfig(cfg, path, setts)
