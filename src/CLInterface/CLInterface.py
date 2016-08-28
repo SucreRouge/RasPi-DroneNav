@@ -49,12 +49,13 @@ class CLInterface:
         else:
             self.configExists = False
 
-        # cfg.add_section('VisionParams')
+        cfg.add_section('VisionParams')
         # append all the dict in the config
-        # for key in setts:
-            # cfg.set('VisionParams', key, setts[key])
+        for key in setts:
+            cfg.set('VisionParams', key, setts[key])
 
-        cfg.read_dict({'VisionParams': setts})
+        # Python3 way to do that
+        # cfg.read_dict({'VisionParams': setts})
 
         if not self.configExists:
             self.writeConfig(cfg, path, setts)
@@ -79,6 +80,12 @@ class CLInterface:
     def writeConfig(self, cfg, path, setts):
         # TODO: test writing when config.ini already exists. Add file rm if doesnt
         self.class_logger.info('Writing config file.')
+
+        cfg.remove_section('VisionParams')
+        cfg.add_section('VisionParams')
+        # append all the dict in the config
+        for key in setts:
+            cfg.set('VisionParams', key, setts[key])
 
         configFile = open(path, 'w')
         cfg.write(configFile)
