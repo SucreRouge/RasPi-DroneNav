@@ -35,46 +35,61 @@ class CLInterface:
         self.main_dir = main_dir
         self.configFilePath = (self.main_dir + 'config.ini')
         self.configPars = ConfigParser.ConfigParser()
+        self.configExists = False
 
         # logging
         self.class_logger = logging.getLogger('droneNav.CLI')
 
     def readConfig(self, cfg, path, setts):
-        self.class_logger.info('Reading config file.')
-        cfg.read('config.ini')
+        if self.configExists:
+            self.class_logger.info('Reading config file.')
+            cfg.read('config.ini')
 
-        setts['dispThresh']    = cfg.getboolean('VisionParams', 'dispThresh')
-        setts['dispContours']  = cfg.getboolean('VisionParams', 'dispContours')
-        setts['dispVertices']  = cfg.getboolean('VisionParams', 'dispVertices')
-        setts['dispNames']     = cfg.getboolean('VisionParams', 'dispNames')
-        setts['dispCenters']   = cfg.getboolean('VisionParams', 'dispCenters')
-        setts['dispTHEcenter'] = cfg.getboolean('VisionParams', 'dispTHEcenter')
-        setts['erodeValue']    = cfg.getint('VisionParams', 'erodeValue')
-        setts['lowerThresh']   = cfg.getint('VisionParams', 'lowerThresh')
+            setts['dispThresh']    = cfg.getboolean('VisionParams', 'dispThresh')
+            setts['dispContours']  = cfg.getboolean('VisionParams', 'dispContours')
+            setts['dispVertices']  = cfg.getboolean('VisionParams', 'dispVertices')
+            setts['dispNames']     = cfg.getboolean('VisionParams', 'dispNames')
+            setts['dispCenters']   = cfg.getboolean('VisionParams', 'dispCenters')
+            setts['dispTHEcenter'] = cfg.getboolean('VisionParams', 'dispTHEcenter')
+            setts['erodeValue']    = cfg.getint('VisionParams', 'erodeValue')
+            setts['lowerThresh']   = cfg.getint('VisionParams', 'lowerThresh')
+        else:
+            self.class_logger.info('Tried to read config but file doesnt exist.')
 
     def writeConfig(self, cfg, path, setts):
         # TODO: test writing when config.ini already exists. Add file rm if doesnt
-        self.class_logger.info('Writing config file.')
-        configFile = open(path, 'w')
+        if not self.configExists:
+            self.class_logger.info('Writing config file.')
+            configFile = open(path, 'w')
 
-        cfg.add_section('VisionParams')
-        # append all the dict in the config
-        for key in setts:
-            cfg.set('VisionParams', key, setts[key])
+            cfg.add_section('VisionParams')
+            # append all the dict in the config
+            for key in setts:
+                cfg.set('VisionParams', key, setts[key])
 
-        cfg.write(configFile)
-        configFile.close()
+            cfg.write(configFile)
+            configFile.close()
+            self.configExists = True
+        else:
+            os.remove(configFilePath)
+            self.configExists = False
+            self.writeConfig(self.configPars, self.configFilePath, self.settings)
 
     def start(self):
         self.class_logger.info('Starting console interface.')
         # create or load config file
         if os.path.isfile(self.configFilePath):
-            self.class_logger.debug('The config.ini does exist.')
+            self.configExists = True
+        else:
+            self.configExists = False
+
+        if self.configExists:
+            self.class_logger.debug('The config.ini does exist; reading.')
             self.readConfig(self.configPars,
                             self.configFilePath,
                             self.settings)
         else:
-            self.class_logger.debug('The config file doesnt exist.')
+            self.class_logger.debug('The config file doesnt exist; writing.')
             self.writeConfig(self.configPars,
                              self.configFilePath,
                              self.settings)
@@ -127,7 +142,6 @@ class CLInterface:
                 if self.settings['erodeValue'] < 0:
                     self.settings['erodeValue'] = 0
             elif self.keyPressed == ord('p'):
-                os.remove(self.configFilePath)
                 self.writeConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
