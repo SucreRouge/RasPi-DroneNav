@@ -28,12 +28,12 @@ def main():
         print('3 - EXIT')
         choice = raw_input()
 
-        if choice == 1:
+        if choice == '1':
             c = ManualControl()
             c.main()
-        elif choice == 2 and imported:
+        elif choice == '2' and imported:
             authonomic_control()
-        elif choice == 3:
+        elif choice == '3':
             sys.exit(0)
         else:
             continue
