@@ -84,7 +84,7 @@ def drawCntrsFeatures(fr, setts, obj):
         cv2.circle(fr, (obj['center']), 2, (50, 255, 50), 1)
 
 
-def authonomic_control():
+def authonomic_control(displayFlag = -1):
     """ Main program loop. """
     # #####################################################################
     # VARIABLES USED
@@ -120,6 +120,11 @@ def authonomic_control():
     ap.add_argument("-c", "--cli", type=int, default=1,
                     help="Whether or not curses process should start.")
     args = vars(ap.parse_args())
+
+    if displayFlag == 0:
+        args['display'] = displayFlag
+    elif displayFlag ==1:
+        args['display'] = displayFlag
     # #####################################################################
 
     print('Starting in 3...')
@@ -203,7 +208,6 @@ def authonomic_control():
 
         # HIGH GUI DISPLAY AND CONTROL
         if args['display'] > 0:
-            cv2.startWindowThread()
             cv2.imshow('Frame', frame)
 
             if settings['dispThresh']:

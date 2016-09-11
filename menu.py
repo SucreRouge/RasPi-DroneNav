@@ -22,18 +22,26 @@ def main():
 
     while choice != 1 or choice != 2:
         print('Choose module:')
-        print('1 - manual control')
+        print('1 - manual control (throttle 1.0)')
+        print('2 - manual control (throttle 0.1)')
         if imported:
-            print('2 - automatic navigation')
-        print('3 - EXIT')
+            print('3 - automatic navigation (display on, cli on')
+            print('4 - automatic navigation (display off, cli on')
+        print('')
+        print('5 - EXIT')
         choice = raw_input()
 
         if choice == '1':
-            c = ManualControl()
+            c = ManualControl(throttle = 1.0)
             c.main()
         elif choice == '2' and imported:
-            authonomic_control()
-        elif choice == '3':
+            c = ManualControl(throttle = 0.1)
+            c.main()
+        elif choice == '3' and imported:
+            authonomic_control(1)
+        elif choice == '4' and imported:
+            authonomic_control(0)
+        elif choice == '5':
             sys.exit(0)
         else:
             continue
