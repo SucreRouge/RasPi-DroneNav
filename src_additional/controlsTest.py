@@ -352,4 +352,6 @@ def main():
             pygame.display.flip()
             clock.tick(50)
 
-main()
+
+if __name__ == "__main__":
+    main()
