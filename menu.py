@@ -1,6 +1,10 @@
 #!python2
 # -*- coding: UTF-8 -*-
 
+bashCommand_1 = "source virtualenvwrapper.sh"
+bashCommand_2 = "workon cv"
+bashCommand_3 = "deactivate"
+
 import subprocess
 p = subprocess.Popen(bashCommand_3.split(), stdout=subprocess.PIPE)
 import sys
