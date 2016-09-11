@@ -221,9 +221,9 @@ def authonomic_control():
     # #####################################################################
 
     # do a bit of cleanup
-    cv2.destroyAllWindows()
     vs.stop()
     cli.stop()
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
