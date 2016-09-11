@@ -137,7 +137,6 @@ def authonomic_control():
         cli.start()
     serialPort.start()
     stm.start()
-    cv2.startWindowThread()
     time.sleep(2)  # necessary so camera can start properly
 
     # #####################################################################
@@ -204,6 +203,7 @@ def authonomic_control():
 
         # HIGH GUI DISPLAY AND CONTROL
         if args['display'] > 0:
+            cv2.startWindowThread()
             cv2.imshow('Frame', frame)
 
             if settings['dispThresh']:
