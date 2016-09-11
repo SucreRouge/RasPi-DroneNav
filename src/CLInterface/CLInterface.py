@@ -52,7 +52,7 @@ class CLInterface:
         cfg.add_section('VisionParams')
         # append all the dict in the config
         for key in setts:
-            cfg.set('VisionParams', key, setts[key])
+            cfg.set('VisionParams', key, str(setts[key]))
 
         # Python3 way to do that
         # cfg.read_dict({'VisionParams': setts})
