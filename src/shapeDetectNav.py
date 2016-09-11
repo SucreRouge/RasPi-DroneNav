@@ -115,9 +115,9 @@ def authonomic_control():
 
     # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument("-d", "--display", type=int,
+    ap.add_argument("-d", "--display", type=int, default=1,
                     help="Whether or not frames should be displayed.")
-    ap.add_argument("-c", "--cli", type=int,
+    ap.add_argument("-c", "--cli", type=int, default=1,
                     help="Whether or not curses process should start.")
     args = vars(ap.parse_args())
     # #####################################################################
@@ -224,7 +224,6 @@ def authonomic_control():
     cv2.destroyAllWindows()
     vs.stop()
     cli.stop()
-    sys.exit(0)
 
 
 if __name__ == "__main__":
