@@ -38,9 +38,9 @@ def main():
             c = ManualControl(throttle = 0.1)
             c.main()
         elif choice == '3' and imported:
-            authonomic_control(1)
+            authonomic_control(displayFlag = 1)
         elif choice == '4' and imported:
-            authonomic_control(0)
+            authonomic_control(displayFlag = 0)
         elif choice == '5':
             sys.exit(0)
         else:
