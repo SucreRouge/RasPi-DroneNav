@@ -1,8 +1,8 @@
 #!python2
 # -*- coding: UTF-8 -*-
 
-import sys
 import subprocess
+import sys
 from src_additional.manualcontrol import ManualControl
 
 imported = True
@@ -21,9 +21,9 @@ def main():
     choice = 0
 
     while choice != 1 or choice != 2:
+        p = subprocess.Popen(bashCommand_3.split(), stdout=subprocess.PIPE)
         print('Choose module:')
         print('1 - manual control')
-        p = subprocess.Popen(bashCommand_3.split(), stdout=subprocess.PIPE)
         if imported:
             p = subprocess.Popen(bashCommand_1.split(), stdout=subprocess.PIPE)
             p = subprocess.Popen(bashCommand_2.split(), stdout=subprocess.PIPE)
