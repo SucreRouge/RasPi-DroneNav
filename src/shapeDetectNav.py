@@ -84,7 +84,7 @@ def drawCntrsFeatures(fr, setts, obj):
         cv2.circle(fr, (obj['center']), 2, (50, 255, 50), 1)
 
 
-def main():
+def authonomic_control():
     """ Main program loop. """
     # #####################################################################
     # VARIABLES USED
@@ -228,4 +228,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    authonomic_control()

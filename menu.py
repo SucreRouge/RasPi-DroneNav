@@ -4,21 +4,29 @@
 import sys
 from src_additional.manualcontrol import ManualControl
 
+imported = True
+try:
+    from src.shapeDetectNav import *
+except ImportError:
+    print('Error in importing shapeDetectNav - probably OS == Windows')
+    imported = False
+
 def main():
     choice = 0
 
     while choice != 1 or choice != 2:
         print('Choose module:')
         print('1 - manual control')
-        print('2 - automatic navigation')
+        if imported:
+            print('2 - automatic navigation')
         print('3 - EXIT')
         choice = input()
 
         if choice == 1:
             c = ManualControl()
             c.main()
-        elif choice == 2:
-            pass
+        elif choice == 2 and imported:
+            authonomic_control()
         elif choice == 3:
             sys.exit(0)
         else:
