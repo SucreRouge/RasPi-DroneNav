@@ -4,9 +4,9 @@
 bashCommand_1 = "source virtualenvwrapper.sh"
 bashCommand_2 = "workon cv"
 bashCommand_3 = "deactivate"
+# p = subprocess.call()
 
 import subprocess
-p = subprocess.Popen(bashCommand_3.split(), stdout=subprocess.PIPE)
 import sys
 from src_additional.manualcontrol import ManualControl
 
@@ -17,21 +17,13 @@ except ImportError:
     print('Error in importing shapeDetectNav - probably OS == Windows')
     imported = False
 
-output = process.communicate()[0]
-bashCommand_1 = "source virtualenvwrapper.sh"
-bashCommand_2 = "workon cv"
-bashCommand_3 = "deactivate"
-
 def main():
     choice = 0
 
     while choice != 1 or choice != 2:
-        p = subprocess.Popen(bashCommand_3.split(), stdout=subprocess.PIPE)
         print('Choose module:')
         print('1 - manual control')
         if imported:
-            p = subprocess.Popen(bashCommand_1.split(), stdout=subprocess.PIPE)
-            p = subprocess.Popen(bashCommand_2.split(), stdout=subprocess.PIPE)
             print('2 - automatic navigation')
         print('3 - EXIT')
         choice = input()
