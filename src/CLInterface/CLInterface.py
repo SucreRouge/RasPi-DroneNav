@@ -33,7 +33,7 @@ class CLInterface:
 
         # configuration parser
         self.main_dir = main_dir
-        self.configFilePath = (self.main_dir + 'config.ini')
+        self.configFilePath = (self.main_dir + '/config.ini')
         self.configPars = ConfigParser.ConfigParser()
         self.configExists = False
 
@@ -84,10 +84,7 @@ class CLInterface:
         cfg.add_section('VisionParams')
         # append all the dict in the config
         for key in setts:
-            if isinstance(setts[key], bool):
-                cfg.set('VisionParams', key, str(setts[key]).lower())
-            elif isinstance(setts[key], int):
-                cfg.set('VisionParams', key, setts[key])
+            cfg.set('VisionParams', key, setts[key])
 
 
         configFile = open(path, 'w')
