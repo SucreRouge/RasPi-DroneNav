@@ -84,7 +84,11 @@ class CLInterface:
         cfg.add_section('VisionParams')
         # append all the dict in the config
         for key in setts:
-            cfg.set('VisionParams', key, setts[key])
+            if isinstance(setts[key], bool):
+                cfg.set('VisionParams', key, str(setts[key]).lower())
+            elif isinstance(setts[key], int):
+                cfg.set('VisionParams', key, setts[key])
+
 
         configFile = open(path, 'w')
         cfg.write(configFile)
