@@ -145,12 +145,6 @@ class ManualControl(object):
 
         print('Starting with settings: port {0}, throttle {1}'.format(args['port'], args['throttle']))
         time.sleep(1)
-        print('Starting the program in 3 seconds.')
-        time.sleep(1)
-        print('Starting the program in 2 seconds.')
-        time.sleep(1)
-        print('Starting the program in 1 seconds.')
-        time.sleep(1)
         print('Lesgo!')
 
         while self.working:

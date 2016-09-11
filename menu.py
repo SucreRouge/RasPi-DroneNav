@@ -26,7 +26,7 @@ def main():
         if imported:
             print('2 - automatic navigation')
         print('3 - EXIT')
-        choice = input()
+        choice = raw_input()
 
         if choice == 1:
             c = ManualControl()
