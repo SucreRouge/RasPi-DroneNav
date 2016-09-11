@@ -87,7 +87,7 @@ class CLInterface:
             if isinstance(setts[key], bool):
                 cfg.set('VisionParams', key, str(setts[key]).lower())
             elif isinstance(setts[key], int):
-                cfg.set('VisionParams', key, setts[key])
+                cfg.set('VisionParams', key, str(setts[key]))
 
 
         configFile = open(path, 'w')
