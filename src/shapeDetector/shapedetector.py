@@ -13,6 +13,7 @@ class ShapeDetector:
         approxPerimeter = cv2.approxPolyDP(c, 0.04 * peri, True)
         verts = []
         vrt = []
+        approxPerimeterArea = cv2.contourArea(approxPerimeter)
 
         # #####################################################################
         # GETTING THE VERTICES COORDINATES
@@ -57,4 +58,5 @@ class ShapeDetector:
         # return [shape, verts]
         return {'shapeName': shape,
                 'verts': verts,
-                'approxPerimeter': approxPerimeter}
+                'approxPerimeter': approxPerimeter,
+                'approxPerimeterArea': approxPerimeterArea}
