@@ -73,7 +73,7 @@ def drawCntrsFeatures(fr, setts, obj):
     vertives, centers) on frame.
     """
     if setts['dispContours']:
-        cv2.drawContours(fr, [obj['contour']], -1, (0, 255, 0), 1)
+        cv2.drawContours(fr, [obj['approxPerimeter']], -1, (0, 255, 0), 1)
     if setts['dispNames']:
         cv2.putText(fr, obj['shapeName'], obj['center'], cv2.FONT_HERSHEY_SIMPLEX,
                     0.5, (255, 255, 255), 1)

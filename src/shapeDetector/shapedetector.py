@@ -55,4 +55,6 @@ class ShapeDetector:
 
         # return the name of the shape
         # return [shape, verts]
-        return {'shapeName': shape, 'verts': verts}
+        return {'shapeName': shape,
+                'verts': verts,
+                'approxPerimeter': approxPerimeter}
