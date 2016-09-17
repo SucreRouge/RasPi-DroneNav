@@ -26,9 +26,7 @@ void setup() {
   myservo4.attach(18);
   myservo5.attach(19);
 
-  //142 = 2.008ms
-  //45 = 1.008ms
-  //93 = 1.502ms
+  // set initial PWM signals
   myservo0.writeMicroseconds(1500);
   myservo1.writeMicroseconds(1500);
   myservo2.writeMicroseconds(1500);
@@ -41,6 +39,7 @@ void setup() {
 }
 
 void loop() {
+  // set PWM signals
   myservo0.writeMicroseconds(pwm0);
   myservo1.writeMicroseconds(pwm1);
   myservo2.writeMicroseconds(pwm2);
@@ -48,13 +47,15 @@ void loop() {
   myservo4.writeMicroseconds(pwm4);
   myservo5.writeMicroseconds(pwm5);
 
-    if(stringComplete){
-        inputString = "";
-        stringComplete = false;
-    }
+  // clear string and set complete flag to false
+  if(stringComplete){
+    inputString = "";
+    stringComplete = false;
+  }
 }
 
 void serialEvent() {
+    // Serial.available returns number of elements in Serial buffer
     while (Serial.available()) {
          // get the new byte:
         char inChar = (char)Serial.read();
