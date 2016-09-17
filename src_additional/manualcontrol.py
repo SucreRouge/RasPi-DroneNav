@@ -7,6 +7,7 @@ import Queue
 import time
 import sys
 import argparse
+import array
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--port", type=int, default=4,
@@ -53,6 +54,11 @@ class ManualControl(object):
 
     def build_data_string(self, valueList):
         s = 'a{0}b{1}c{2}d{3}e{4}f{5}g\n'.format(*valueList)
+        return s
+
+    def build_data_hex_string(self, valueList):
+        valueList.insert(0, 0xAA)  # add preamble
+        s = array.array('B', valueList).tostring()
         return s
 
     def handle_input(self, events):
@@ -131,8 +137,10 @@ class ManualControl(object):
                   int(self.pwm4),
                   int(self.pwm5)]
         valuesString = self.build_data_string(values)
+        valuesHexString = self.build_data_hex_string(values)
         print("Data {0}, and throttle {1}".format(valuesString, self.throttle))
-        self.queue.put(valuesString)
+        # self.queue.put(valuesString)
+        self.queue.put(valuesHexString)
 
         self.screen.blit(self.background, (0, 0))
         pygame.display.flip()

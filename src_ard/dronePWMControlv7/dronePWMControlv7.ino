@@ -1,7 +1,10 @@
 #include <Servo.h>
 
-String inputString = "";
-boolean stringComplete = false;
+#define PREAMBLE       0xAA
+#define MSG_SIZE       7
+
+uint8_t dataBuffer[MSG_SIZE - 1];
+
 Servo myservo0;  // create servo object to control a servo
 Servo myservo1;  // create servo object to control a servo
 Servo myservo2;  // create servo object to control a servo
@@ -46,42 +49,23 @@ void loop() {
     myservo3.writeMicroseconds(pwm3);
     myservo4.writeMicroseconds(pwm4);
     myservo5.writeMicroseconds(pwm5);
-
-      // clear string and set complete flag to false
-    if(stringComplete){
-        inputString = "";
-        stringComplete = false;
-    }
 }
 
 void serialEvent() {
     // Serial.available returns number of elements in Serial buffer
-    while (Serial.available()) {
-         // get the first byte from buffer
-        char inChar = (char)Serial.read();
-        // add it to the inputString:
-        inputString += inChar;
-        // if the incoming character is a newline, set a flag
-        // so the main loop can do something about it:
-        if (inChar == '\n') {
-            stringComplete = true;
+    if (Serial.available() >= MSG_SIZE) {
+        // get the first byte from buffer
+        uint8_t inChar = (uint8_t)Serial.read();
+
+        if(inChar == PREAMBLE){
+            Serial.readBytes(dataBuffer, MSG_SIZE - 1);
+
+            pwm0 = dataBuffer[0] * 10;
+            pwm1 = dataBuffer[1] * 10;
+            pwm2 = dataBuffer[2] * 10;
+            pwm3 = dataBuffer[3] * 10;
+            pwm4 = dataBuffer[4] * 10;
+            pwm5 = dataBuffer[5] * 10;
         }
-    }
-
-    if (stringComplete)
-    {
-        pwm0 = inputString.substring(inputString.indexOf('a')+1, inputString.indexOf('b')).toInt();
-        pwm1 = inputString.substring(inputString.indexOf('b')+1, inputString.indexOf('c')).toInt();
-        pwm2 = inputString.substring(inputString.indexOf('c')+1, inputString.indexOf('d')).toInt();
-        pwm3 = inputString.substring(inputString.indexOf('d')+1, inputString.indexOf('e')).toInt();
-        pwm4 = inputString.substring(inputString.indexOf('e')+1, inputString.indexOf('f')).toInt();
-        pwm5 = inputString.substring(inputString.indexOf('f')+1, inputString.indexOf('g')).toInt();
-
-        pwm0 = pwm0 * 10;
-        pwm1 = pwm1 * 10;
-        pwm2 = pwm2 * 10;
-        pwm3 = pwm3 * 10;
-        pwm4 = pwm4 * 10;
-        pwm5 = pwm5 * 10;
     }
 }
