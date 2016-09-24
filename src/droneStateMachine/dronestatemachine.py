@@ -3,20 +3,36 @@
 
 from threading import Thread
 import logging
+import array
 
 
 class DroneStateMachine:
     def __init__(self, q1, q2):
-        self.possibleStates = {'default': 0, 'ascending': 1,
+        self.possibleStates = {'onTheGround': 0, 'ascending': 1,
                                'rotating': 2, 'movingToPoint': 3,
                                'landing': 4, 'hovering': 5,
                                'hoveringOnPoint': 6}
-        self.state = self.possibleStates['default']
+        self.state = self.possibleStates['onTheGround']
         self.running = False
+        self.autoMode = False
         self.queueSTM = q1
         self.queueSRL = q2
         self.objs = []
         self.lastStateLogged = False
+
+        # TODO: check the names below
+        # throttle
+        self.pwm0 = 100
+        # yaw
+        self.pwm1 = 150
+        # pitch
+        self.pwm2 = 150
+        # roll
+        self.pwm3 = 150
+        # accessory 1
+        self.pwm4 = 150
+        # accessory 2
+        self.pwm5 = 150
 
         # logging
         self.class_logger = logging.getLogger('droneNav.StateMachine')
@@ -30,45 +46,85 @@ class DroneStateMachine:
 
     def update(self):
         while self.running:
+            if self.autoMode:
 
-            if not self.queueSTM.empty():
-                self.objs = self.queueSTM.get()
-                self.queueSTM.task_done()
-            else:
-                pass
+                # getting the objects seen by camera
+                if not self.queueSTM.empty():
+                    self.objs = self.queueSTM.get()
+                    self.queueSTM.task_done()
+                else:
+                    pass
 
-            if self.state == self.possibleStates['default']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Default state.')
-                    self.lastStateLogged = True
-            elif self.state == self.possibleStates['ascending']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Ascending state.')
-                    self.lastStateLogged = True
-            elif self.state == self.possibleStates['rotating']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Rotating state.')
-                    self.lastStateLogged = True
-            elif self.state == self.possibleStates['movingToPoint']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Moving to point state.')
-                    self.lastStateLogged = True
-            elif self.state == self.possibleStates['landing']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Landing state.')
-                    self.lastStateLogged = True
-            elif self.state == self.possibleStates['hovering']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Hovering state.')
-                    self.lastStateLogged = True
-            elif self.state == self.possibleStates['hoveringOnPoint']:
-                if not self.lastStateLogged:
-                    self.class_logger.info('Hovering on point state.')
-                    self.lastStateLogged = True
+                if self.state == self.possibleStates['onTheGround']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('onTheGround state.')
+                        self.lastStateLogged = True
+
+                    self.set_state(self.possibleStates['ascending'])
+
+                elif self.state == self.possibleStates['ascending']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('Ascending state.')
+                        self.lastStateLogged = True
+
+                elif self.state == self.possibleStates['rotating']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('Rotating state.')
+                        self.lastStateLogged = True
+
+                elif self.state == self.possibleStates['movingToPoint']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('Moving to point state.')
+                        self.lastStateLogged = True
+
+                elif self.state == self.possibleStates['landing']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('Landing state.')
+                        self.lastStateLogged = True
+
+                elif self.state == self.possibleStates['hovering']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('Hovering state.')
+                        self.lastStateLogged = True
+
+                elif self.state == self.possibleStates['hoveringOnPoint']:
+                    if not self.lastStateLogged:
+                        self.class_logger.info('Hovering on point state.')
+                        self.lastStateLogged = True
+
+                # send control commands
+                values = [int(self.pwm0),
+                          int(self.pwm1),
+                          int(self.pwm2),
+                          int(self.pwm3),
+                          int(self.pwm4),
+                          int(self.pwm5)]
+                valuesHexString = self.build_data_hex_string(values)
+                self.queueSRL.put(valuesHexString)
+
+            elif not self.autoMode:
+                # send control commands
+                values = [100, 150, 150, 150, 150, 150]
+                valuesHexString = self.build_data_hex_string(values)
+                self.queueSRL.put(valuesHexString)
+
+    def set_mode(self, mode):
+        self.autoMode = mode
+        return
 
     def stop(self):
         self.running = False
+        return
 
-    def setState(self, goalState):
+    def set_state(self, goalState):
         self.state = goalState
         return
+
+    def calculate_control(self, goalPos):
+        # TODO: fill this function
+        return
+
+    def build_data_hex_string(self, valueList):
+        valueList.insert(0, 0xAA)  # add preamble
+        s = array.array('B', valueList).tostring()
+        return s

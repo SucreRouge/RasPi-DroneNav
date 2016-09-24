@@ -27,9 +27,10 @@ class CLInterface:
         self.keyPressed = 0
 
         self.settings = {'dispThresh': False, 'dispContours': False,
-                         'dispVertices': False, 'dispNames': True,
-                         'dispCenters': True, 'dispTHEcenter': True,
-                         'erodeValue': 0, 'lowerThresh': 0, 'working': True}
+                         'dispVertices': False, 'dispNames': False,
+                         'dispCenters': False, 'dispTHEcenter': False,
+                         'erodeValue': 0, 'lowerThresh': 40, 'working': True,
+                         'autoMode': False}
 
         # configuration parser
         self.main_dir = main_dir
@@ -163,6 +164,11 @@ class CLInterface:
                 self.writeConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
+            elif self.keyPressed == ord('m'):
+                self.settings['autoMode'] = not self.setting['autoMode']
+
+            # TODO: add some failsafe here that will shutdown the drone
+
 
             # it puts the data in queueCLI after pressing button because
             # it is a blocking getch() (timeout(-1))
@@ -216,6 +222,9 @@ class CLInterface:
         wmove(self.window, 16, 1)
         waddstr(self.window, 'Process working     : {0} \n'.
                              format(self.settings['working']))
+        wmove(self.window, 16, 1)
+        waddstr(self.window, 'Auto mode     : {0} \n'.
+                             format(self.settings['autoMode']))
 
     def stop(self):
         endwin()

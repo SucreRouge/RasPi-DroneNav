@@ -86,7 +86,7 @@ def drawCntrsFeatures(fr, setts, obj):
         cv2.circle(fr, (obj['center']), 2, (50, 255, 50), 1)
 
 
-def authonomic_control(displayFlag = -1):
+def authonomic_control(displayFlag=-1):
     """ Main program loop. """
     # #####################################################################
     # VARIABLES USED
@@ -98,7 +98,8 @@ def authonomic_control(displayFlag = -1):
     settings = {'dispThresh': False, 'dispContours': False,
                 'dispVertices': False, 'dispNames': False,
                 'dispCenters': False, 'dispTHEcenter': False,
-                'erodeValue': 0, 'lowerThresh': 40, 'working': True}
+                'erodeValue': 0, 'lowerThresh': 40, 'working': True,
+                'autoMode': False}
     # #####################################################################
 
     # #####################################################################
@@ -125,7 +126,7 @@ def authonomic_control(displayFlag = -1):
 
     if displayFlag == 0:
         args['display'] = displayFlag
-    elif displayFlag ==1:
+    elif displayFlag == 1:
         args['display'] = displayFlag
     # #####################################################################
 
@@ -161,6 +162,11 @@ def authonomic_control(displayFlag = -1):
             queueCLI.task_done()
 
         working = settings['working']
+
+        if settings['autoMode']:
+            stm.set_mode(True)
+        elif not settings['autoMode']:
+            stm.set_mode(False)
 
         # grab the frame from the threaded video stream...
         frame = vs.read()
