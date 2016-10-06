@@ -1,9 +1,10 @@
 #!python2
 # -*- coding: UTF-8 -*-
 
-from threading import Thread
+from threading import Thread, Timer
 import logging
 import array
+import time
 
 
 class DroneStateMachine:
@@ -19,6 +20,13 @@ class DroneStateMachine:
         self.queueSRL = q2
         self.objs = []
         self.lastStateLogged = False
+        self.frequency = 50
+        self.compute = False
+        self.startTime = 0.0
+        self.dt = 0.0
+        self.resolution = (320, 240)
+        self.dx = 0
+        self.dy = 0
 
         # TODO: check the names below
         # throttle
@@ -34,12 +42,20 @@ class DroneStateMachine:
         # accessory 2
         self.pwm5 = 150
 
+        self.values = [int(self.pwm0),
+                       int(self.pwm1),
+                       int(self.pwm2),
+                       int(self.pwm3),
+                       int(self.pwm4),
+                       int(self.pwm5)]
+
         # logging
         self.class_logger = logging.getLogger('droneNav.StateMachine')
 
     def start(self):
         self.class_logger.info('Starting state machine.')
         t = Thread(target=self.update, args=())
+        # t = Timer(0.02, self.update, args=())
         t.daemon = True
         t.start()
         return self
@@ -49,23 +65,61 @@ class DroneStateMachine:
             if self.autoMode:
 
                 # getting the objects seen by camera
-                if not self.queueSTM.empty():
+                if self.queueSTM.empty():
+                    self.compute = False
+                else:
+                    self.compute = True
                     self.objs = self.queueSTM.get()
                     self.queueSTM.task_done()
-                else:
-                    pass
 
                 if self.state == self.possibleStates['onTheGround']:
                     if not self.lastStateLogged:
                         self.class_logger.info('onTheGround state.')
                         self.lastStateLogged = True
+                        self.startTime = time.time()
 
-                    self.set_state(self.possibleStates['ascending'])
+                    # if 3 seconds from start elapsed
+                    self.dt = time.time() - self.startTime
+                    if self.dt > 3:
+                        self.set_state(self.possibleStates['ascending'])
 
                 elif self.state == self.possibleStates['ascending']:
                     if not self.lastStateLogged:
                         self.class_logger.info('Ascending state.')
                         self.lastStateLogged = True
+                        self.startTime = time.time()
+
+                    self.dt = time.time() - self.startTime
+                    # not seeing anything logical
+                    if len(self.objs > 3) or len(self.objs < 1):
+                        logText = '{0}:{1}:{2}'.format('Ascending',
+                                                       'not seeing obj'
+                                                       ' of interest',
+                                                       self.values)
+                        self.class_logger.info(logText)
+                        if self.dt > 1:
+                            self.startTime = time.time()
+                        #     self.pwm0 = self.pwm0 + 1
+
+                        # if self.pwm0 > 150:
+                        #     self.pwm0 = 150
+
+                    # seeing 1 2 or 3 objects
+                    else:
+                        logText = '{0}:{1}:{2}:{3}'.format('Ascending',
+                                                           'seeing objs:',
+                                                           len(self.objs),
+                                                           self.values)
+                        self.class_logger.info(logText)
+                        if len(self.objs == 1):
+                            self.dx = self.resolution[0] -self.objs[0]['center'][0]
+                            self.dy = self.resolution[1] - self.objs[0]['center'][1]
+                        if len(self.objs == 2):
+                            self.dx = self.resolution[0] - self.objs[0]['center'][0]
+                            self.dy = self.resolution[1] - self.objs[0]['center'][1]
+                        if len(self.objs == 3):
+                            self.dx = self.resolution[0] - self.objs[0]['center'][0]
+                            self.dy = self.resolution[1] - self.objs[0]['center'][1]
 
                 elif self.state == self.possibleStates['rotating']:
                     if not self.lastStateLogged:
@@ -92,20 +146,21 @@ class DroneStateMachine:
                         self.class_logger.info('Hovering on point state.')
                         self.lastStateLogged = True
 
-                # send control commands
-                values = [int(self.pwm0),
-                          int(self.pwm1),
-                          int(self.pwm2),
-                          int(self.pwm3),
-                          int(self.pwm4),
-                          int(self.pwm5)]
-                valuesHexString = self.build_data_hex_string(values)
-                self.queueSRL.put(valuesHexString)
+                if self.compute:
+                    # send control commands
+                    self.values = [int(self.pwm0),
+                                   int(self.pwm1),
+                                   int(self.pwm2),
+                                   int(self.pwm3),
+                                   int(self.pwm4),
+                                   int(self.pwm5)]
+                    valuesHexString = self.build_data_hex_string(self.values)
+                    self.queueSRL.put(valuesHexString)
 
             elif not self.autoMode:
                 # send control commands
-                values = [100, 150, 150, 150, 150, 150]
-                valuesHexString = self.build_data_hex_string(values)
+                self.values = [100, 150, 150, 150, 150, 150]
+                valuesHexString = self.build_data_hex_string(self.values)
                 self.queueSRL.put(valuesHexString)
 
     def set_mode(self, mode):
@@ -118,6 +173,7 @@ class DroneStateMachine:
 
     def set_state(self, goalState):
         self.state = goalState
+        self.lastStateLogged = False
         return
 
     def calculate_control(self, goalPos):
