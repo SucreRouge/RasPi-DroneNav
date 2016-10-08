@@ -63,90 +63,92 @@ class DroneStateMachine:
     def update(self):
         while self.running:
             if self.autoMode:
+                self.lastStateLogged = False
 
                 # getting the objects seen by camera
                 if self.queueSTM.empty():
                     self.compute = False
                 else:
-                    self.compute = True
                     self.objs = self.queueSTM.get()
+                    if isinstance(self.objs, dict):
+                        self.compute = True
                     self.queueSTM.task_done()
 
-                if self.state == self.possibleStates['onTheGround']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('onTheGround state.')
-                        self.lastStateLogged = True
-                        self.startTime = time.time()
-
-                    # if 3 seconds from start elapsed
-                    self.dt = time.time() - self.startTime
-                    if self.dt > 3:
-                        self.set_state(self.possibleStates['ascending'])
-
-                elif self.state == self.possibleStates['ascending']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('Ascending state.')
-                        self.lastStateLogged = True
-                        self.startTime = time.time()
-
-                    self.dt = time.time() - self.startTime
-                    # not seeing anything logical
-                    if len(self.objs > 3) or len(self.objs < 1):
-                        logText = '{0}:{1}:{2}'.format('Ascending',
-                                                       'not seeing obj'
-                                                       ' of interest',
-                                                       self.values)
-                        self.class_logger.info(logText)
-                        if self.dt > 1:
-                            self.startTime = time.time()
-                        #     self.pwm0 = self.pwm0 + 1
-
-                        # if self.pwm0 > 150:
-                        #     self.pwm0 = 150
-
-                    # seeing 1 2 or 3 objects
-                    else:
-                        logText = '{0}:{1}:{2}:{3}'.format('Ascending',
-                                                           'seeing objs:',
-                                                           len(self.objs),
-                                                           self.values)
-                        self.class_logger.info(logText)
-                        if len(self.objs == 1):
-                            self.dx = self.resolution[0] -self.objs[0]['center'][0]
-                            self.dy = self.resolution[1] - self.objs[0]['center'][1]
-                        if len(self.objs == 2):
-                            self.dx = self.resolution[0] - self.objs[0]['center'][0]
-                            self.dy = self.resolution[1] - self.objs[0]['center'][1]
-                        if len(self.objs == 3):
-                            self.dx = self.resolution[0] - self.objs[0]['center'][0]
-                            self.dy = self.resolution[1] - self.objs[0]['center'][1]
-
-                elif self.state == self.possibleStates['rotating']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('Rotating state.')
-                        self.lastStateLogged = True
-
-                elif self.state == self.possibleStates['movingToPoint']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('Moving to point state.')
-                        self.lastStateLogged = True
-
-                elif self.state == self.possibleStates['landing']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('Landing state.')
-                        self.lastStateLogged = True
-
-                elif self.state == self.possibleStates['hovering']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('Hovering state.')
-                        self.lastStateLogged = True
-
-                elif self.state == self.possibleStates['hoveringOnPoint']:
-                    if not self.lastStateLogged:
-                        self.class_logger.info('Hovering on point state.')
-                        self.lastStateLogged = True
-
                 if self.compute:
+                    if self.state == self.possibleStates['onTheGround']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('onTheGround state.')
+                            self.lastStateLogged = True
+                            self.startTime = time.time()
+
+                        # if 3 seconds from start elapsed
+                        self.dt = time.time() - self.startTime
+                        if self.dt > 3:
+                            self.set_state(self.possibleStates['ascending'])
+
+                    elif self.state == self.possibleStates['ascending']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('Ascending state.')
+                            self.lastStateLogged = True
+                            self.startTime = time.time()
+
+                        self.dt = time.time() - self.startTime
+                        # not seeing anything logical
+                        if len(self.objs > 3) or len(self.objs < 1):
+                            logText = '{0}:{1}:{2}'.format('Ascending',
+                                                           'not seeing obj'
+                                                           ' of interest',
+                                                           self.values)
+                            self.class_logger.info(logText)
+                            if self.dt > 1:
+                                self.startTime = time.time()
+                            #     self.pwm0 = self.pwm0 + 1
+
+                            # if self.pwm0 > 150:
+                            #     self.pwm0 = 150
+
+                        # seeing 1 2 or 3 objects
+                        else:
+                            logText = '{0}:{1}:{2}:{3}'.format('Ascending',
+                                                               'seeing objs:',
+                                                               len(self.objs),
+                                                               self.values)
+                            self.class_logger.info(logText)
+                            if len(self.objs == 1):
+                                self.dx = self.resolution[0] -self.objs[0]['center'][0]
+                                self.dy = self.resolution[1] - self.objs[0]['center'][1]
+                            if len(self.objs == 2):
+                                self.dx = self.resolution[0] - self.objs[0]['center'][0]
+                                self.dy = self.resolution[1] - self.objs[0]['center'][1]
+                            if len(self.objs == 3):
+                                self.dx = self.resolution[0] - self.objs[0]['center'][0]
+                                self.dy = self.resolution[1] - self.objs[0]['center'][1]
+
+                    elif self.state == self.possibleStates['rotating']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('Rotating state.')
+                            self.lastStateLogged = True
+
+                    elif self.state == self.possibleStates['movingToPoint']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('Moving to point state.')
+                            self.lastStateLogged = True
+
+                    elif self.state == self.possibleStates['landing']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('Landing state.')
+                            self.lastStateLogged = True
+
+                    elif self.state == self.possibleStates['hovering']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('Hovering state.')
+                            self.lastStateLogged = True
+
+                    elif self.state == self.possibleStates['hoveringOnPoint']:
+                        if not self.lastStateLogged:
+                            self.class_logger.info('Hovering on point state.')
+                            self.lastStateLogged = True
+
                     # send control commands
                     self.values = [int(self.pwm0),
                                    int(self.pwm1),
@@ -158,8 +160,11 @@ class DroneStateMachine:
                     self.queueSRL.put(valuesHexString)
 
             elif not self.autoMode:
+            self.lastStateLogged = False
                 # send control commands
-                self.class_logger.info('Auto mode off.')
+                if not self.lastStateLogged:
+                    self.class_logger.info('Auto mode off - landing.')
+                    self.lastStateLogged = True
                 self.values = [100, 150, 150, 150, 150, 150]
                 valuesHexString = self.build_data_hex_string(self.values)
                 self.queueSRL.put(valuesHexString)
