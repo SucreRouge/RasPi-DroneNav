@@ -160,7 +160,7 @@ class DroneStateMachine:
                     self.queueSRL.put(valuesHexString)
 
             elif not self.autoMode:
-            self.lastStateLogged = False
+                self.lastStateLogged = False
                 # send control commands
                 if not self.lastStateLogged:
                     self.class_logger.info('Auto mode off - landing.')
