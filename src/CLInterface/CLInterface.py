@@ -64,7 +64,7 @@ class CLInterface:
 
     def readConfig(self, cfg, path, setts):
         if self.configExists:
-            self.class_logger.info('Reading config file.')
+            self.class_logger.debug('Reading config file.')
             cfg.read('config.ini')
 
             setts['dispThresh']    = cfg.getboolean('VisionParams', 'dispThresh')
@@ -76,10 +76,10 @@ class CLInterface:
             setts['erodeValue']    = cfg.getint('VisionParams', 'erodeValue')
             setts['lowerThresh']   = cfg.getint('VisionParams', 'lowerThresh')
         else:
-            self.class_logger.info('Tried to read config but file doesnt exist.')
+            self.class_logger.debug('Tried to read config but file doesnt exist.')
 
     def writeConfig(self, cfg, path, setts):
-        self.class_logger.info('Writing config file.')
+        self.class_logger.debug('Writing config file.')
 
         cfg.remove_section('VisionParams')
         cfg.add_section('VisionParams')
@@ -98,7 +98,7 @@ class CLInterface:
         self.configExists = True
 
     def start(self):
-        self.class_logger.info('Starting console interface.')
+        self.class_logger.debug('Starting console interface.')
         # create or load config file
         self.initConfig(self.configPars, self.configFilePath, self.settings)
 

@@ -18,7 +18,7 @@ class SerialCom():
         self.class_logger = logging.getLogger('droneNav.SerialCom')
 
     def start(self):
-        self.class_logger.info('Starting serial com.')
+        self.class_logger.debug('Starting serial com.')
         self.SP = serial.Serial('/dev/ttyAMA0',
                                 self.BaudRate,
                                 timeout=5)
