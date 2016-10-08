@@ -165,7 +165,7 @@ class CLInterface:
             elif self.keyPressed == ord('o'):
                 self.readConfig(self.configPars, self.configFilePath, self.settings)
             elif self.keyPressed == ord('m'):
-                self.settings['autoMode'] = not self.setting['autoMode']
+                self.settings['autoMode'] = not self.settings['autoMode']
 
             # TODO: add some failsafe here that will shutdown the drone
 

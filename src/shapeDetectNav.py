@@ -163,10 +163,7 @@ def authonomic_control(displayFlag=-1):
 
         working = settings['working']
 
-        if settings['autoMode']:
-            stm.set_mode(True)
-        elif not settings['autoMode']:
-            stm.set_mode(False)
+        stm.set_mode(settings['autoMode'])
 
         # grab the frame from the threaded video stream...
         frame = vs.read()

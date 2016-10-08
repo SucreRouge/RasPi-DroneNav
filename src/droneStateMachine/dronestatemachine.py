@@ -159,6 +159,7 @@ class DroneStateMachine:
 
             elif not self.autoMode:
                 # send control commands
+                self.class_logger.info('Auto mode off.')
                 self.values = [100, 150, 150, 150, 150, 150]
                 valuesHexString = self.build_data_hex_string(self.values)
                 self.queueSRL.put(valuesHexString)
