@@ -1,13 +1,37 @@
-# import the necessary packages
+#!python2
+# -*- coding: UTF-8 -*-
+
+"""
+A module which approximates the contour (input), gives it a name
+based on number of vertices and returns simplified contour with it's
+vertices, area and name .
+
+.. moduleauthor:: Michal Ciesielski <ciesielskimm@gmail.com>
+
+"""
+
 import cv2
 
 
 class ShapeDetector:
     def __init__(self):
+        """
+        An __init__ function that does nothing.
+        """
         pass
 
     def detect(self, c):
-        # initialize the shape name and approximate the contour
+        """
+        This functiion simplifies the contour, identifies shape by name,
+        unpacks vertices, computes area. Then it returns a dictionary with
+        all of this data.
+
+        :param c: Contour to be approximated.
+        :type c: OpenCV2 contour.
+        :returns: dictionary -- shape name, vertices, approximated contour,
+        approximated area.
+        :rtype: dictionary.
+        """
         shape = "unidentified"
         peri = cv2.arcLength(c, True)
         approxPerimeter = cv2.approxPolyDP(c, 0.04 * peri, True)
@@ -54,8 +78,6 @@ class ShapeDetector:
             shape = "circle"
         # #####################################################################
 
-        # return the name of the shape
-        # return [shape, verts]
         return {'shapeName': shape,
                 'verts': verts,
                 'approxPerimeter': approxPerimeter,

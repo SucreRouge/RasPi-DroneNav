@@ -1,6 +1,15 @@
 #!python2
 # -*- coding: UTF-8 -*-
 
+"""
+A module for manual controlling the drone with keyboard.
+Keys used:
+    E,D,S,F,I,K,J,L,X,1,2
+
+.. moduleauthor:: Michal Ciesielski <ciesielskimm@gmail.com>
+
+"""
+
 from SerialCom.serialcom import serialcom
 import pygame
 import Queue
@@ -11,16 +20,17 @@ import array
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--port", type=int, default=4,
-                 help="Bluetooth = 4,"
-                 "USB TTL   = 13")
+                help="Bluetooth = 4,"
+                "USB TTL   = 13")
 ap.add_argument("-t", "--throttle", type=float, default=1.0,
-                 help="The multiplier for output "
-                 "(safety switch to make drone fly slower.")
+                help="The multiplier for output "
+                "(safety switch to make drone fly slower.")
 args = vars(ap.parse_args())
+
 
 class ManualControl(object):
     """Class which lets control drone manually."""
-    def __init__(self, portNr = args['port'], throttle = args['throttle']):
+    def __init__(self, portNr=args['port'], throttle=args['throttle']):
 
         self.queue = Queue.Queue()
         self.serialPort = serialcom(self.queue, portNr)
@@ -162,7 +172,6 @@ class ManualControl(object):
         pygame.display.flip()
         self.clock.tick(50)
 
-
     def main(self):
 
         print('Starting with settings: port {0}, throttle {1}'.format(args['port'], args['throttle']))
@@ -180,5 +189,5 @@ class ManualControl(object):
 
 
 if __name__ == "__main__":
-    ctrl = ManualControl(portNr = args['port'], throttle = args['throttle'])
+    ctrl = ManualControl(portNr=args['port'], throttle=args['throttle'])
     ctrl.main()
