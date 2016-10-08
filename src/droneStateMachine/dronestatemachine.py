@@ -76,7 +76,8 @@ class DroneStateMachine:
                 if self.compute:
                     if self.state == self.possibleStates['onTheGround']:
                         if not self.lastStateLogged:
-                            self.class_logger.info('onTheGround state.')
+                            self.class_logger.info('onTheGround state. dt:{0}'
+                                                   .format(self.dt))
                             self.lastStateLogged = True
                             self.startTime = time.time()
 
