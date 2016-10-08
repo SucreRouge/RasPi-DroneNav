@@ -63,13 +63,13 @@ class DroneStateMachine:
     def update(self):
         while self.running:
             if self.autoMode:
-                self.lastStateLogged = False
 
                 # getting the objects seen by camera
                 if self.queueSTM.empty():
                     self.compute = False
                 else:
                     self.objs = self.queueSTM.get()
+                    self.class_logger.info(type(self.objs))
                     if isinstance(self.objs, dict):
                         self.compute = True
                     self.queueSTM.task_done()
@@ -160,7 +160,6 @@ class DroneStateMachine:
                     self.queueSRL.put(valuesHexString)
 
             elif not self.autoMode:
-                self.lastStateLogged = False
                 # send control commands
                 if not self.lastStateLogged:
                     self.class_logger.info('Auto mode off - landing.')
@@ -171,10 +170,12 @@ class DroneStateMachine:
 
     def set_mode(self, mode):
         self.autoMode = mode
+        self.lastStateLogged = False
         return
 
     def stop(self):
         self.running = False
+        self.lastStateLogged = False
         return
 
     def set_state(self, goalState):
