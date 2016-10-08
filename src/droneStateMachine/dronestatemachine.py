@@ -69,7 +69,6 @@ class DroneStateMachine:
                     self.compute = False
                 else:
                     self.objs = self.queueSTM.get()
-                    self.class_logger.info(type(self.objs))
                     if isinstance(self.objs, list):
                         self.compute = True
                     self.queueSTM.task_done()
