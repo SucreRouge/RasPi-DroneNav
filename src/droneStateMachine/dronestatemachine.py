@@ -70,7 +70,7 @@ class DroneStateMachine:
                 else:
                     self.objs = self.queueSTM.get()
                     self.class_logger.info(type(self.objs))
-                    if isinstance(self.objs, dict):
+                    if isinstance(self.objs, list):
                         self.compute = True
                     self.queueSTM.task_done()
 
@@ -161,9 +161,6 @@ class DroneStateMachine:
 
             elif not self.autoMode:
                 # send control commands
-                if not self.lastStateLogged:
-                    self.class_logger.info('Auto mode off - landing.')
-                    self.lastStateLogged = True
                 self.values = [100, 150, 150, 150, 150, 150]
                 valuesHexString = self.build_data_hex_string(self.values)
                 self.queueSRL.put(valuesHexString)
