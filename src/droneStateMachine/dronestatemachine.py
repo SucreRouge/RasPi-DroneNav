@@ -14,7 +14,7 @@ class DroneStateMachine:
                                'landing': 4, 'hovering': 5,
                                'hoveringOnPoint': 6}
         self.state = self.possibleStates['onTheGround']
-        self.running = False
+        self.running = True
         self.autoMode = False
         self.queueSTM = q1
         self.queueSRL = q2
