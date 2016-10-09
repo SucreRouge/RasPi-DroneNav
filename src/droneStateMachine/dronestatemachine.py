@@ -25,6 +25,7 @@ class DroneStateMachine:
         self.resolution = (320, 240)
         self.dx = 0
         self.dy = 0
+        self.n = 0
 
         self.log_state_once = self.run_once(self.log_state)
 
@@ -103,9 +104,14 @@ class DroneStateMachine:
                                                        ' of interest')
                             self.class_logger.info(logText)
 
-                            self.pwm0 = self.pwm0 + 1
+                            if n > 2000:
+                                self.pwm0 = self.pwm0 + 1
+                                n = 0
+
                             if self.pwm0 > 150:
                                 self.pwm0 = 150
+
+                            n++
 
                         # seeing 1 2 or 3 objects
                         else:
