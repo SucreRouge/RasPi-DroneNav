@@ -197,6 +197,8 @@ class DroneStateMachine:
 
     def set_mode(self, mode):
         self.autoMode = mode
+        self.queueSRL.queue.clear()
+        self.queueSTM.queue.clear()
         return
 
     def stop(self):

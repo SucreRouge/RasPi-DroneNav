@@ -33,6 +33,8 @@ class SerialCom():
 
     def update(self):
         while self.running:
+            if self.queueSRL.empty():
+                continue
             if not self.queueSRL.empty():
                 self.data = self.queueSRL.get()
                 self.queueSRL.task_done()
@@ -51,13 +53,16 @@ class SerialCom():
                     pass
                 except:
                     pass
-            else:
-                pass
 
         self.stop()
 
     def read(self):
         return self.numericals
+
+    def clean(self):
+        self.SP.flush()
+        self.SP.flushInput()
+        return
 
     def stop(self):
         self.SP.close()
