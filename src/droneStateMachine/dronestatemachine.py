@@ -111,7 +111,7 @@ class DroneStateMachine:
                             if self.pwm0 > 150:
                                 self.pwm0 = 150
 
-                            n++
+                            n += 1
 
                         # seeing 1 2 or 3 objects
                         else:
