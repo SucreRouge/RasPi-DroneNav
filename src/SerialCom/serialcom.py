@@ -39,14 +39,13 @@ class SerialCom():
                 self.SP.write(self.data)
 
                 try:
-                    logText = '{0}:{1}:{2}:'
-                              '{3}:{4}:{5}'.format(ord(self.data[0]),
-                                                   ord(self.data[1]),
-                                                   ord(self.data[2]),
-                                                   ord(self.data[3]),
-                                                   ord(self.data[4]),
-                                                   ord(self.data[5])
-                                                   )
+                    logText = '{0}:{1}:{2}:{3}:{4}:{5}'.format(ord(self.data[0]),
+                                                               ord(self.data[1]),
+                                                               ord(self.data[2]),
+                                                               ord(self.data[3]),
+                                                               ord(self.data[4]),
+                                                               ord(self.data[5])
+                                                               )
                     self.valuesLogger.debug(logText)
                     pass
                 except Exception as e:
