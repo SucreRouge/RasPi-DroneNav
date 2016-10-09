@@ -92,7 +92,7 @@ class DroneStateMachine:
                         self.log_state_once(self.state)
 
                         # not seeing anything logical
-                        if len(self.objs > 3) or len(self.objs < 1):
+                        if len(self.objs) > 3 or len(self.objs) < 1:
                             logText = '{0}:{1}'.format('Ascending',
                                                        'not seeing obj'
                                                        ' of interest')
@@ -110,13 +110,13 @@ class DroneStateMachine:
                                                            'seeing objs:',
                                                            len(self.objs))
                             self.class_logger.info(logText)
-                            if len(self.objs == 1):
+                            if len(self.objs) == 1:
                                 self.dx = self.resolution[0] -self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
-                            if len(self.objs == 2):
+                            if len(self.objs) == 2:
                                 self.dx = self.resolution[0] - self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
-                            if len(self.objs == 3):
+                            if len(self.objs) == 3:
                                 self.dx = self.resolution[0] - self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
 
