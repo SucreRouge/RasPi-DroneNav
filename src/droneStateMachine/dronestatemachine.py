@@ -173,7 +173,6 @@ class DroneStateMachine:
     def set_mode(self, mode):
         self.stateStartTime = time.time()
         self.autoMode = mode
-        self.log_state_once.has_run = False
         return
 
     def stop(self):
