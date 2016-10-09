@@ -64,8 +64,6 @@ class DroneStateMachine:
     def update(self):
         while self.running:
 
-            self.dt = time.time() - self.stateStartTime
-
             if self.autoMode:
 
                 # getting the objects seen by camera
@@ -84,8 +82,7 @@ class DroneStateMachine:
                         self.log_state_once(self.state)
 
                         # if 3 seconds from start elapsed
-                        if self.dt > 5:
-                            self.set_state(self.possibleStates['ascending'])
+                        time.sleep(3)
 
                     elif self.state == self.possibleStates['ascending']:
                         self.log_state_once(self.state)
@@ -98,10 +95,10 @@ class DroneStateMachine:
                             self.class_logger.info(logText)
                             if self.dt > 1:
                                 self.stateStartTime = time.time()
-                            #     self.pwm0 = self.pwm0 + 1
+                                self.pwm0 = self.pwm0 + 1
 
-                            # if self.pwm0 > 150:
-                            #     self.pwm0 = 150
+                            if self.pwm0 > 150:
+                                self.pwm0 = 150
 
                         # seeing 1 2 or 3 objects
                         else:
