@@ -76,7 +76,7 @@ class DroneStateMachine:
 
                 if self.compute:
                     if self.state == self.possibleStates['onTheGround']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                         # if 3 seconds from start elapsed
                         self.dt = time.time() - self.stateStartTime
@@ -84,7 +84,7 @@ class DroneStateMachine:
                             self.set_state(self.possibleStates['ascending'])
 
                     elif self.state == self.possibleStates['ascending']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                         self.dt = time.time() - self.stateStartTime
                         # not seeing anything logical
@@ -119,19 +119,19 @@ class DroneStateMachine:
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
 
                     elif self.state == self.possibleStates['rotating']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                     elif self.state == self.possibleStates['movingToPoint']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                     elif self.state == self.possibleStates['landing']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                     elif self.state == self.possibleStates['hovering']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                     elif self.state == self.possibleStates['hoveringOnPoint']:
-                        self.log_state_once()
+                        self.log_state_once(self.state)
 
                     # send control commands
                     self.values = [int(self.pwm0),
