@@ -19,14 +19,15 @@ class DroneStateMachine:
         self.queueSTM = q1
         self.queueSRL = q2
         self.objs = []
-        self.lastStateLogged = False
         self.frequency = 50
         self.compute = False
-        self.startTime = 0.0
+        self.stateStartTime = 0.0
         self.dt = 0.0
         self.resolution = (320, 240)
         self.dx = 0
         self.dy = 0
+
+        self.log_state_once = self.run_once(self.log_state)
 
         # TODO: check the names below
         # throttle
@@ -55,7 +56,7 @@ class DroneStateMachine:
     def start(self):
         self.class_logger.info('Starting state machine.')
         t = Thread(target=self.update, args=())
-        # t = Timer(0.02, self.update, args=())
+        self.stateStartTime = time.time()
         t.daemon = True
         t.start()
         return self
@@ -75,24 +76,17 @@ class DroneStateMachine:
 
                 if self.compute:
                     if self.state == self.possibleStates['onTheGround']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('onTheGround state. dt:{0}'
-                                                   .format(self.dt))
-                            self.lastStateLogged = True
-                            self.startTime = time.time()
+                        self.log_state_once()
 
                         # if 3 seconds from start elapsed
-                        self.dt = time.time() - self.startTime
-                        if self.dt > 3:
+                        self.dt = time.time() - self.stateStartTime
+                        if self.dt > 5:
                             self.set_state(self.possibleStates['ascending'])
 
                     elif self.state == self.possibleStates['ascending']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('Ascending state.')
-                            self.lastStateLogged = True
-                            self.startTime = time.time()
+                        self.log_state_once()
 
-                        self.dt = time.time() - self.startTime
+                        self.dt = time.time() - self.stateStartTime
                         # not seeing anything logical
                         if len(self.objs > 3) or len(self.objs < 1):
                             logText = '{0}:{1}:{2}'.format('Ascending',
@@ -101,7 +95,7 @@ class DroneStateMachine:
                                                            self.values)
                             self.class_logger.info(logText)
                             if self.dt > 1:
-                                self.startTime = time.time()
+                                self.stateStartTime = time.time()
                             #     self.pwm0 = self.pwm0 + 1
 
                             # if self.pwm0 > 150:
@@ -125,29 +119,19 @@ class DroneStateMachine:
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
 
                     elif self.state == self.possibleStates['rotating']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('Rotating state.')
-                            self.lastStateLogged = True
+                        self.log_state_once()
 
                     elif self.state == self.possibleStates['movingToPoint']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('Moving to point state.')
-                            self.lastStateLogged = True
+                        self.log_state_once()
 
                     elif self.state == self.possibleStates['landing']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('Landing state.')
-                            self.lastStateLogged = True
+                        self.log_state_once()
 
                     elif self.state == self.possibleStates['hovering']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('Hovering state.')
-                            self.lastStateLogged = True
+                        self.log_state_once()
 
                     elif self.state == self.possibleStates['hoveringOnPoint']:
-                        if not self.lastStateLogged:
-                            self.class_logger.info('Hovering on point state.')
-                            self.lastStateLogged = True
+                        self.log_state_once()
 
                     # send control commands
                     self.values = [int(self.pwm0),
@@ -165,19 +149,39 @@ class DroneStateMachine:
                 valuesHexString = self.build_data_hex_string(self.values)
                 self.queueSRL.put(valuesHexString)
 
+    def log_state(self, state):
+        if state == self.possibleStates['onTheGround']:
+            logText = '{:16s}: dt {2.3f}'.format('onTheGround', self.dt)
+        elif state == self.possibleStates['ascending']:
+            logText = '{:16s}'.format('ascending')
+        elif state == self.possibleStates['rotating']:
+            logText = '{:16s}'.format('rotating')
+        elif state == self.possibleStates['movingToPoint']:
+            logText = '{:16s}'.format('movingToPoint')
+        elif state == self.possibleStates['landing']:
+            logText = '{:16s}'.format('landing')
+        elif state == self.possibleStates['hovering']:
+            logText = '{:16s}'.format('hovering')
+        elif state == self.possibleStates['hoveringOnPoint']:
+            logText = '{:16s}'.format('hoveringOnPoint')
+
+        self.class_logger.info(logText)
+        return
+
     def set_mode(self, mode):
         self.autoMode = mode
-        self.lastStateLogged = False
+        self.log_state_once.has_run = False
         return
 
     def stop(self):
         self.running = False
-        self.lastStateLogged = False
+        self.log_state_once.has_run = False
         return
 
     def set_state(self, goalState):
         self.state = goalState
-        self.lastStateLogged = False
+        self.stateStartTime = time.time()
+        self.log_state_once.has_run = False
         return
 
     def calculate_control(self, goalPos):
@@ -188,3 +192,11 @@ class DroneStateMachine:
         valueList.insert(0, 0xAA)  # add preamble
         s = array.array('B', valueList).tostring()
         return s
+
+    def run_once(self, f):
+        def wrapper(*args, **kwargs):
+            if not wrapper.has_run:
+                wrapper.has_run = True
+                return f(*args, **kwargs)
+        wrapper.has_run = False
+        return wrapper
