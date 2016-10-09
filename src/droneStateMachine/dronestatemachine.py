@@ -62,6 +62,9 @@ class DroneStateMachine:
 
     def update(self):
         while self.running:
+
+            self.dt = time.time() - self.stateStartTime
+
             if self.autoMode:
 
                 # getting the objects seen by camera
@@ -80,14 +83,12 @@ class DroneStateMachine:
                         self.log_state_once(self.state)
 
                         # if 3 seconds from start elapsed
-                        self.dt = time.time() - self.stateStartTime
                         if self.dt > 5:
                             self.set_state(self.possibleStates['ascending'])
 
                     elif self.state == self.possibleStates['ascending']:
                         self.log_state_once(self.state)
 
-                        self.dt = time.time() - self.stateStartTime
                         # not seeing anything logical
                         if len(self.objs > 3) or len(self.objs < 1):
                             logText = '{0}:{1}:{2}'.format('Ascending',
@@ -152,19 +153,19 @@ class DroneStateMachine:
 
     def log_state(self, state):
         if state == self.possibleStates['onTheGround']:
-            logText = '{0:16s}: dt {1:2.3f}'.format('onTheGround', self.dt)
+            logText = '{0:14s}: dt {1:2.3f}'.format('onTheGround', self.dt)
         elif state == self.possibleStates['ascending']:
-            logText = '{0:16s}'.format('ascending')
+            logText = '{0:14s}'.format('ascending')
         elif state == self.possibleStates['rotating']:
-            logText = '{0:16s}'.format('rotating')
+            logText = '{0:14s}'.format('rotating')
         elif state == self.possibleStates['movingToPoint']:
-            logText = '{0:16s}'.format('movingToPoint')
+            logText = '{0:14s}'.format('movingToPoint')
         elif state == self.possibleStates['landing']:
-            logText = '{0:16s}'.format('landing')
+            logText = '{0:14s}'.format('landing')
         elif state == self.possibleStates['hovering']:
-            logText = '{0:16s}'.format('hovering')
+            logText = '{0:14s}'.format('hovering')
         elif state == self.possibleStates['hoveringOnPoint']:
-            logText = '{0:16s}'.format('hoveringOnPoint')
+            logText = '{0:14s}'.format('hoveringOnPoint')
 
         self.class_logger.info(logText)
         return
