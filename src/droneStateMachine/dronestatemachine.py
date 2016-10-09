@@ -97,21 +97,21 @@ class DroneStateMachine:
                     elif self.state == self.possibleStates['ascending']:
                         self.log_state_once(self.state)
 
+                        self.n += 1
+
+                        if self.n > 200:
+                            self.pwm0 = self.pwm0 + 1
+                            self.n = 0
+
+                        if self.pwm0 > 150:
+                            self.pwm0 = 150
+
                         # not seeing anything logical
                         if len(self.objs) > 3 or len(self.objs) < 1:
                             logText = '{0}:{1}'.format('Ascending',
                                                        'not seeing obj'
                                                        ' of interest')
                             self.class_logger.info(logText)
-
-                            if self.n > 200:
-                                self.pwm0 = self.pwm0 + 1
-                                self.n = 0
-
-                            if self.pwm0 > 150:
-                                self.pwm0 = 150
-
-                            self.n += 1
 
                         # seeing 1 2 or 3 objects
                         else:
