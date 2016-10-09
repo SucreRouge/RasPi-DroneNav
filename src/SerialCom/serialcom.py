@@ -37,7 +37,7 @@ class SerialCom():
                 self.data = self.queueSRL.get()
                 self.queueSRL.task_done()
                 self.SP.write(self.data)
-                self.valuesLogger.debug(self.data)
+                self.valuesLogger.debug('{0:03d}'.format(self.data))
             else:
                 pass
 
