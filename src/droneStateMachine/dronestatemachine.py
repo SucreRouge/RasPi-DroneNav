@@ -56,7 +56,6 @@ class DroneStateMachine:
     def start(self):
         self.class_logger.info('Starting state machine.')
         t = Thread(target=self.update, args=())
-        self.stateStartTime = time.time()
         t.daemon = True
         t.start()
         return self
@@ -72,6 +71,8 @@ class DroneStateMachine:
                     self.objs = self.queueSTM.get()
                     if isinstance(self.objs, list):
                         self.compute = True
+                    else:
+                        self.compute = False
                     self.queueSTM.task_done()
 
                 if self.compute:
@@ -169,6 +170,7 @@ class DroneStateMachine:
         return
 
     def set_mode(self, mode):
+        self.stateStartTime = time.time()
         self.autoMode = mode
         self.log_state_once.has_run = False
         return
