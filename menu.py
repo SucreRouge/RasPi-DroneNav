@@ -25,8 +25,8 @@ def main():
         print('1 - manual control (throttle 1.0)')
         print('2 - manual control (throttle 0.1)')
         if imported:
-            print('3 - automatic navigation (display on, cli on')
-            print('4 - automatic navigation (display off, cli on')
+            print('3 - automatic navigation (display on, cli on)')
+            print('4 - automatic navigation (display off, cli on)')
         print('')
         print('5 - EXIT')
         choice = raw_input()

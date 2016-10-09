@@ -12,8 +12,8 @@ class DroneStateMachine:
         self.possibleStates = {'onTheGround': 0, 'ascending': 1,
                                'rotating': 2, 'movingToPoint': 3,
                                'landing': 4, 'hovering': 5,
-                               'hoveringOnPoint': 6}
-        self.state = self.possibleStates['onTheGround']
+                               'hoveringOnPoint': 6, 'dummy': 99}
+        self.state = self.possibleStates['dummy']
         self.running = True
         self.autoMode = False
         self.queueSTM = q1
@@ -55,6 +55,7 @@ class DroneStateMachine:
 
     def start(self):
         self.class_logger.info('Starting state machine.')
+        self.set_state(self.possibleStates['onTheGround'])
         t = Thread(target=self.update, args=())
         t.daemon = True
         t.start()
@@ -91,10 +92,9 @@ class DroneStateMachine:
 
                         # not seeing anything logical
                         if len(self.objs > 3) or len(self.objs < 1):
-                            logText = '{0}:{1}:{2}'.format('Ascending',
-                                                           'not seeing obj'
-                                                           ' of interest',
-                                                           self.values)
+                            logText = '{0}:{1}'.format('Ascending',
+                                                       'not seeing obj'
+                                                       ' of interest')
                             self.class_logger.info(logText)
                             if self.dt > 1:
                                 self.stateStartTime = time.time()
@@ -105,10 +105,9 @@ class DroneStateMachine:
 
                         # seeing 1 2 or 3 objects
                         else:
-                            logText = '{0}:{1}:{2}:{3}'.format('Ascending',
-                                                               'seeing objs:',
-                                                               len(self.objs),
-                                                               self.values)
+                            logText = '{0}:{1}:{2}'.format('Ascending',
+                                                           'seeing objs:',
+                                                           len(self.objs))
                             self.class_logger.info(logText)
                             if len(self.objs == 1):
                                 self.dx = self.resolution[0] -self.objs[0]['center'][0]

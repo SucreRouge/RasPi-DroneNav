@@ -47,32 +47,12 @@ class SerialCom():
                                                                    ord(self.data[5]),
                                                                    ord(self.data[6])
                                                                    )
-                    self.valuesLogger.debug(logText)
+                    self.valuesLogger.info(logText)
                     pass
-                except Exception as e:
+                except:
                     pass
             else:
                 pass
-
-            # # ile bajtow czeka
-            # self.bytesToRead = self.SP.inWaiting()
-            # # czyta dane jako byte object
-            # self.data_received = self.SP.readline()
-            # # wyswietla z decodowaniem ascii - type unicode
-            # self.data_ascii = self.data_received.decode('ascii')
-
-            # # extracting numerical values
-            # try:
-            #     self.tmp = re.split('[:]', self.data_ascii)
-            #     self.tmp = self.tmp[1]
-            #     self.tmp = re.split('[,]', str(self.tmp))
-            #     self.tmp = [x.rstrip() for x in self.tmp]
-            #     self.numericals = [float(i) for i in self.tmp]
-            #     # print(self.numericals)
-            #     self.queueSRL.put(self.numericals)
-            # except:
-            #     # print('Failing at data munching [or/and] putting data into q.')
-            #     pass
 
         self.stop()
 
