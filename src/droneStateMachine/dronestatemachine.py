@@ -104,7 +104,7 @@ class DroneStateMachine:
                                                        ' of interest')
                             self.class_logger.info(logText)
 
-                            if self.n > 2000:
+                            if self.n > 200:
                                 self.pwm0 = self.pwm0 + 1
                                 self.n = 0
 
