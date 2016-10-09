@@ -151,19 +151,19 @@ class DroneStateMachine:
 
     def log_state(self, state):
         if state == self.possibleStates['onTheGround']:
-            logText = '{:16s}: dt {2.3f}'.format('onTheGround', self.dt)
+            logText = '{0:16s}: dt {1:2.3f}'.format('onTheGround', self.dt)
         elif state == self.possibleStates['ascending']:
-            logText = '{:16s}'.format('ascending')
+            logText = '{0:16s}'.format('ascending')
         elif state == self.possibleStates['rotating']:
-            logText = '{:16s}'.format('rotating')
+            logText = '{0:16s}'.format('rotating')
         elif state == self.possibleStates['movingToPoint']:
-            logText = '{:16s}'.format('movingToPoint')
+            logText = '{0:16s}'.format('movingToPoint')
         elif state == self.possibleStates['landing']:
-            logText = '{:16s}'.format('landing')
+            logText = '{0:16s}'.format('landing')
         elif state == self.possibleStates['hovering']:
-            logText = '{:16s}'.format('hovering')
+            logText = '{0:16s}'.format('hovering')
         elif state == self.possibleStates['hoveringOnPoint']:
-            logText = '{:16s}'.format('hoveringOnPoint')
+            logText = '{0:16s}'.format('hoveringOnPoint')
 
         self.class_logger.info(logText)
         return
