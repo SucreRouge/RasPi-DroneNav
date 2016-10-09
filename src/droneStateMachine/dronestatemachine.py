@@ -108,17 +108,10 @@ class DroneStateMachine:
 
                         # not seeing anything logical
                         if len(self.objs) > 3 or len(self.objs) < 1:
-                            logText = '{0}:{1}'.format('Ascending',
-                                                       'not seeing obj'
-                                                       ' of interest')
-                            self.class_logger.info(logText)
+                            pass
 
                         # seeing 1 2 or 3 objects
                         else:
-                            logText = '{0}:{1}:{2}'.format('Ascending',
-                                                           'objs:',
-                                                           len(self.objs))
-                            self.class_logger.info(logText)
                             if len(self.objs) == 1:
                                 self.dx = self.resolution[0] -self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
@@ -128,6 +121,12 @@ class DroneStateMachine:
                             if len(self.objs) == 3:
                                 self.dx = self.resolution[0] - self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
+
+                        logText = '{0} - {1}: {2}'.format('Ascending',
+                                                          'nr of objs: ',
+                                                          len(self.objs))
+
+                        self.class_logger.info(logText)
 
                     # #########################################################
                     # ROTATING
