@@ -15,10 +15,11 @@ class SerialCom():
         self.queueSRL = q
         self.data = 'a\n'
 
-        self.class_logger = logging.getLogger('droneNav.SerialCom')
+        self.classLogger = logging.getLogger('droneNav.SerialCom')
+        self.valuesLogger = logging.getLogger('serialCom.SerialCom')
 
     def start(self):
-        self.class_logger.debug('Starting serial com.')
+        self.classLogger.debug('Starting serial com.')
         self.SP = serial.Serial('/dev/ttyAMA0',
                                 self.BaudRate,
                                 timeout=5)
@@ -36,6 +37,7 @@ class SerialCom():
                 self.data = self.queueSRL.get()
                 self.queueSRL.task_done()
                 self.SP.write(self.data)
+                self.valuesLogger.debug(self.data)
             else:
                 pass
 

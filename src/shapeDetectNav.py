@@ -51,14 +51,14 @@ def processFrame(fr, setts):
     return frameFinal
 
 
-def createLogger(log_dir):
+def createLogger(log_dir, loggerID, name):
     """
     Takes dir for log file.
     Returns logger object with formatter and file handle.
     """
-    log = logging.getLogger('droneNav')
+    log = logging.getLogger(loggerID)
     log.setLevel(logging.DEBUG)
-    fh = logging.FileHandler(log_dir + '/log')
+    fh = logging.FileHandler(log_dir + '/' + name)
     fh.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s %(module)s '
                                   '%(levelname)s %(message)s')
@@ -105,7 +105,8 @@ def authonomic_control(displayFlag=-1):
     # #####################################################################
     # OBJECTS USED
     # #####################################################################
-    logger = createLogger(main_dir)
+    logger1 = createLogger(main_dir, 'droneNav', 'log')
+    logger2 = createLogger(main_dir, 'serialCom', 'logValues')
     queueSRL = Queue.Queue()
     queueCLI = Queue.Queue()
     queueSTM = Queue.Queue()
@@ -227,7 +228,7 @@ def authonomic_control(displayFlag=-1):
                 working = False
 
         end_time = time.time()
-        # logger.info('Loop dt: {0}'.format(end_time - start_time))
+        # logger1.info('Loop dt: {0}'.format(end_time - start_time))
     # #####################################################################
 
     # do a bit of cleanup
