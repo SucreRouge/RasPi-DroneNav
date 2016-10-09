@@ -82,7 +82,9 @@ class DroneStateMachine:
                         self.log_state_once(self.state)
 
                         # if 3 seconds from start elapsed
-                        time.sleep(3)
+                        for zzz in xrange(0, 2):
+                            self.class_logger.info('Ascending in: ' + str(3 - zzz))
+                            time.sleep(1)
 
                     elif self.state == self.possibleStates['ascending']:
                         self.log_state_once(self.state)
