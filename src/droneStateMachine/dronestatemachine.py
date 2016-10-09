@@ -21,7 +21,6 @@ class DroneStateMachine:
         self.objs = []
         self.frequency = 50
         self.compute = False
-        self.stateStartTime = 0.0
         self.dt = 0.0
         self.resolution = (320, 240)
         self.dx = 0
@@ -78,6 +77,9 @@ class DroneStateMachine:
                     self.queueSTM.task_done()
 
                 if self.compute:
+                    # #########################################################
+                    # ON THE GROUND STATE
+                    # #########################################################
                     if self.state == self.possibleStates['onTheGround']:
                         self.log_state_once(self.state)
 
@@ -88,6 +90,9 @@ class DroneStateMachine:
 
                         self.set_state(self.possibleStates['ascending'])
 
+                    # #########################################################
+                    # ASCENDING
+                    # #########################################################
                     elif self.state == self.possibleStates['ascending']:
                         self.log_state_once(self.state)
 
@@ -97,17 +102,15 @@ class DroneStateMachine:
                                                        'not seeing obj'
                                                        ' of interest')
                             self.class_logger.info(logText)
-                            if self.dt > 1:
-                                self.stateStartTime = time.time()
-                                self.pwm0 = self.pwm0 + 1
 
+                            self.pwm0 = self.pwm0 + 1
                             if self.pwm0 > 150:
                                 self.pwm0 = 150
 
                         # seeing 1 2 or 3 objects
                         else:
                             logText = '{0}:{1}:{2}'.format('Ascending',
-                                                           'seeing objs:',
+                                                           'objs:',
                                                            len(self.objs))
                             self.class_logger.info(logText)
                             if len(self.objs) == 1:
@@ -120,22 +123,39 @@ class DroneStateMachine:
                                 self.dx = self.resolution[0] - self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
 
+                    # #########################################################
+                    # ROTATING
+                    # #########################################################
                     elif self.state == self.possibleStates['rotating']:
                         self.log_state_once(self.state)
 
+                    # #########################################################
+                    # MOVING TO POINT
+                    # #########################################################
                     elif self.state == self.possibleStates['movingToPoint']:
                         self.log_state_once(self.state)
 
+                    # #########################################################
+                    # LANDING
+                    # #########################################################
                     elif self.state == self.possibleStates['landing']:
                         self.log_state_once(self.state)
 
+                    # #########################################################
+                    # HOVERING
+                    # #########################################################
                     elif self.state == self.possibleStates['hovering']:
                         self.log_state_once(self.state)
 
+                    # #########################################################
+                    # HOVERING ON POINT
+                    # #########################################################
                     elif self.state == self.possibleStates['hoveringOnPoint']:
                         self.log_state_once(self.state)
 
-                    # send control commands
+                    # #########################################################
+                    # SEND DATA
+                    # #########################################################
                     self.values = [int(self.pwm0),
                                    int(self.pwm1),
                                    int(self.pwm2),
@@ -171,7 +191,6 @@ class DroneStateMachine:
         return
 
     def set_mode(self, mode):
-        self.stateStartTime = time.time()
         self.autoMode = mode
         return
 
@@ -182,7 +201,6 @@ class DroneStateMachine:
 
     def set_state(self, goalState):
         self.state = goalState
-        self.stateStartTime = time.time()
         self.log_state_once.has_run = False
         return
 
