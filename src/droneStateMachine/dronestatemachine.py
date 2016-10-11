@@ -73,6 +73,7 @@ class DroneStateMachine:
                     self.objs = self.queueSTM.get()
                     if isinstance(self.objs, list):
                         self.compute = True
+                        objCount = len(self.objs)
                     else:
                         self.compute = False
                     self.queueSTM.task_done()
@@ -107,24 +108,24 @@ class DroneStateMachine:
                             self.pwm0 = 150
 
                         # not seeing anything logical
-                        if len(self.objs) > 3 or len(self.objs) < 1:
+                        if objCount > 3 or objCount < 1:
                             pass
 
                         # seeing 1 2 or 3 objects
                         else:
-                            if len(self.objs) == 1:
+                            if objCount == 1:
                                 self.dx = self.resolution[0] -self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
-                            if len(self.objs) == 2:
+                            if objCount == 2:
                                 self.dx = self.resolution[0] - self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
-                            if len(self.objs) == 3:
+                            if objCount == 3:
                                 self.dx = self.resolution[0] - self.objs[0]['center'][0]
                                 self.dy = self.resolution[1] - self.objs[0]['center'][1]
 
                         logText = '{0} - {1}: {2}'.format('Ascending',
                                                           'nr of objs: ',
-                                                          len(self.objs))
+                                                          objCount)
 
                         self.class_logger.info(logText)
 
